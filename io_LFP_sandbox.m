@@ -1,3 +1,4 @@
+%2/18/20 - use this primarily for testing out the LFP related code
 %auditoryTask_sandbox; AT initiated on 12/1/19
 %%
 %%
