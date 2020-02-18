@@ -1,0 +1,231 @@
+
+load('inputshorten_PT1.mat', 'inputshorten')
+load('rData_PT1.mat', 'rData_PT1')
+rData = rData_PT1;
+input_matrix_rndm = inputshorten;
+
+% siInd = [1:9,19:27,37:45,55:63,73:81,91:99,109:117,127:135];
+siInd = [1:9,19:27];
+
+choice = transpose([rData.Response]);
+% choiceSI = choice(siInd); 
+actual = transpose([rData.actual]);
+% actualSI = actual(siInd);
+trialHist = input_matrix_rndm;
+trialHSI = trialHist(siInd);
+correct = choice == actual;
+correctSI = correct(siInd);
+
+% 1 = easy left
+% 2 = med left
+% 3 = 50/50
+% 4 = med right
+% 5 = easy right
+
+observationsL = zeros(1,5);
+observationsL(1,1) = sum(trialHSI == 1 & correctSI);
+observationsL(1,2) = sum(trialHSI == 2 & correctSI);
+observationsL(1,3) = sum(trialHSI == 301 & correctSI);
+observationsL(1,4) = sum(trialHSI == 4 & ~correctSI);
+observationsL(1,5) = sum(trialHSI == 5 & ~correctSI);
+
+trialnum = zeros(1,5);
+trialnum(1,1) = sum(trialHSI == 1);
+trialnum(1,2) = sum(trialHSI == 2);
+trialnum(1,3) = sum(trialHSI == 301);
+trialnum(1,4) = sum(trialHSI == 4);
+trialnum(1,5) = sum(trialHSI == 5);
+
+percent_L = zeros(1,5);
+percent_L(1,1) = sum(trialHSI == 1 & correctSI) / sum(trialHSI == 1);
+percent_L(1,2) = sum(trialHSI == 2 & correctSI) / sum(trialHSI == 2);
+
+percent_L(1,3) = sum(trialHSI == 301 & correctSI) / sum(trialHSI == 301);
+
+percent_L(1,4) = sum(trialHSI == 4 & ~correctSI) / sum(trialHSI == 4);
+percent_L(1,5) = sum(trialHSI == 5 & ~correctSI) / sum(trialHSI == 5);
+
+
+xAxisM = [5,4,3,2,1];
+b = glmfit(xAxisM',[observationsL; trialnum]' , 'binomial');
+
+x_axis = (1:0.1:5);
+y_fit = glmval(b, x_axis, 'logit');
+
+figure;
+p = plot(xAxisM, percent_L, 'ko');
+set(p, 'MarkerFaceColor', 'r', 'MarkerSize', 10);
+hold on
+% the fit
+p = plot(x_axis, y_fit, 'r');
+set(p, 'LineWidth', 1);
+ylim([0 1])
+yticks([0 0.5 1])
+ylabel('Fraction of right choices');
+xticks([1 2 3 4 5])
+xlabel('Frequency of tone')
+% h1 = legend('Participant 1');
+
+
+hold on
+
+%% as of 11/10 works for PT1
+
+
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+%
+% Example: figure_2_atJNM('AT_Oct20.mat')
+
+
+
+% load(fName , 'rData')
+% load('input_matrix_rndm_matonly')
+
+
+load('inputshorten_PT2.mat', 'inputshorten_PT2')
+load('rData_PT2.mat', 'rData_PT2')
+rData = rData_PT2;
+input_matrix_rndm = inputshorten_PT2;
+
+% siInd = [1:9,19:27,37:45,55:63,73:81,91:99,109:117,127:135];
+siInd = [1:9,19:27,37:45,55:63];
+
+choice = transpose([rData.Response]);
+% choiceSI = choice(siInd); 
+actual = transpose([rData.actual]);
+% actualSI = actual(siInd);
+trialHist = input_matrix_rndm;
+trialHSI = trialHist(siInd);
+correct = choice == actual;
+correctSI = correct(siInd);
+
+% 1 = easy left
+% 2 = med left
+% 3 = 50/50
+% 4 = med right
+% 5 = easy right
+
+observationsL = zeros(1,5);
+observationsL(1,1) = sum(trialHSI == 1 & correctSI);
+observationsL(1,2) = sum(trialHSI == 2 & correctSI);
+observationsL(1,3) = sum(trialHSI == 301 & correctSI);
+observationsL(1,4) = sum(trialHSI == 4 & ~correctSI);
+observationsL(1,5) = sum(trialHSI == 5 & ~correctSI);
+
+trialnum = zeros(1,5);
+trialnum(1,1) = sum(trialHSI == 1);
+trialnum(1,2) = sum(trialHSI == 2);
+trialnum(1,3) = sum(trialHSI == 301);
+trialnum(1,4) = sum(trialHSI == 4);
+trialnum(1,5) = sum(trialHSI == 5);
+
+percent_L = zeros(1,5);
+percent_L(1,1) = sum(trialHSI == 1 & correctSI) / sum(trialHSI == 1);
+percent_L(1,2) = sum(trialHSI == 2 & correctSI) / sum(trialHSI == 2);
+
+percent_L(1,3) = sum(trialHSI == 301 & correctSI) / sum(trialHSI == 301);
+
+percent_L(1,4) = sum(trialHSI == 4 & ~correctSI) / sum(trialHSI == 4);
+percent_L(1,5) = sum(trialHSI == 5 & ~correctSI) / sum(trialHSI == 5);
+
+
+xAxisM = [5,4,3,2,1];
+b = glmfit(xAxisM',[observationsL; trialnum]' , 'binomial');
+
+x_axis = (1:0.1:5);
+y_fit = glmval(b, x_axis, 'logit');
+
+p = plot(xAxisM, percent_L, 'ko');
+set(p, 'MarkerFaceColor', 'b', 'MarkerSize', 10);
+hold on
+% the fit
+p = plot(x_axis, y_fit, 'b');
+set(p, 'LineWidth', 1);
+ylim([0 1])
+yticks([0 0.5 1])
+ylabel('Fraction of right choices');
+xticks([1 2 3 4 5])
+xlabel('Frequency of tone')
+% h2 = legend('Participant 2');
+
+hold on
+
+%%
+
+load('rData_total.mat', 'rData_total')
+load('input_total.mat', 'input_total')
+
+% siInd = [1:9,19:27,37:45,55:63,73:81,91:99,109:117,127:135];
+siInd = [1:9,19:27,37:45,55:63,73:81,91:99];
+rData = rData_total;
+input_matrix_rndm = input_total;
+
+
+choice = transpose([rData.Response]);
+% choiceSI = choice(siInd); 
+actual = transpose([rData.actual]);
+% actualSI = actual(siInd);
+trialHist = input_matrix_rndm;
+trialHSI = trialHist(siInd);
+correct = choice == actual;
+correctSI = correct(siInd);
+
+% 1 = easy left
+% 2 = med left
+% 3 = 50/50
+% 4 = med right
+% 5 = easy right
+
+observationsL = zeros(1,5);
+observationsL(1,1) = sum(trialHSI == 1 & correctSI);
+observationsL(1,2) = sum(trialHSI == 2 & correctSI);
+observationsL(1,3) = sum(trialHSI == 301 & correctSI);
+observationsL(1,4) = sum(trialHSI == 4 & ~correctSI);
+observationsL(1,5) = sum(trialHSI == 5 & ~correctSI);
+
+trialnum = zeros(1,5);
+trialnum(1,1) = sum(trialHSI == 1);
+trialnum(1,2) = sum(trialHSI == 2);
+trialnum(1,3) = sum(trialHSI == 301);
+trialnum(1,4) = sum(trialHSI == 4);
+trialnum(1,5) = sum(trialHSI == 5);
+
+percent_L = zeros(1,5);
+percent_L(1,1) = sum(trialHSI == 1 & correctSI) / sum(trialHSI == 1);
+percent_L(1,2) = sum(trialHSI == 2 & correctSI) / sum(trialHSI == 2);
+
+percent_L(1,3) = sum(trialHSI == 301 & correctSI) / sum(trialHSI == 301);
+
+percent_L(1,4) = sum(trialHSI == 4 & ~correctSI) / sum(trialHSI == 4);
+percent_L(1,5) = sum(trialHSI == 5 & ~correctSI) / sum(trialHSI == 5);
+
+
+xAxisM = [5,4,3,2,1];
+b = glmfit(xAxisM',[observationsL; trialnum]' , 'binomial');
+
+x_axis = (1:0.1:5);
+y_fit = glmval(b, x_axis, 'logit');
+
+p = plot(xAxisM, percent_L, 'ko');
+set(p, 'MarkerFaceColor', 'k', 'MarkerSize', 10);
+hold on
+% the fit
+p = plot(x_axis, y_fit, 'k');
+set(p, 'LineWidth', 3);
+ylim([0 1])
+yticks([0 0.5 1])
+ylabel('Fraction of right choices');
+xticks([1 2 3 4 5])
+xlabel('Frequency of tone')
+
+% str1 = get (h1,'string'); % get the previous legend
+% str2 = get (h2,'string'); % get the previous legend
+% legend('Combined', k);  % your new legend
+h = zeros(3, 1);
+h(1) = plot(NaN,NaN,'or');
+h(2) = plot(NaN,NaN,'ob');
+h(3) = plot(NaN,NaN,'ok');
+legend(h, 'Participant 1','Participant 2','Combined');
+
+
