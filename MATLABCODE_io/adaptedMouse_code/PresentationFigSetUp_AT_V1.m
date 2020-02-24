@@ -24,8 +24,8 @@ screen_width = screen_size(3);
 screen_height = screen_size(4);
 
 % Set the width of the figure, relative to the screen size
-FRACTION_h = 0.4;
-FRACTION_w = 0.25;
+FRACTION_h = 0.8;
+FRACTION_w = 0.5;
 
 %% set a square figure window, so that when units are normalized, .1 vertically = .1 horizontally
 FIG_HEIGHT = screen_height * FRACTION_h;
