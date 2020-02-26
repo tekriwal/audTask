@@ -39,7 +39,7 @@
 function [ref_spike_times, trial_inds, plot_handles] =...
     raster_io_V1(spike_times, trial_start_times, event_times, window, secondary_event_times, no_plot_flag)
 
-GetPhysioGlobals;
+GetPhysioGlobals_io_V1;
 global RESOLUTION;
 
 TICK_LENGTH = 1; % length of tick marks for spikes

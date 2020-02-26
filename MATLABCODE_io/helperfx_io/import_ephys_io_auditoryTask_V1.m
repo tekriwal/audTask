@@ -53,34 +53,39 @@ if strcmp(cell2mat(caseInfo_table.Properties.RowNames), '11')
     spiketimes = spike1.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike1.spikeDATA.clustIDS;
     
-    clustIndex_0 = clustids  == 0;
+%     clustIndex_0 = clustids  == 0;
     clustIndex_1 = clustids  == 1;
     clustIndex_2 = clustids  == 2;
     clustIndex_3 = clustids  == 3;
     clustIndex_4 = clustids  == 4;
     clustIndex_5 = clustids  == 5;
-    clustIndex_6 = clustids  == 6;
+%     clustIndex_6 = clustids  == 6;
     
-    spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0  = spiketimes(clustIndex_0);
+%     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0  = spiketimes(clustIndex_0);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3  = spiketimes(clustIndex_3);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4  = spiketimes(clustIndex_4);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5  = spiketimes(clustIndex_5);
-    spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_6  = spiketimes(clustIndex_6);
+%     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_6  = spiketimes(clustIndex_6);
     
     spiketimes = spike2.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike2.spikeDATA.clustIDS;
     
+    clustIndex_1 = clustids  == 1;
+    clustIndex_2 = clustids  == 2;    
     clustIndex_3 = clustids  == 3;
     clustIndex_4 = clustids  == 4;
     clustIndex_5 = clustids  == 5;
-    clustIndex_6 = clustids  == 6;
-    
+%     clustIndex_6 = clustids  == 6;
+
+
+    spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
+    spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3  = spiketimes(clustIndex_3);
     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4  = spiketimes(clustIndex_4);
     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5  = spiketimes(clustIndex_5);
-    spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_6  = spiketimes(clustIndex_6);
+%     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_6  = spiketimes(clustIndex_6);
 
 
 elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '8')

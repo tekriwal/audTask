@@ -56,10 +56,10 @@ align_ind1 = 4; %which part of the trial do we want to look at as our 'zero' poi
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
     
-window_event1 = [-1.5 3]; %window of time around align_ind1 that we want to look at
+% window_event1 = [-1.5 3]; %window of time around align_ind1 that we want to look at
 % ymaxx 
 NUM_TRIALS_TO_PLOT = 10;
-PSTH_SMOOTH_FACTOR = 50;
+% PSTH_SMOOTH_FACTOR = 75;
 
 %below sets up the y axis for psth, either 'zero' or 'half', zero means it
 %goes until zero while half means its half of ymax
@@ -140,7 +140,7 @@ spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs;
 % spike_timestamp = spk_file.spikeDATA.waveforms.negWaveInfo.negLocs;
 
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0;  
-% spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;  
+spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;  
 spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;  
 spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;  
 spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;  
@@ -148,9 +148,43 @@ spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_6;  
 
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0;  
-spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3];  
-spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2];  
+spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4];  
+% spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2];  
 
+if strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4
+    
+    %Below looks good for 'strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4' 
+%     spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;
+%     miny = 'half';
+%     window_event1 = [-.7 2];
+% PSTH_SMOOTH_FACTOR = 110;
+
+    %Below looks good for 'strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4' 
+%         spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;
+%     miny = 'half';
+%     window_event1 = [-.5 1.5];
+%     PSTH_SMOOTH_FACTOR = 75;
+
+       %Below looks good for 'strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4' 
+                spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
+%                 spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
+
+    miny = 'zero';
+    window_event1 = [-3 1];
+    PSTH_SMOOTH_FACTOR = 55;         
+        
+elseif  strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 5
+
+%                 spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
+% %                 spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
+% 
+%     miny = 'zero';
+%     window_event1 = [-3 1];
+%     PSTH_SMOOTH_FACTOR = 55; 
+    
+    
+        % spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4];
+end
 %% define some constants
 % figure('rend','painters','pos',[10 10 900 600])
 

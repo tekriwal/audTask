@@ -4,7 +4,7 @@
 %% Based on GetSCGlobals, originally written 1/8/08 by GF.
 %% $ Generalized for use with awake behaving recording data 12/3/12 by GF.
 
-function GetPhysioGlobals
+function GetPhysioGlobals_V0
 
 %%% ESTABLISH THE GLOBAL VARIABLES
 
