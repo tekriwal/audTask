@@ -52,10 +52,13 @@ function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V2()
 %below are some basic inputs we are going to want
 caseNumb = 11;
 spikeFile = 'spike1';
-align_ind1 = 4; %which part of the trial do we want to look at as our 'zero' point?
+align_ind1 = 3; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
-    
+% raster_plotting = 'inOrder'; % 'inOrder' means that the raster plots things in numeric order, if this variable is set to 'default', then it plots the default way (randomly selects)
+raster_plotting = 'default';
+
+
 % window_event1 = [-1.5 3]; %window of time around align_ind1 that we want to look at
 % ymaxx 
 NUM_TRIALS_TO_PLOT = 10;
@@ -150,8 +153,17 @@ spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0;  
 spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4];  
 % spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2];  
+spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3];  
 
-if strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4
+
+if strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 3
+    
+    spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1];
+    miny = 'half';
+    window_event1 = [-.7 2];
+    PSTH_SMOOTH_FACTOR = 75;   
+
+elseif strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4
     
     %Below looks good for 'strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4' 
 %     spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;
@@ -167,10 +179,10 @@ if strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4
 
        %Below looks good for 'strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4' 
                 spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
-%                 spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
+                spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1];
 
-    miny = 'zero';
-    window_event1 = [-3 1];
+    miny = 'half';
+    window_event1 = [-.7 2];
     PSTH_SMOOTH_FACTOR = 55;         
         
 elseif  strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 5
@@ -396,8 +408,12 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 %% only plot a certain number of trials in the raster (but psth should be
 %% average of all trials)
 if length(trial_start_times) > NUM_TRIALS_TO_PLOT
-    r = randperm(length(trial_start_times));
-    trials_to_plot = sort(r(1:NUM_TRIALS_TO_PLOT));
+    if strcmp(raster_plotting, 'default')
+        r = randperm(length(trial_start_times));
+        trials_to_plot = sort(r(1:NUM_TRIALS_TO_PLOT));
+    elseif strcmp(raster_plotting, 'inOrder')
+        trials_to_plot = (1:NUM_TRIALS_TO_PLOT);
+    end
 else
     trials_to_plot = 1:length(trial_start_times);
 end
@@ -412,7 +428,9 @@ feedback_times = feedback_times(trials_to_plot);
 
 
 % sort trials by rxn
-[y, trials_to_plot] = sort(submitsResponse_times - stimDelivered_times);
+if strcmp(raster_plotting, 'default')
+    [y, trials_to_plot] = sort(submitsResponse_times - stimDelivered_times);
+end
 
 trialStart_times = trialStart_times(trials_to_plot);
 upPressed_times = upPressed_times(trials_to_plot);
@@ -463,7 +481,7 @@ set(plot_handle.secondary_events(:, 6), 'Color', feedback_color);
 
 set(gca, 'xticklabel', []);
 set(gca, 'ytick', []);
-ylabel({'Ipsi.'});
+ylabel({'Left'});
 title('Stimulus guided');
 
 % recalculate raster, w/ all 'well-behaved' trials included, for psth - aligned to odorportout
@@ -491,7 +509,7 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
 
-[ref_spike_times, trial_inds, plot_handle] = raster(spike_times, trial_start_times',...
+[ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
     eval(align_event1_times), window_event1,...
     [ stimDelivered_times; goCue_times; leftUP_times], no_plot_flag);
 
@@ -533,8 +551,12 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 %% only plot a certain number of trials in the raster (but psth should be
 %% average of all trials)
 if length(trial_start_times) > NUM_TRIALS_TO_PLOT
-    r = randperm(length(trial_start_times));
-    trials_to_plot = sort(r(1:NUM_TRIALS_TO_PLOT));
+    if strcmp(raster_plotting, 'default')
+        r = randperm(length(trial_start_times));
+        trials_to_plot = sort(r(1:NUM_TRIALS_TO_PLOT));
+    elseif strcmp(raster_plotting, 'inOrder')
+        trials_to_plot = (1:NUM_TRIALS_TO_PLOT);
+    end
 else
     trials_to_plot = 1:length(trial_start_times);
 end
@@ -549,7 +571,9 @@ feedback_times = feedback_times(trials_to_plot);
 
 
 % sort trials by rxn
-[y, trials_to_plot] = sort(submitsResponse_times - stimDelivered_times);
+if strcmp(raster_plotting, 'default')
+    [y, trials_to_plot] = sort(submitsResponse_times - stimDelivered_times);
+end
 
 trialStart_times = trialStart_times(trials_to_plot);
 upPressed_times = upPressed_times(trials_to_plot);
@@ -627,7 +651,7 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
 
-[ref_spike_times, trial_inds, plot_handle] = raster(spike_times, trial_start_times',...
+[ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
     eval(align_event1_times), window_event1,...
     [ stimDelivered_times; goCue_times; leftUP_times], no_plot_flag);
 
@@ -667,8 +691,12 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 %% only plot a certain number of trials in the raster (but psth should be
 %% average of all trials)
 if length(trial_start_times) > NUM_TRIALS_TO_PLOT
-    r = randperm(length(trial_start_times));
-    trials_to_plot = sort(r(1:NUM_TRIALS_TO_PLOT));
+    if strcmp(raster_plotting, 'default')
+        r = randperm(length(trial_start_times));
+        trials_to_plot = sort(r(1:NUM_TRIALS_TO_PLOT));
+    elseif strcmp(raster_plotting, 'inOrder')
+        trials_to_plot = (1:NUM_TRIALS_TO_PLOT);
+    end
 else
     trials_to_plot = 1:length(trial_start_times);
 end
@@ -683,7 +711,10 @@ feedback_times = feedback_times(trials_to_plot);
 
 
 % sort trials by rxn
-[y, trials_to_plot] = sort(submitsResponse_times - stimDelivered_times);
+if strcmp(raster_plotting, 'default')
+    [y, trials_to_plot] = sort(submitsResponse_times - stimDelivered_times);
+end
+
 
 trialStart_times = trialStart_times(trials_to_plot);
 upPressed_times = upPressed_times(trials_to_plot);
@@ -734,7 +765,7 @@ set(plot_handle.secondary_events(:, 6), 'Color', feedback_color);
 
 set(gca, 'xticklabel', []);
 set(gca, 'ytick', []);
-ylabel({'Contra.'});
+ylabel({'Right'});
 %title('Stimulus guided');
 
 % recalculate raster, w/ all 'well-behaved' trials included, for psth - aligned to odorportout
@@ -761,7 +792,7 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
 
-[ref_spike_times, trial_inds, plot_handle] = raster(spike_times, trial_start_times',...
+[ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
     eval(align_event1_times), window_event1,...
     [ stimDelivered_times; goCue_times; leftUP_times], no_plot_flag);
 
@@ -802,8 +833,12 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 %% only plot a certain number of trials in the raster (but psth should be
 %% average of all trials)
 if length(trial_start_times) > NUM_TRIALS_TO_PLOT
-    r = randperm(length(trial_start_times));
-    trials_to_plot = sort(r(1:NUM_TRIALS_TO_PLOT));
+    if strcmp(raster_plotting, 'default')
+        r = randperm(length(trial_start_times));
+        trials_to_plot = sort(r(1:NUM_TRIALS_TO_PLOT));
+    elseif strcmp(raster_plotting, 'inOrder')
+        trials_to_plot = (1:NUM_TRIALS_TO_PLOT);
+    end
 else
     trials_to_plot = 1:length(trial_start_times);
 end
@@ -818,7 +853,10 @@ feedback_times = feedback_times(trials_to_plot);
 
 
 % sort trials by rxn
-[y, trials_to_plot] = sort(submitsResponse_times - stimDelivered_times);
+if strcmp(raster_plotting, 'default')
+    [y, trials_to_plot] = sort(submitsResponse_times - stimDelivered_times);
+end
+
 
 trialStart_times = trialStart_times(trials_to_plot);
 upPressed_times = upPressed_times(trials_to_plot);
@@ -899,7 +937,7 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
 
-[ref_spike_times, trial_inds, plot_handle] = raster(spike_times, trial_start_times',...
+[ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
     eval(align_event1_times), window_event1,...
     [ stimDelivered_times; goCue_times; leftUP_times], no_plot_flag);
 

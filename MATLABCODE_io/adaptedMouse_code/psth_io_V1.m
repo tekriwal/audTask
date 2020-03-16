@@ -57,7 +57,7 @@
 function [ref_psth, plot_handle, psth_info] = psth_io_V1(ref_spike_times, trial_inds, window, smoothing_factor, no_plot_flag, total_num_trials)
 
 %GetSCGlobals;
-GetPhysioGlobals;
+GetPhysioGlobals_io_V1;
 global RESOLUTION;
 
 if nargin < 4
