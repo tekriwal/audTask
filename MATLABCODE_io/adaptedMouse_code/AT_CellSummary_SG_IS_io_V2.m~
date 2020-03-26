@@ -54,7 +54,7 @@
 function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V2()
 
 %below are some basic inputs we are going to want
-caseNumb = 11;
+caseNumb = 12;
 spikeFile = 'spike1';
 align_ind1 = 3; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
@@ -94,9 +94,7 @@ addpath(p);
 [inputmatrix, rsp_struct] = import_behavior_io_auditoryTask_V1(caseInfo_table);
 
 
-% AT 3/16/20; BClust were clustered at 2 SD and refined down as much as
-% possible; while _V2 were clustered to 3SD and largely left unrefined.
-
+% AT 3/16/20; BClust were clustered at 
 % [Ephys_struct, spike1, spike2, spike3] = import_ephys_io_auditoryTask_V1(caseInfo_table, 'processed_spikes_BClust');
 [Ephys_struct, spike1, spike2, spike3] = import_ephys_io_auditoryTask_V1(caseInfo_table, 'processed_spikes_V2');
 
@@ -152,16 +150,16 @@ spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs;
 
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0;  
 spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;  
-% spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;  
-% spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;  
-% spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;  
+spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;  
+spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;  
+spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;  
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5;  
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_6;  
 
-% % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0;  
-% spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4];  
-% % spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2];  
-% spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3];  
+% spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0;  
+spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4];  
+% spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2];  
+spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3];  
 
 
 if strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 3

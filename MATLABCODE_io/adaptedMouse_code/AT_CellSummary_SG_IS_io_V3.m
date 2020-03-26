@@ -51,27 +51,34 @@
 %
 
 % function [h1, fig_handle] = AT_CellSummary_SG_IS_V1(behav_file, spk_file, align_ind1, window_event1, ymaxx, NUM_TRIALS_TO_PLOT, PSTH_SMOOTH_FACTOR, saveFigure)
-function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V2()
+function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V3()
 
-%below are some basic inputs we are going to want
-caseNumb = 11;
-spikeFile = 'spike1';
-align_ind1 = 3; %which part of the trial do we want to look at as our 'zero' point?
+%3/22/20
+%below are some basic inputs we are going to want; to figure out what the
+%appropriate spike# and clust# is, refer to the datafiles on box,
+%specifically the 'processed_spikes_V2' folder. If there's a .jpg file,
+%means that there were more than 1 cluster after spike sorting
+
+caseNumb = 13;
+spikeFile = 'spike2';
+clust = 2; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
+align_ind1 = 2; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
-% raster_plotting = 'inOrder'; % 'inOrder' means that the raster plots things in numeric order, if this variable is set to 'default', then it plots the default way (randomly selects)
-raster_plotting = 'default';
+raster_plotting = 'inOrder'; % 'inOrder' means that the raster plots things in numeric order, if this variable is set to 'default', then it plots the default way (randomly selects)
+% raster_plotting = 'default';
 
 
 % window_event1 = [-1.5 3]; %window of time around align_ind1 that we want to look at
 % ymaxx 
-NUM_TRIALS_TO_PLOT = 10;
+NUM_TRIALS_TO_PLOT = 15;
 % PSTH_SMOOTH_FACTOR = 75;
 
 %below sets up the y axis for psth, either 'zero' or 'half', zero means it
 %goes until zero while half means its half of ymax
 miny = 'zero';
-
+window_event1 = [-2 4];
+PSTH_SMOOTH_FACTOR = 55;
 
 if caseNumb == 8 || caseNumb == 9
     SGonly = 1;
@@ -93,7 +100,6 @@ addpath(p);
 
 [inputmatrix, rsp_struct] = import_behavior_io_auditoryTask_V1(caseInfo_table);
 
-
 % AT 3/16/20; BClust were clustered at 2 SD and refined down as much as
 % possible; while _V2 were clustered to 3SD and largely left unrefined.
 
@@ -108,8 +114,14 @@ addpath(p);
 % fromwhere_relativetoendofwaitperiod = 0; %have 0 here will identify the
 % first TTL after the delay epoch is completed
 
+if caseNumb == 3 || caseNumb == 2 || caseNumb == 1
+    rData = rsp_struct.rsp_master_v1;%unpacking, AT
+elseif caseNumb == 4
+    rData = rsp_struct.rsp_master_v2;%unpacking, AT
+else
+    rData = rsp_struct.rsp_master_v3;%unpacking, AT
+end
 
-rData = rsp_struct.rsp_master_v3;%unpacking, AT
 inputmatrix = inputmatrix.input_matrix_rndm;%unpacking, AT
 
 lasttrialwewant = length(rData);
@@ -123,8 +135,30 @@ behavior_timestamp = Ephys_struct.ttlInfo.ttl_up; %.ttl_dn is just 2200 samples 
 %order have the timings reflect time from beginning of each individual
 %trial. This is really important! To account for different versions of our
 %task, we should use different versions of the below fx!
+if caseNumb == 4 
+    rData = Case04_behavior_adapter(rData);
+end
+
+if caseNumb == 3 || caseNumb == 2 || caseNumb == 1 
+    rData = Case03_behavior_adapter(rData);
+end
 taskbase_io = behav_file_adapter_V1(rData,inputmatrix);
-taskbase_io = AOstart_adapter_V1(taskbase_io, Ephys_struct, 'trialStart'); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
+
+if caseNumb == 4
+    taskbase_io = Case04_AOstart_adapter(taskbase_io, Ephys_struct, 'trialStart'); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
+elseif caseNumb == 3 || caseNumb == 2 || caseNumb == 1
+    taskbase_io = Case03_AOstart_adapter(taskbase_io, Ephys_struct, 'trialStart'); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
+else
+    taskbase_io = AOstart_adapter_V1(taskbase_io, Ephys_struct, 'trialStart'); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
+end
+
+
+%AT adding below on 3/20/20 to account for weirdness in the way file was
+%saved.
+if caseNumb == 1
+taskbase_io.trialStart_AO = taskbase_io.trialStart_AO(14:(end-5));
+end
+
 
 
 %AT 2/14/20; below are input variables to original fx pulled out
@@ -150,61 +184,60 @@ saveFigure = 0;
 spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs;
 % spike_timestamp = spk_file.spikeDATA.waveforms.negWaveInfo.negLocs;
 
-% spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0;  
-spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;  
+
+if clust == 1
+    spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;
+elseif clust == 2
+    spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;
+elseif clust == 3
+    spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;
+end
+
+
+
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;  
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;  
-% spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;  
-% spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5;  
-% spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_6;  
 
-% % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0;  
-% spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4];  
-% % spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2];  
-% spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3];  
-
-
-if strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 3
-    
-    spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1];
-    miny = 'half';
-    window_event1 = [-.7 2];
-    PSTH_SMOOTH_FACTOR = 75;   
-
-elseif strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4
-    
-    %Below looks good for 'strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4' 
-%     spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;
-%     miny = 'half';
-%     window_event1 = [-.7 2];
-% PSTH_SMOOTH_FACTOR = 110;
-
-    %Below looks good for 'strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4' 
-%         spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;
-%     miny = 'half';
-%     window_event1 = [-.5 1.5];
-%     PSTH_SMOOTH_FACTOR = 75;
-
-       %Below looks good for 'strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4' 
-                spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
-                spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1];
-
-    miny = 'half';
-    window_event1 = [-.7 2];
-    PSTH_SMOOTH_FACTOR = 55;         
-        
-elseif  strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 5
-
-%                 spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
-% %                 spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
-% 
-%     miny = 'zero';
-%     window_event1 = [-3 1];
-%     PSTH_SMOOTH_FACTOR = 55; 
-    
-    
-        % spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4];
-end
+% % if strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 2
+% %     
+% %     spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1];
+% %     miny = 'zero';
+% %     window_event1 = [-.5 4];
+% %     PSTH_SMOOTH_FACTOR = 75; 
+% %     
+% % elseif strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 3
+% %     
+% %     spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1];
+% %     miny = 'zero';
+% %     window_event1 = [-.7 3];
+% %     PSTH_SMOOTH_FACTOR = 75;   
+% % 
+% % elseif strcmp(spikeFile, 'spike1') && caseNumb == 11 && align_ind1 == 4
+% %     
+% % %     spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_5];
+% %     spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1];
+% % 
+% %     miny = 'zero';
+% %     window_event1 = [-2 2];
+% %     PSTH_SMOOTH_FACTOR = 75;         
+% %         
+% % 
+% % elseif strcmp(spikeFile, 'spike2') && caseNumb == 11 && align_ind1 == 2
+% %     
+% %     spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1];
+% %     miny = 'zero';
+% %     window_event1 = [-.5 4];
+% %     PSTH_SMOOTH_FACTOR = 75;   
+% %     
+% % elseif strcmp(spikeFile, 'spike2') && caseNumb == 11 && align_ind1 == 4
+% %     
+% %     spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1];
+% %     miny = 'zero';
+% %     window_event1 = [-2 2];
+% %     PSTH_SMOOTH_FACTOR = 75;       
+% %     
+% %         % spike_timestamp = [spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_4];
+% % end
 %% define some constants
 % figure('rend','painters','pos',[10 10 900 600])
 
@@ -343,30 +376,6 @@ no_plot_flag = 1;
 % [raster_events, stim_params] = TrialClassification_dispatcher(taskbase, trial_events, num_trials_back);
 % [raster_events, stim_params] = TrialClassification_dispatcher_AT_V1(taskbase, trial_events, num_trials_back);
 
-% % % % 
-% % % % Determine whether to use the "Valve7A" or "Valve7B" field to determine
-% % % % which are the choice and which are the no-choice trials.
-% % % % 
-% % % % 
-% % % % 
-% % % % if (range(taskbase.Valve7A ~= 0)) && (range(taskbase.Valve7B ~= 0))
-% % % %     
-% % % %     error('Both Valve7A and Valve7B have changing values for Valve7. No-choice blocks unclear.');
-% % % %     
-% % % % elseif (range(taskbase.Valve7A == 0)) && (range(taskbase.Valve7B == 0))
-% % % %     
-% % % %     error('Neither Valve7A nor Valve7B have changing values for Valve7. No-choice blocks unclear.');
-% % % %     
-% % % % elseif range(taskbase.Valve7A) ~= 0
-% % % %     choice_trials = taskbase.Valve7A == 0.5;
-% % % %     nochoice_trials_L = taskbase.Valve7A == 0;
-% % % %     nochoice_trials_R = taskbase.Valve7A == 1;
-% % % %     
-% % % % elseif range(taskbase.Valve7A) == 0
-% % % %     choice_trials = taskbase.Valve7B == 0.5;
-% % % %     nochoice_trials_L = taskbase.Valve7B == 0;
-% % % %     nochoice_trials_R = taskbase.Valve7B == 1;
-% % % % end
 
 [choice_trials_L, choice_trials_R, nochoice_trials_L, nochoice_trials_R, choice_trials_L_corrects, choice_trials_R_corrects, nochoice_trials_L_corrects, nochoice_trials_R_corrects ] = io_taskindexing_AT_V2(rData, inputmatrix);
 
@@ -378,16 +387,6 @@ if SGonly == 1
     nochoice_trials = choice_trials;
 end
     
-% % % % %% ocassionally, the Valve7A/B field is 1 element longer than the choice
-% % % % %% field. I'm not sure why this is. For now, assume that the last value
-% % % % %% should be removed (along the lines of their usually (always?) being one
-% % % % %% more element in the start field than in the other events)
-% % % % if length(choice_trials) > length(taskbase.choice)
-% % % %     warning('choice_trials is longer than taskbase.choice.');
-% % % %     choice_trials = choice_trials(1:length(taskbase.choice));
-% % % %     nochoice_trials_L = nochoice_trials_L(1:length(taskbase.choice));
-% % % %     nochoice_trials_R = nochoice_trials_R(1:length(taskbase.choice));
-% % % % end
 
 %% Look at L, choice (active decision making) trials %%%
 % aka L choices made during SG
@@ -405,13 +404,6 @@ submitsResponse_times = taskbase_io.events.submitsResponse(trial_inds)';
 feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
-
-% % % % opi_times = taskbase.OdorPokeIn(trial_inds)';
-% % % % ovo_times = taskbase.DIO(trial_inds)';
-% % % % gt_times = taskbase.cue(trial_inds)';
-% % % % opo_times = taskbase.OdorPokeOut(trial_inds)';
-% % % % wpi_times = taskbase.WaterPokeIn(trial_inds)';
-% % % % wvo_times = taskbase.WaterDeliv(trial_inds)';
 
 %% only plot a certain number of trials in the raster (but psth should be
 %% average of all trials)
@@ -632,7 +624,12 @@ set(plot_handle.secondary_events(:, 6), 'Color', feedback_color);
 set(gca, 'xticklabel', []);
 set(gca, 'ytick', []);
 %ylabel({'Ipsi.'});
+
 title('Internally specified');
+
+if caseNumb == 9 || caseNumb == 8
+    title('Stimulus-guided (as well)');
+end
 
 % recalculate raster, w/ all 'well-behaved' trials included, for psth - aligned to odorportout
 % % % % trial_inds = find((taskbase.choice == 1) & (choice_trials == 1));
@@ -1006,7 +1003,7 @@ max_psth = max([max(get(p1, 'YData')) max(get(p3, 'YData'))]); %...
 % max_psth = max([max(get(p1, 'YData')) max(get(p2, 'YData')) max(get(p3, 'YData')) max(get(p4, 'YData'))]); %...
 %     max(get(p5, 'YData')) max(get(p6, 'YData')) max(get(p7, 'YData')) max(get(p8, 'YData'))...
 %     max(get(p9, 'YData')) max(get(p10, 'YData')) max(get(p11, 'YData')) max(get(p12, 'YData'))]);
-max_y = (ceil(max_psth / 10)) * 10;
+max_y = ((ceil(max_psth / 10)) * 10)+10;
 
 plot_window_event1 = init_psth_window_event1 + [+((RESOLUTION/1000)/2) -((RESOLUTION/1000)/2)]; %b/c raster output has been padded
 
@@ -1099,7 +1096,7 @@ set(gcf, 'CurrentAxes', event1_psth);
 % max_psth = max([max(get(p1, 'YData')) max(get(p2, 'YData')) max(get(p3, 'YData')) max(get(p4, 'YData'))]); %...
 %     max(get(p5, 'YData')) max(get(p6, 'YData')) max(get(p7, 'YData')) max(get(p8, 'YData'))...
 %     max(get(p9, 'YData')) max(get(p10, 'YData')) max(get(p11, 'YData')) max(get(p12, 'YData'))]);
-max_y = (ceil(max_psth / 10)) * 10;
+max_y = ((ceil(max_psth / 10)) * 10)+10;
 
 plot_window_event1 = init_psth_window_event1 + [+((RESOLUTION/1000)/2) -((RESOLUTION/1000)/2)]; %b/c raster output has been padded
 
