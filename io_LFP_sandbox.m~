@@ -20,19 +20,7 @@
 % LFPsource = 'CMacro_LFP02';
 % LFPsource = 'CMacro_LFP03';
 
-lfp_v3(11, 'movePreparation', LFP01);
-lfp_v3(11, 'moveInitiation', LFP01);
-lfp_v3(11, 'movePreparation', LFP02);
-lfp_v3(11, 'moveInitiation', LFP02);
-lfp_v3(11, 'movePreparation', LFP03);
-lfp_v3(11, 'moveInitiation', LFP03);
-
-% lfp_v3(11, 'movePreparation', CMacro_LFP01);
-% lfp_v3(11, 'moveInitiation', CMacro_LFP01);
-lfp_v3(11, 'movePreparation', CMacro_LFP02);
-lfp_v3(11, 'moveInitiation', CMacro_LFP02);
-lfp_v3(11, 'movePreparation', CMacro_LFP03);
-lfp_v3(11, 'moveInitiation', CMacro_LFP03);
+lfp_v3(11, 'movePreparation, LFPsource);
 
 
 
