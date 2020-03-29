@@ -30,7 +30,7 @@ arguments
     inPUTS.dirLOC (1,1) string = "noloc"
     inPUTS.dnSamp (1,1) double = 250
     inPUTS.toPlot (1,1) logical = 0
-    inPUTS.LowPfil (1,1) logical = 80
+    inPUTS.LowPfil (1,1) double = 80
 end
 
 if contains(inPUTS.dirLOC,"noloc")
