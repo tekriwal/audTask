@@ -47,7 +47,7 @@ GetPhysioGlobals_io_V1;
 global RESOLUTION;
 
 TICK_LENGTH = 1; % length of tick marks for spikes
-SPIKE_TICK_WIDTH = 0.5; % width of lines marking spikes
+SPIKE_TICK_WIDTH = 0.2; % width of lines marking spikes
 EVENT_TICK_WIDTH = 2; % width of lines marking secondary events (e.g., odor poke out)
 
 if isempty(trial_start_times) % if there are no trials, return empty matrices
@@ -113,7 +113,6 @@ if no_plot_flag == 0 % do the plotting
     
     if max(trial_inds) < NUM_TRIALS_TO_PLOT
         delta= NUM_TRIALS_TO_PLOT - max(trial_inds);
-        addendum = zeros(delta, 1);
         
         addendum = zeros(delta, 1);
         ref_spike_times_added = [ref_spike_times; addendum];
@@ -137,6 +136,23 @@ if no_plot_flag == 0 % do the plotting
         
         addendum = zeros(delta, 6);
         ref_secondary_event_times_added = [ref_secondary_event_times; addendum];
+  
+    else
+        
+        ref_spike_times_added = ref_spike_times;
+        
+        trial_inds_added = trial_inds;
+        
+        %         spike_times =
+        
+        trial_start_times_added = trial_start_times;
+        
+        event_times_added = event_times;
+        %         window
+        
+        secondary_event_times_added = secondary_event_times;
+        
+        ref_secondary_event_times_added = ref_secondary_event_times;
     end
     
     
