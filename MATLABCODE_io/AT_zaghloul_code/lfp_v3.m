@@ -1,4 +1,7 @@
-%%AT V3; created
+%%AT V3; changes into a fx that works in a manner I'm better able to
+%%understand. example input:
+%     lfp_v3(n, 'moveInitiation', 'LFP01');
+
 
 %%AT v2 created 1/22/20; so far code is coming together, will want to break
 %%it up into separate functions sometime soon probably
@@ -8,7 +11,7 @@ function [] = lfp_v3(caseNumb, epoch, LFPsource)
 dbstop if error
 
 %below is for running the LFP code
-clearvars;
+% clearvars;
 % close all;
 clc;
 
@@ -106,13 +109,18 @@ end
 
 [inputmatrix, rsp_struct] = import_behavior_io_auditoryTask_V1(caseInfo_table);
 
+surgerySide = caseInfo_table.("Target (R/L STN)");
+
 % AT 3/16/20; BClust were clustered at 2 SD and refined down as much as
 % possible; while _V2 were clustered to 3SD and largely left unrefined.
 
 % [Ephys_struct, spike1, spike2, spike3] = import_ephys_io_auditoryTask_V1(caseInfo_table, 'processed_spikes_BClust');
 [Ephys_struct, spike1, spike2, spike3] = import_ephys_io_auditoryTask_V1(caseInfo_table, 'processed_spikes_V2');
-LFPSamplerate = Ephys_struct.lfp.sampFreqHz;
-
+if caseNumb == 12
+    LFPSamplerate = Ephys_struct.lfp.KHz*1000;
+else
+    LFPSamplerate = Ephys_struct.lfp.sampFreqHz;
+end
 
 [lfpMicro1, lfpMacro1, lfpMicro2, lfpMacro2, lfpMicro3, lfpMacro3] = unpack_ephysLFP_io_auditoryTask_V1(caseInfo_table, Ephys_struct);
 
@@ -251,11 +259,11 @@ tstart=tic;
 %AT uncomment below when using our data
 %     [L_IS_correct_structs,  R_IS_correct_structs,  L_SG_correct_structs, R_SG_correct_structs] = io_taskindexing_AT_V1(rsp_struct.rsp_master_v3, inputmatrix.input_matrix_rndm);
 
-if isfield(rsp_struct, 'rsp_master_v3')
-    [L_IS_correct_structs,  R_IS_correct_structs,  L_SG_correct_structs, R_SG_correct_structs] = io_taskindexing_AT_V1(rsp_struct.rsp_master_v3, inputmatrix);
-elseif isfield(rsp_struct, 'ans')
-    [L_IS_correct_structs,  R_IS_correct_structs,  L_SG_correct_structs, R_SG_correct_structs] = io_taskindexing_AT_V1(rsp_struct.ans, inputmatrix);
-end
+% if isfield(rsp_struct, 'rsp_master_v3')
+%     [L_IS_correct_structs,  R_IS_correct_structs,  L_SG_correct_structs, R_SG_correct_structs] = io_taskindexing_AT_V1(rsp_struct.rsp_master_v3, inputmatrix);
+% elseif isfield(rsp_struct, 'ans')
+%     [L_IS_correct_structs,  R_IS_correct_structs,  L_SG_correct_structs, R_SG_correct_structs] = io_taskindexing_AT_V1(rsp_struct.ans, inputmatrix);
+% end
 
 
 
@@ -264,10 +272,10 @@ end
 %         events_high=events(dist_correct);
 %         events_joint=[events_low, events_high];
 %
-%AT uncomment below when using our data
-events_ISjoint=[L_IS_correct_structs, R_IS_correct_structs];
-events_SGjoint=[L_SG_correct_structs, R_SG_correct_structs];
-events_joint = [events_SGjoint, events_ISjoint]; %unsure if this will be used, but prob
+% %AT uncomment below when using our data
+% events_ISjoint=[L_IS_correct_structs, R_IS_correct_structs];
+% events_SGjoint=[L_SG_correct_structs, R_SG_correct_structs];
+% events_joint = [events_SGjoint, events_ISjoint]; %unsure if this will be used, but prob
 
 %         % load the EEG data
 %         filename=[homeDir subj '/ecogLFPdata_rereferenced/' events(1).eegfile channel];
@@ -348,6 +356,13 @@ end
 
 [choice_trials_L, choice_trials_R, nochoice_trials_L, nochoice_trials_R, choice_trials_L_corrects, choice_trials_R_corrects, nochoice_trials_L_corrects, nochoice_trials_R_corrects ] = io_taskindexing_AT_V2(rData, inputmatrix);
 
+
+choice_trials_L(1:3) = [];
+choice_trials_R(1:3) = [];
+nochoice_trials_L(1:3) = [];
+nochoice_trials_R(1:3) = [];
+
+
 choice_trials = choice_trials_L + choice_trials_R; %AT making combined SG index
 nochoice_trials = nochoice_trials_L + nochoice_trials_R; %AT making combined SG index
 
@@ -419,14 +434,18 @@ IS_R_stacked = [mean(IS_R.delta_pband), mean(IS_R.alpha_pband), mean(IS_R.theta_
 
 
 figure()
-% spacer = [0, 0, 0];
-y_combined = vertcat(SG_L_stacked, IS_L_stacked, SG_R_stacked, IS_R_stacked);
-% names = {'Contraversive'; 'Ipsiversive'; 'No Preference'; 'empty'; 'Contraversive'; 'Ipsiversive'; 'No Preference'};
-names = {'SG_L'; 'IS_L'; 'SG_R'; 'IS_R'};
+if strcmp(surgerySide, 'L')
+    y_combined = vertcat(SG_L_stacked, IS_L_stacked, SG_R_stacked, IS_R_stacked);
+    names = {'SG ipsi'; 'IS ipsi'; 'SG contra'; 'IS contra'};
+elseif strcmp(surgerySide, 'R')
+    y_combined = vertcat(SG_R_stacked, IS_R_stacked,SG_L_stacked, IS_L_stacked);
+    names = {'SG ipsi'; 'IS ipsi'; 'SG contra'; 'IS contra'};
+end
+
 h = bar(y_combined, 'stacked');
 % set(h, {'FaceColor'}, { [.1 .1 1]; [.5 .5 .5]; [.9 .1 .1]});
-set(gca, 'xtick', [1:7], 'xticklabel', names)
-l = cell(1,6);
+set(gca, 'xtick', [1:4], 'xticklabel', names)
+l = cell(1,5);
 l{1} = 'Delta'; l{2} =  'Alpha'; l{3} = 'Theta'; l{4} = 'Beta'; l{5} = 'Low Gamma'; l{6} = 'High Gamma';
 % l{1} = 'Significant FR decrease'; l{2} = 'No FR change'; l{3} =  'Significance FR increase';
 title(strcat(['Case#: ' mat2str(caseNumb),'  LFP#: ' mat2str(LFPsource),'  Epoch:' mat2str(epoch), '  All bands']))
@@ -465,12 +484,19 @@ IS_R_stacked = [mean(IS_R.alpha_pband), mean(IS_R.theta_pband), mean(IS_R.beta_p
 
 figure()
 % spacer = [0, 0, 0];
-y_combined = vertcat(SG_L_stacked, IS_L_stacked, SG_R_stacked, IS_R_stacked);
 % names = {'Contraversive'; 'Ipsiversive'; 'No Preference'; 'empty'; 'Contraversive'; 'Ipsiversive'; 'No Preference'};
-names = {'SG_L'; 'IS_L'; 'SG_R'; 'IS_R'};
+
+if strcmp(surgerySide, 'L')
+    y_combined = vertcat(SG_L_stacked, IS_L_stacked, SG_R_stacked, IS_R_stacked);
+    names = {'SG ipsi'; 'IS ipsi'; 'SG contra'; 'IS contra'};
+elseif strcmp(surgerySide, 'R')
+    y_combined = vertcat(SG_R_stacked, IS_R_stacked,SG_L_stacked, IS_L_stacked);
+    names = {'SG ipsi'; 'IS ipsi'; 'SG contra'; 'IS contra'};
+end
+
 h = bar(y_combined, 'stacked');
 % set(h, {'FaceColor'}, { [.1 .1 1]; [.5 .5 .5]; [.9 .1 .1]});
-set(gca, 'xtick', [1:7], 'xticklabel', names)
+set(gca, 'xtick', [1:4], 'xticklabel', names)
 l = cell(1,5);
 l{1} =  'Alpha'; l{2} = 'Theta'; l{3} = 'Beta'; l{4} = 'Low Gamma'; l{5} = 'High Gamma';
 % l{1} = 'Significant FR decrease'; l{2} = 'No FR change'; l{3} =  'Significance FR increase';

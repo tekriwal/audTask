@@ -52,10 +52,12 @@ for g = 1:length(input_matrix_rndm)
         R_SG_correct(g) = 1;
     end
 end
+         
+errors = [rsp_master_v3.Response] == 'f';
 
-%AT editting below on 3/29/20
-% errors1 = [rsp_master_v3.Response] == 'f';
-errors = [rsp_master_v3.Postholdtime] < 0.10;
+errors = [rsp_master_v3.Postholdtime] < 'f';
+
+
 
 errors = errors';
 

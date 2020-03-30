@@ -42,6 +42,27 @@ end
 
 Ephys_struct = load(cell2mat(ephysfile_name));
 
+
+% AT 3/28/20 I manually checked that the start and end times are the same for the individual cases. but below is how we'd automate
+% Ephys_struct.mer.timeStart ~= Ephys_struct.lfp.timeStart ~= Ephys_struct.emg.timeStart ~= Ephys_struct.mLFP.timeStart ~= 
+if Ephys_struct.mer.timeStart >  Ephys_struct.ttlInfo.timeStart || Ephys_struct.mer.timeEnd <  Ephys_struct.ttlInfo.timeEnd
+    msg = 'Error in ephys files, see import_ephys_io_auditoryTask_VX ';
+    error(msg)
+end
+%AT 3/28/20; 
+delta = Ephys_struct.ttlInfo.timeStart - Ephys_struct.mer.timeStart;
+buffer = round((Ephys_struct.ttlInfo.sampFreqHz)*delta);
+Ephys_struct.ttlInfo.ttl_up = Ephys_struct.ttlInfo.ttl_up+buffer;
+
+Ephys_struct.ttlInfo.timeStart = Ephys_struct.mer.timeStart;
+
+
+
+
+
+
+
+
 if caseInfo_table.("Number of MER (total)") == 1
     spike1 = load(cell2mat(fullfile('Users','andytek','Box','Auditory_task_SNr','Data','io_neural_data', neuraldata_folder, spikeMethod_folder, spike1_name)));
 elseif caseInfo_table.("Number of MER (total)") == 2
