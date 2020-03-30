@@ -133,6 +133,20 @@ badIndexes = floatST > badCutOff;
 
 % Remove artifcats
 newSignal = floatST;
+
+% NEW smooth bad index
+for si = 1:length(badIndexes)
+   
+    tmpBI = badIndexes(si);
+    tmpRegion = linspace(tmpBI-6,tmpBI+6,12);
+    tmpRegionN = tmpReigon(ismember(tmpRegion,tmpBI));
+    
+    
+    
+    
+end
+
+
 newSignal(badIndexes) = 0;
 
 outSignal = newSignal;
