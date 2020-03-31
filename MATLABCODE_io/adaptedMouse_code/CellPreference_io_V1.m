@@ -105,8 +105,9 @@ if length(raster_info.raster_events.trial_start.L) > 0 % make sure there are som
     
     for trial_ind = 1:num_current_trials
         
-        trial_spike_times = ref_spike_times;
-        
+        trial_spike_times = ref_spike_times(trial_inds == trial_ind);
+%         trial_spike_times = ref_spike_times.L{stim_num}(trial_inds.L{stim_num} == trial_ind);
+
         for epoch_ind = 1:length(epochs)
             
             %% get epoch start and stop times
@@ -210,7 +211,8 @@ if length(raster_info.raster_events.trial_start.R) > 0 % make sure there are som
     
     for trial_ind = 1:num_current_trials
         
-        trial_spike_times = ref_spike_times;
+          trial_spike_times = ref_spike_times(trial_inds == trial_ind);
+%         trial_spike_times = ref_spike_times;
         
         for epoch_ind = 1:length(epochs)
             

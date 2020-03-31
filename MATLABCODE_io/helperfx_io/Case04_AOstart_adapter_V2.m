@@ -54,7 +54,7 @@ for i = 1:(length(waitperiod_index_easilyscannable)-1)
     intertrialInterval_TTLnav(i) = (waitperiod_index_easilyscannable(i+1) - waitperiod_index_easilyscannable(i))/44000;
 end
 
-index_tooLong = intertrialInterval_TTLnav(:) > 30; %so this is saying that if the intertrialInterval is longer than 30 seconds, we dont want that TTL. It most likely is a trial that I ran PRIOR to the pt to check system, and it was included in the final output
+index_tooLong = intertrialInterval_TTLnav(:) > 35; %so this is saying that if the intertrialInterval is longer than 30 seconds, we dont want that TTL. It most likely is a trial that I ran PRIOR to the pt to check system, and it was included in the final output
 index_tooShort = intertrialInterval_TTLnav(:) < 3.5; %so this is saying that if the intertrialInterval is shorter than 3.5 seconds, we should kick it out. this is likely from a trial wherein pt responded too quickly to be possible but not so quickly that controller picked up on the OE
 
 

@@ -78,7 +78,7 @@ if nargin == 0
     
     % window_event1 = [-1.5 4]; %window of time around align_ind1 that we want to look at
     % ymaxx
-    NUM_TRIALS_TO_PLOT = 30;
+    NUM_TRIALS_TO_PLOT = 20;
     % PSTH_SMOOTH_FACTOR = 75;
     
     %below sets up the y axis for psth, either 'zero' or 'half', zero means it
@@ -88,7 +88,7 @@ if nargin == 0
 %     PSTH_SMOOTH_FACTOR = 155;
 
     window_event1 = [-1 4];
-    PSTH_SMOOTH_FACTOR = 155;
+    PSTH_SMOOTH_FACTOR = 125;
 end
 
 
