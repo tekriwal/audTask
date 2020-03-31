@@ -80,7 +80,6 @@ end
 
 num_stim = length(raster_info.raster_events.trial_start.L);
 raster_events = raster_info.raster_events;
-trial_inds = raster_info.trial_inds.L;
 
 align_ind = raster_info.align_ind;
 
@@ -98,6 +97,7 @@ align_ind = raster_info.align_ind;
 
 %% L trials
 ref_spike_times = raster_info.ref_spike_times.L;
+trial_inds = raster_info.trial_inds.L;
 
 if length(raster_info.raster_events.trial_start.L) > 0 % make sure there are some trials of this type
     
@@ -204,6 +204,7 @@ end
 
 %% R trials
 ref_spike_times = raster_info.ref_spike_times.R;
+trial_inds = raster_info.trial_inds.R;
 
 if length(raster_info.raster_events.trial_start.R) > 0 % make sure there are some trials of this type
     

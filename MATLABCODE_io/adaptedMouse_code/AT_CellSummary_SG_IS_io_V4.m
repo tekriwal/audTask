@@ -67,7 +67,7 @@ function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V4(caseNumb, spikeFile, clus
 
 if nargin == 0
     caseNumb = 4;
-    spikeFile = 'spike1';
+    spikeFile = 'spike3';
     clust = 1; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     align_ind1 = 2; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
