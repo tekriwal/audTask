@@ -99,7 +99,7 @@ for k = 1:length(rData)
     end
 end
 
-completedTrials = length(rData) - sum(errorCount) - sum(index);
+completedTrials = length(rData) - sum(index);
 
 if completedTrials ~= length(waitperiod_index_easilyscannable_cleaned)
     error('see AOstart_adapter_VX; Problem with TTL indexing compared to behavior')

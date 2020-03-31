@@ -66,7 +66,7 @@ function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V4(caseNumb, spikeFile, clus
 %means that there were more than 1 cluster after spike sorting
 
 if nargin == 0
-    caseNumb = 12;
+    caseNumb = 4;
     spikeFile = 'spike1';
     clust = 1; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     align_ind1 = 2; %which part of the trial do we want to look at as our 'zero' point?
@@ -574,15 +574,15 @@ init_psth_window_event1 = window_event1 + [-((RESOLUTION/1000)/2) +((RESOLUTION/
     psth_io_V1(ref_spike_times, trial_inds, init_psth_window_event1, PSTH_SMOOTH_FACTOR, no_plot_flag);
 
 
-SG_raster_info.L.ref_spike_times = ref_spike_times;
-SG_raster_info.L.trial_inds = trial_inds;
+SG_raster_info.ref_spike_times.L = ref_spike_times;
+SG_raster_info.trial_inds.L = trial_inds;
 
-SG_raster_info.L.raster_events.trial_start = trialStart_times';
-SG_raster_info.L.raster_events.trial_event_times =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
+SG_raster_info.raster_events.trial_start.L = trialStart_times';
+SG_raster_info.raster_events.trial_event_times.L =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
 
-SG_raster_info.L.stim_params = [];
-SG_raster_info.L.align_ind = 1; %I think this corresponds with trial_event_times?
-SG_raster_info.L.window = init_psth_window_event1;
+SG_raster_info.stim_params = [];
+SG_raster_info.align_ind = 1; %I think this corresponds with trial_event_times?
+SG_raster_info.window = init_psth_window_event1;
 
 %% Look at L, no-choice trials %%%
 % aka L choices made during IS
@@ -736,15 +736,15 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
 
-IS_raster_info.L.ref_spike_times = ref_spike_times;
-IS_raster_info.L.trial_inds = trial_inds;
+IS_raster_info.ref_spike_times.L = ref_spike_times;
+IS_raster_info.trial_inds.L = trial_inds;
 
-IS_raster_info.L.raster_events.trial_start = trialStart_times';
-IS_raster_info.L.raster_events.trial_event_times =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
+IS_raster_info.raster_events.trial_start.L = trialStart_times';
+IS_raster_info.raster_events.trial_event_times.L =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
 
-IS_raster_info.L.stim_params = [];
-IS_raster_info.L.align_ind = 1; %I think this corresponds with trial_event_times?
-IS_raster_info.L.window = init_psth_window_event1;
+IS_raster_info.stim_params = [];
+IS_raster_info.align_ind = 1; %I think this corresponds with trial_event_times?
+IS_raster_info.window = init_psth_window_event1;
 
 %% Look at R, choice (active decision making) trials %%%
 % aka L choices made during SG
@@ -896,15 +896,16 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
 
-SG_raster_info.R.ref_spike_times = ref_spike_times;
-SG_raster_info.R.trial_inds = trial_inds;
 
-SG_raster_info.R.raster_events.trial_start = trialStart_times';
-SG_raster_info.R.raster_events.trial_event_times =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
+SG_raster_info.ref_spike_times.R = ref_spike_times;
+SG_raster_info.trial_inds.R = trial_inds;
 
-SG_raster_info.R.stim_params = [];
-SG_raster_info.R.align_ind = 1; %I think this corresponds with trial_event_times?
-SG_raster_info.R.window = init_psth_window_event1;
+SG_raster_info.raster_events.trial_start.R = trialStart_times';
+SG_raster_info.raster_events.trial_event_times.R =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
+
+SG_raster_info.stim_params = [];
+SG_raster_info.align_ind = 1; %I think this corresponds with trial_event_times?
+SG_raster_info.window = init_psth_window_event1;
 
 %% Look at R, no-choice trials %%%
 % aka R choices made during IS
@@ -1052,15 +1053,15 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
     psth_io_V1(ref_spike_times, trial_inds, init_psth_window_event1, PSTH_SMOOTH_FACTOR, no_plot_flag);
 
 
-IS_raster_info.R.ref_spike_times = ref_spike_times;
-IS_raster_info.R.trial_inds = trial_inds;
+IS_raster_info.ref_spike_times.R = ref_spike_times;
+IS_raster_info.trial_inds.R = trial_inds;
 
-IS_raster_info.R.raster_events.trial_start = trialStart_times';
-IS_raster_info.R.raster_events.trial_event_times =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
+IS_raster_info.raster_events.trial_start.R = trialStart_times';
+IS_raster_info.raster_events.trial_event_times.R =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
 
-IS_raster_info.R.stim_params = [];
-IS_raster_info.R.align_ind = 1; %I think this corresponds with trial_event_times?
-IS_raster_info.R.window = init_psth_window_event1;
+IS_raster_info.stim_params = [];
+IS_raster_info.align_ind = 1; %I think this corresponds with trial_event_times?
+IS_raster_info.window = init_psth_window_event1;
 
 
 %% plot PSTHs
@@ -1340,11 +1341,11 @@ end
 IS_raster_info;
 SG_raster_info;
 
-raster_info = SG_raster_info;
+raster_info = IS_raster_info;
 num_iter = 500;
 analysis_to_perform = 'leftchoice_vs_rightchoice';
-epochs = [1,3];
-
+epochs = {[1 3]};
+%{[1 2]; [8 3]; [888 0 3 999 3 .250]; [999 3 0.250 999 4 0]; [3 4];}
 [preference, roc_p, activity_info] = CellPreference_io_V1(raster_info, num_iter, analysis_to_perform, epochs);
 
 % [pref, p_values, activity_info] = CellPreference(raster_info, 500, 'leftchoice_vs_rightchoice', {[1 6]; [888 -0.25 1 999 1 .1];...
