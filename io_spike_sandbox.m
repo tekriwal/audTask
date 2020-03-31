@@ -2,6 +2,48 @@
 %%
 
 
+% 3/30/20; so I want to generate the analogous 'raster_info' input to
+% CellPref. 
+
+%To generate the appropriate input. 
+
+%below should be the 'ref_spike_times'
+raster_info_io.ref_spike_times.L{1, 1:5}
+raster_info_io.ref_spike_times.R{1, 1:5}
+
+%below should be the 'trial_inds'
+raster_info_io.trial_inds.L{1, 1:5} 
+raster_info_io.trial_inds.R{1, 1:5}
+
+
+%below should be the 'trialStart_times'
+raster_info_io.raster_events.L.trial_start{1, 5}
+raster_info_io.raster_events.R.trial_start{1, 5}  
+
+%below are the event times, which will be represented in a matrix, within
+%the 1, 1:5 subfield of trial_events_time. Each event will be its own row,
+%with each column being a given trial
+raster_info_io.raster_events.L.trial_events_time{1, 5}  
+raster_info_io.raster_events.R.trial_events_time{1, 5}  
+
+%below are the stim parameters
+raster_info_io.stim_params.odor_names = []; %contains the odor mixture as '95' '-95' '50'
+raster_info_io.stim_params.reward_side = [];  %corresponding rewarded side to the info in above
+
+%
+raster_info_io.align_ind   %in hemiPD is an integer, we prob want it to be 4 for go cue or something
+
+raster_info_io.window  %time window
+
+
+
+
+
+
+
+
+
+
 
 %% Look at R, choice (active decision making) trials %%%
 % aka L choices made during SG

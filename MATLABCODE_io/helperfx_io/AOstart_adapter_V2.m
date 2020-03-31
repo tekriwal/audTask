@@ -4,7 +4,7 @@
 %trials
 
 %AT V1 created on 2/15/20 in order to calculate the offset between alpha
-%omega clock and the time of trial start. 
+%omega clock and the time of trial start.
 
 
 function [taskbase_io] = AOstart_adapter_V2(taskbase_io, Ephys_struct, where, rData, index_errors)
@@ -51,13 +51,13 @@ end %this serves its purposes, generates exact TTL ID's for what we're calling s
 
 
 for i = 1:(length(waitperiod_index_easilyscannable)-1)
-ddif(i,1) = waitperiod_index_easilyscannable(i)/44000;
+    ddif(i,1) = waitperiod_index_easilyscannable(i)/44000;
 end
 
 
 
 for i = 1:(length(waitperiod_index_easilyscannable)-1)
-intertrialInterval_TTLnav(i) = (waitperiod_index_easilyscannable(i+1) - waitperiod_index_easilyscannable(i))/44000;
+    intertrialInterval_TTLnav(i) = (waitperiod_index_easilyscannable(i+1) - waitperiod_index_easilyscannable(i))/44000;
 end
 
 index_tooLong = intertrialInterval_TTLnav(:) > 30; %so this is saying that if the intertrialInterval is longer than 30 seconds, we dont want that TTL. It most likely is a trial that I ran PRIOR to the pt to check system, and it was included in the final output
@@ -80,24 +80,32 @@ waitperiod_index_easilyscannable_cleaned(:,index) = []; %remove the whole row
 offset=sum(index_tooLong);
 
 for i = 1:(length(rData)-1)
-ddif(i+offset,3) = (rData(i+1).Wholetrial - rData(i).Wholetrial);
+    ddif(i+offset,3) = (rData(i+1).Wholetrial - rData(i).Wholetrial);
 end
 
 for i = 1:(length(rData)-1)
-ddif(i+offset,4) =rData(i).Start_loop + rData(i).Hold_time + rData(i).Postholdtime + rData(i).Writeuptime;
+    ddif(i+offset,4) =rData(i).Start_loop + rData(i).Hold_time + rData(i).Postholdtime + rData(i).Writeuptime;
 end
 
 for i = 1:(length(rData)-1)
-ddif(i+offset,5) = rData(i).Start_loop + rData(i).Hold_time + rData(i).Postholdtime + rData(i).Writeuptime + rData(i).Writeread_response;
+    ddif(i+offset,5) = rData(i).Start_loop + rData(i).Hold_time + rData(i).Postholdtime + rData(i).Writeuptime + rData(i).Writeread_response;
 end
 
 
+errorCount = zeros(length(rData),1);
+for k = 1:length(rData)
+    if (rData(k).actual == 'f')
+        errorCount(k) = 1;
+    end
+end
 
+completedTrials = length(rData) - sum(errorCount) - sum(index);
 
-
-
-
-
+if completedTrials ~= length(waitperiod_index_easilyscannable_cleaned)
+    error('see AOstart_adapter_VX; Problem with TTL indexing compared to behavior')
+    %Note check that the thresh's used in this fx are fx'ing as expected if
+    %above error is thrown.
+end
 
 taskbase_io.trialStart_AO = waitperiod_index_easilyscannable_cleaned';
 

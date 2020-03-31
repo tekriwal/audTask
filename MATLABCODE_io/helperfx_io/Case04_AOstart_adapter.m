@@ -23,6 +23,7 @@ for i = stopgap:(length(TTLdata)-1)
 end
 
 
+
 % little aside here to make the waitperiod_index more scannable by eye
 waitperiod_index_easilyscannable = [];
 for i = 1:length(waitperiod_index)
