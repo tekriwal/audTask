@@ -82,24 +82,15 @@ for mi = 1:length(matLIST)
         if inPUTS.trimOpt
             [sigClear , emgTn] = trimSignal(decy , allDat.emg , allDat.ttlInfo , inPUTS.dnSamp , inPUTS.trimOpt);
         else
-            sigClear = decy;
-            emgTn.StartTimeNew = allDat.emg.timeStart;
-            emgTn.EndTimeNew = allDat.emg.timeEnd;
+            
         end
         
         % DETREND
-        finDT = detrend(double(sigClear));
-        % RECTIFY
-        recDT = abs(finDT);
-        % HIBBERT ENVELOPE
-        windLength = 500;
-        [ampEnvDT , ~] = envelope(recDT,windLength,'rms');
-        % SMOOTH DATA
-        [finalDT , ~] = smoothdata(ampEnvDT,'movmedian',round(length(sigClear)*0.0025));
+        finDT = detrend(sigClear);
 
         if inPUTS.toPlot
             figure;
-            plot(finalDT)
+            plot(finDT)
         end
 
         allDat.emg.proc.Fs = inPUTS.dnSamp;
@@ -108,10 +99,10 @@ for mi = 1:length(matLIST)
         allDat.emg.proc.timeEnd = emgTn.EndTimeNew;
         
         if i == 1
-            allDat.CEMG_1_P = finalDT;
+            allDat.CEMG_1_P = finDT;
             save(miT,'-struct','allDat')
         else
-            allDat.CEMG_2_P = finalDT;
+            allDat.CEMG_2_P = finDT;
             save(miT,'-struct','allDat')
         end
         
