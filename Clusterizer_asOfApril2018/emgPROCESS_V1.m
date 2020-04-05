@@ -101,8 +101,13 @@ for mi = 1:length(matLIST)
             figure;
             plot(finalDT)
         end
-
-        allDat.emg.proc.Fs = inPUTS.dnSamp;
+        
+        if isnan(inPUTS.dnSamp)
+            allDat.emg.proc.Fs = allDat.emg.sampFreqHz;
+        else
+            allDat.emg.proc.Fs = inPUTS.dnSamp;
+        end
+        
         allDat.emg.proc.LowPFilt = inPUTS.LowPfil;
         allDat.emg.proc.timeStart = emgTn.StartTimeNew;
         allDat.emg.proc.timeEnd = emgTn.EndTimeNew;
