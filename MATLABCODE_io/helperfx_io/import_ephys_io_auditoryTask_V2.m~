@@ -6,7 +6,7 @@
 %Note, you'll want to run import_excelData_auditoryTask_V1 before this and
 %use that output for this input
 
-function [Ephys_struct, spike1, spike2, spike3] = import_ephys_io_auditoryTask_V1(caseInfo_table, spikeMethod_folder)
+function [Ephys_struct, spike1, spike2, spike3] = import_ephys_io_auditoryTask_V2(caseInfo_table, spikeMethod_folder)
 %example use:
 % [Raw_ephys, spike1, spike2, ~] = import_ephys_io_auditoryTask_V1(caseInfo_table)
 
@@ -44,27 +44,61 @@ Ephys_struct = load(cell2mat(ephysfile_name));
 
 
 % AT 3/28/20 I manually checked that the start and end times are the same for the individual cases. but below is how we'd automate
-% Ephys_struct.mer.timeStart ~= Ephys_struct.lfp.timeStart ~= Ephys_struct.emg.timeStart ~= Ephys_struct.mLFP.timeStart ~= 
+% Ephys_struct.mer.timeStart ~= Ephys_struct.lfp.timeStart ~= Ephys_struct.emg.timeStart ~= Ephys_struct.mLFP.timeStart ~=
 if Ephys_struct.mer.timeStart >  Ephys_struct.ttlInfo.timeStart || Ephys_struct.mer.timeEnd <  Ephys_struct.ttlInfo.timeEnd
     msg = 'Error in ephys files, see import_ephys_io_auditoryTask_VX ';
     error(msg)
 end
 
 
+
+if caseInfo_table.Properties.RowNames
+
 %4/5/20 need to check that stard and end times for ttl and mer match
-%reality.
+%reality. and that lfp matches spike for start times, if it doesn't we need
+%to pad the lfp.
 mer_timeLength = Ephys_struct.mer.timeEnd - Ephys_struct.mer.timeStart;
 cspk_timeLength = length(Ephys_struct.CSPK_01)/Ephys_struct.mer.sampFreqHz;
+if round(mer_timeLength) ~= round(cspk_timeLength)
+    error('mismatched mer lengths')
+end
+
+
 
 lfp_timeLength = Ephys_struct.lfp.timeEnd - Ephys_struct.lfp.timeStart;
 clfp_timeLength = length(Ephys_struct.CLFP_01)/Ephys_struct.lfp.sampFreqHz;
+if round(lfp_timeLength) ~= round(clfp_timeLength)
+    error('mismatched lfp lengths')
+end
 
-Ephys_struct.mer.timeStart == Ephys_struct.mer.timeStart
+
+
+if round(Ephys_struct.mer.timeStart) ~= round(Ephys_struct.lfp.timeStart)
+    
+    if Ephys_struct.mer.timeStart < Ephys_struct.lfp.timeStart
+        delta = Ephys_struct.lfp.timeStart - Ephys_struct.mer.timeStart;
+        buffer = zeros(1, round((Ephys_struct.ttlInfo.sampFreqHz)*delta));
+        Ephys_struct.CLFP_01 = [buffer, Ephys_struct.CLFP_01];
+        %     if Ephys_struct.mer.timeStart < Ephys_struct.lfp.timeStart
+        error('check to see if fix worked - figureitout')
+        %     end
+    elseif Ephys_struct.mer.timeStart > Ephys_struct.lfp.timeStart
+        %we'll need to cut the first 'X' portion of lfp recording, will
+        %need to calculate what that should be based on diff in mer and lfp
+        %length.
+        error('figureitout')
+    end
+    
+end
+
+end
 
 
 
 
-%AT 3/28/20; 
+%AT 3/28/20; the below accounts for ttl being shorter than mer (which is
+%should be, since the ttl clock starts once the first TTL is detected and
+%this is always occurring AFTER we being acquiring spike recordings)
 delta = Ephys_struct.ttlInfo.timeStart - Ephys_struct.mer.timeStart;
 buffer = round((Ephys_struct.ttlInfo.sampFreqHz)*delta);
 Ephys_struct.ttlInfo.ttl_up = Ephys_struct.ttlInfo.ttl_up+buffer;
@@ -101,12 +135,12 @@ if strcmp(cell2mat(caseInfo_table.Properties.RowNames), '13')
     %     clustIndex_0 = clustids  == 0;
     clustIndex_1 = clustids  == 2;
     clustIndex_2 = clustids  == 3;
-%     clustIndex_3 = clustids  == 3;
+    %     clustIndex_3 = clustids  == 3;
     
     %     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0  = spiketimes(clustIndex_0);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
-%     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3  = spiketimes(clustIndex_3);
+    %     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3  = spiketimes(clustIndex_3);
     
     spiketimes = spike2.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike2.spikeDATA.clustIDS;
@@ -115,7 +149,7 @@ if strcmp(cell2mat(caseInfo_table.Properties.RowNames), '13')
     
     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
-      
+    
 elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '12')
     spiketimes = spike1.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike1.spikeDATA.clustIDS;
@@ -123,13 +157,13 @@ elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '12')
     %     clustIndex_0 = clustids  == 0;
     clustIndex_1 = clustids  == 1;
     clustIndex_2 = clustids  == 3;
-%     clustIndex_3 = clustids  == 3;
+    %     clustIndex_3 = clustids  == 3;
     
     
     %     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_0  = spiketimes(clustIndex_0);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
-%     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3  = spiketimes(clustIndex_3);
+    %     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3  = spiketimes(clustIndex_3);
     
 elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '11')
     spiketimes = spike1.spikeDATA.waveforms.posWaveInfo.posLocs';
@@ -246,9 +280,9 @@ elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '4')
     
     spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
     spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
- 
     
-  elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '3')
+    
+elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '3')
     
     spiketimes = spike1.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike1.spikeDATA.clustIDS;
@@ -263,15 +297,15 @@ elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '4')
     
     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
-     
+    
     
     spiketimes = spike3.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike3.spikeDATA.clustIDS;
     clustIndex_1 = clustids  == 3;
     
     spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
-     
-  elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '2')
+    
+elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '2')
     
     spiketimes = spike1.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike1.spikeDATA.clustIDS;
@@ -286,15 +320,15 @@ elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '4')
     
     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
     spike2.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
-     
+    
     
     spiketimes = spike3.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike3.spikeDATA.clustIDS;
     clustIndex_1 = clustids  == 2;
     
     spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
-     
-   elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '1')
+    
+elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '1')
     
     spiketimes = spike1.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike1.spikeDATA.clustIDS;
@@ -304,8 +338,8 @@ elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '4')
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1  = spiketimes(clustIndex_1);
     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
     
-%     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1 = [spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1; spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2]; 
-
+    %     spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1 = [spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1; spike1.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2];
+    
     
     spiketimes = spike2.spikeDATA.waveforms.posWaveInfo.posLocs';
     clustids = spike2.spikeDATA.clustIDS;
@@ -329,9 +363,9 @@ elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '4')
     spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2  = spiketimes(clustIndex_2);
     spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3  = spiketimes(clustIndex_3);
     %AT 3/20/20 so the 2nd cluster for case 1 is now merged
-    spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2 = [spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3]; 
+    spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2 = [spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;spike3.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3];
     
-          
+    
 end
 
 

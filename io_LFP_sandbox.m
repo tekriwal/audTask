@@ -6,6 +6,98 @@
 %%
 %%
 %%
+for n = 1
+    
+    lfp_v4(n, 'movePreparation', 'LFP01', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'LFP01', 0, 1, 1);
+    lfp_v4(n, 'movePreparation', 'CMacro_LFP01', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'CMacro_LFP01', 0, 1, 1);
+    
+    WaitSecs(10)
+    close all
+    
+    lfp_v4(n, 'movePreparation', 'LFP02', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'LFP02', 0, 1, 1);
+    lfp_v4(n, 'movePreparation', 'CMacro_LFP02', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'CMacro_LFP02', 0, 1, 1);
+    close all
+    WaitSecs(10)
+    
+    
+    lfp_v4(n, 'movePreparation', 'LFP03', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'LFP03', 0, 1, 1);
+    lfp_v4(n, 'movePreparation', 'CMacro_LFP03', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'CMacro_LFP03', 0, 1, 1);
+    close all
+    
+end
+
+
+
+for n = 11
+    
+    lfp_v4(n, 'movePreparation', 'LFP01', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'LFP01', 0, 1, 1);
+    WaitSecs(60)
+    
+    lfp_v4(n, 'movePreparation', 'CMacro_LFP01', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'CMacro_LFP01', 0, 1, 1);
+    WaitSecs(60)
+    
+    close all
+    
+    lfp_v4(n, 'movePreparation', 'LFP02', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'LFP02', 0, 1, 1);
+    WaitSecs(60)
+    
+    lfp_v4(n, 'movePreparation', 'CMacro_LFP02', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'CMacro_LFP02', 0, 1, 1);
+    close all
+    WaitSecs(60)
+    
+    %     lfp_v4(n, 'movePreparation', 'LFP03');
+    %     lfp_v4(n, 'moveInitiation', 'LFP03');
+    %     lfp_v4(n, 'movePreparation', 'CMacro_LFP03');
+    %     lfp_v4(n, 'moveInitiation', 'CMacro_LFP03');
+    close all
+    
+end
+
+for n = 12
+    
+    lfp_v4(n, 'movePreparation', 'LFP01', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'LFP01', 0, 1, 1);
+    WaitSecs(60)
+    
+    lfp_v4(n, 'movePreparation', 'CMacro_LFP01', 0, 1, 1);
+    lfp_v4(n, 'moveInitiation', 'CMacro_LFP01', 0, 1, 1);
+    
+    WaitSecs(60)
+    close all
+    
+    %     lfp_v3(n, 'movePreparation', 'LFP02');
+    %     lfp_v3(n, 'moveInitiation', 'LFP02');
+    %     lfp_v3(n, 'movePreparation', 'CMacro_LFP02');
+    %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP02');
+    %     close all
+    %
+    %
+    %     lfp_v3(n, 'movePreparation', 'LFP03');
+    %     lfp_v3(n, 'moveInitiation', 'LFP03');
+    %     lfp_v3(n, 'movePreparation', 'CMacro_LFP03');
+    %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP03');
+    close all
+    WaitSecs(60)
+end
+
+
+
+
+
+
+
+
+
 
 for i = 1:80
 ddif(i,1) = taskbase_io.trialStart_AO(i)/44000;
@@ -74,14 +166,41 @@ ttlInfo.ttl_up = ttlInfo.ttl_up+buffer;
 % LFPsource = 'CMacro_LFP02';
 % LFPsource = 'CMacro_LFP03';
 
-for n = 10
-    
-    lfp_v3(n, 'movePreparation', 'LFP01');
-    lfp_v3(n, 'moveInitiation', 'LFP01');
-    lfp_v3(n, 'movePreparation', 'CMacro_LFP01');
-    lfp_v3(n, 'moveInitiation', 'CMacro_LFP01');
-    
-    
+% for n = 10
+%     
+%     lfp_v3(n, 'movePreparation', 'LFP01');
+%     lfp_v3(n, 'moveInitiation', 'LFP01');
+%     lfp_v3(n, 'movePreparation', 'CMacro_LFP01');
+%     lfp_v3(n, 'moveInitiation', 'CMacro_LFP01');
+%     
+%     
+% %     close all
+% %     
+% %     lfp_v3(n, 'movePreparation', 'LFP02');
+% %     lfp_v3(n, 'moveInitiation', 'LFP02');
+% %     lfp_v3(n, 'movePreparation', 'CMacro_LFP02');
+% %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP02');
+% %     close all
+% %     
+%     
+%     %     lfp_v3(n, 'movePreparation', 'LFP03');
+%     %     lfp_v3(n, 'moveInitiation', 'LFP03');
+%     %     lfp_v3(n, 'movePreparation', 'CMacro_LFP03');
+%     %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP03');
+%     close all
+%     
+% end
+% 
+% 
+% 
+% for n = 11
+%     
+%     lfp_v3(n, 'movePreparation', 'LFP01');
+%     lfp_v3(n, 'moveInitiation', 'LFP01');
+%     lfp_v3(n, 'movePreparation', 'CMacro_LFP01');
+%     lfp_v3(n, 'moveInitiation', 'CMacro_LFP01');
+%     
+%     
 %     close all
 %     
 %     lfp_v3(n, 'movePreparation', 'LFP02');
@@ -90,66 +209,39 @@ for n = 10
 %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP02');
 %     close all
 %     
-    
-    %     lfp_v3(n, 'movePreparation', 'LFP03');
-    %     lfp_v3(n, 'moveInitiation', 'LFP03');
-    %     lfp_v3(n, 'movePreparation', 'CMacro_LFP03');
-    %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP03');
-    close all
-    
-end
-
-
-
-for n = 11
-    
-    lfp_v3(n, 'movePreparation', 'LFP01');
-    lfp_v3(n, 'moveInitiation', 'LFP01');
-    lfp_v3(n, 'movePreparation', 'CMacro_LFP01');
-    lfp_v3(n, 'moveInitiation', 'CMacro_LFP01');
-    
-    
-    close all
-    
-    lfp_v3(n, 'movePreparation', 'LFP02');
-    lfp_v3(n, 'moveInitiation', 'LFP02');
-    lfp_v3(n, 'movePreparation', 'CMacro_LFP02');
-    lfp_v3(n, 'moveInitiation', 'CMacro_LFP02');
-    close all
-    
-    
-    %     lfp_v3(n, 'movePreparation', 'LFP03');
-    %     lfp_v3(n, 'moveInitiation', 'LFP03');
-    %     lfp_v3(n, 'movePreparation', 'CMacro_LFP03');
-    %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP03');
-    close all
-    
-end
-
-for n = 12
-    
-    lfp_v3(n, 'movePreparation', 'LFP01');
-    lfp_v3(n, 'moveInitiation', 'LFP01');
-    lfp_v3(n, 'movePreparation', 'CMacro_LFP01');
-    lfp_v3(n, 'moveInitiation', 'CMacro_LFP01');
-    
-    
-    close all
-    
-%     lfp_v3(n, 'movePreparation', 'LFP02');
-%     lfp_v3(n, 'moveInitiation', 'LFP02');
-%     lfp_v3(n, 'movePreparation', 'CMacro_LFP02');
-%     lfp_v3(n, 'moveInitiation', 'CMacro_LFP02');
+%     
+%     %     lfp_v3(n, 'movePreparation', 'LFP03');
+%     %     lfp_v3(n, 'moveInitiation', 'LFP03');
+%     %     lfp_v3(n, 'movePreparation', 'CMacro_LFP03');
+%     %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP03');
 %     close all
 %     
+% end
+% 
+% for n = 12
 %     
-    %     lfp_v3(n, 'movePreparation', 'LFP03');
-    %     lfp_v3(n, 'moveInitiation', 'LFP03');
-    %     lfp_v3(n, 'movePreparation', 'CMacro_LFP03');
-    %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP03');
-    close all
-    
-end
+%     lfp_v3(n, 'movePreparation', 'LFP01');
+%     lfp_v3(n, 'moveInitiation', 'LFP01');
+%     lfp_v3(n, 'movePreparation', 'CMacro_LFP01');
+%     lfp_v3(n, 'moveInitiation', 'CMacro_LFP01');
+%     
+%     
+%     close all
+%     
+% %     lfp_v3(n, 'movePreparation', 'LFP02');
+% %     lfp_v3(n, 'moveInitiation', 'LFP02');
+% %     lfp_v3(n, 'movePreparation', 'CMacro_LFP02');
+% %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP02');
+% %     close all
+% %     
+% %     
+%     %     lfp_v3(n, 'movePreparation', 'LFP03');
+%     %     lfp_v3(n, 'moveInitiation', 'LFP03');
+%     %     lfp_v3(n, 'movePreparation', 'CMacro_LFP03');
+%     %     lfp_v3(n, 'moveInitiation', 'CMacro_LFP03');
+%     close all
+%     
+% end
 
 
 a=2;

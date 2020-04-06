@@ -69,6 +69,12 @@ index_tooShort = intertrialInterval_TTLnav(:) < 3.5; %so this is saying that if 
 index_tooLong = [index_tooLong;0];
 index_tooShort = [index_tooShort;0];
 
+if sum(index_tooLong) > 0
+    if index_tooLong(1) ~= 1
+        error('AOstart_adapter_V2; check that too long error makes sense')
+    end
+end
+
 index = index_tooLong + index_tooShort;
 index = logical(index);
 

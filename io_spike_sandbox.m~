@@ -3,12 +3,10 @@
 CDIG_IN_1_Up_1;
 CDIG_IN_1_Up_2;
 
+fromwhere_relativetoendofwaitperiod= -17;
 TTLdata = CDIG_IN_1_Up_1; %.ttl_dn is just 2200 samples after this, otherwise same
-TTLdata = CDIG_IN_1_Up_adjusted;
-
 waitperiod_index = zeros(2,length(TTLdata));
 stopgap = 11; %this is needed because we are 'looking' for the LAST TTL of the 11 train TTL that indicates a successful completion of the wait period
-fromwhere_relativetoendofwaitperiod = -17;
 for i = stopgap:(length(TTLdata)-1)
     if TTLdata(i+1) - TTLdata(i) < 400 && TTLdata(i) - TTLdata(i-10) < (14000) %(14000+11670)
         waitperiod_index(1,i) = 1;
@@ -22,7 +20,7 @@ waitperiod_index_easilyscannable = [];
 for i = 1:length(waitperiod_index)
     if waitperiod_index(1,i) == 1
         appendme = waitperiod_index(2,i);
-        waitperiod_index_easilyscannable = [waitperiod_index_easilyscannable appendme];
+        waitperiod_index_easilyscannable_1 = [waitperiod_index_easilyscannable appendme];
     end
 end %this serves its purposes, generates exact TTL ID's for what we're calling successful wait periods
 

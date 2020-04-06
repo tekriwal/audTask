@@ -95,15 +95,12 @@ for i = 1:length(rData)
 end
 index_errors = behavioral_matrix(:,5)==3; %this says, if column five has a 3 in it because 3 means they error'ed on that trial
 
-nearOEcounter = 0;
+
 threshRxn = 0.10; %in case 11, there are rxn that ~ 0.05 seconds, this causes errors with TTL nav code. This threshold may be too relaxed, unsure
 if cutNearOEs == 1
     for i = 1:length(rData)
         if rData(i).Postholdtime < threshRxn
             index_errors(i) = 1;
-        end
-        if rData(i).Postholdtime < threshRxn && rData(i).rtime > 0
-            nearOEcounter = nearOEcounter+1;
         end
     end
 end
@@ -111,7 +108,6 @@ end
 % %     disp(['For freq',num2str(frequ1), ' - ', num2str(frequ2), ', SG > IS; p =', num2str(p)])
 
 disp(['index error sum for behav file adapter is ', num2str(sum(index_errors))])
-disp(['Number of indexxed nearOE is ', num2str(sum(nearOEcounter))])
 
 behavioral_matrix(index_errors,:) = []; %remove the whole row
 

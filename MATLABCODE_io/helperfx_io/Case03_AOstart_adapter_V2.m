@@ -1,8 +1,8 @@
 %AT V1 created on 2/15/20 in order to calculate the offset between alpha
-%omega clock and the time of trial start. 
+%omega clock and the time of trial start.
 
 
-function [taskbase_io] = Case03_AOstart_adapter_V2(taskbase_io, Ephys_struct, where, rData, index_errors)
+function [taskbase_io] = Case03_AOstart_adapter_V2(taskbase_io, Ephys_struct, where, rData, index_errors, caseNumb)
 
 
 switch where
@@ -10,13 +10,15 @@ switch where
         fromwhere_relativetoendofwaitperiod = -17;%-17 should be the start of the trial
 end
 
-
-
+if caseNumb == 1 || caseNumb == 2 || caseNumb == 3 || caseNumb == 4
+    delaytime = 12500;
+end
+    
 TTLdata = Ephys_struct.ttlInfo.ttl_up; %.ttl_dn is just 2200 samples after this, otherwise same
 waitperiod_index = zeros(2,length(TTLdata));
 stopgap = 11; %this is needed because we are 'looking' for the LAST TTL of the 11 train TTL that indicates a successful completion of the wait period
 for i = stopgap:(length(TTLdata)-1)
-    if TTLdata(i+1) - TTLdata(i) < 400 && TTLdata(i) - TTLdata(i-10) < (14000+14000)
+    if TTLdata(i+1) - TTLdata(i) < 400 && TTLdata(i) - TTLdata(i-10) < (14000+delaytime) %(14000+11670)
         waitperiod_index(1,i) = 1;
         waitperiod_index(2,i) = TTLdata(i+fromwhere_relativetoendofwaitperiod);
     end
@@ -33,6 +35,19 @@ for i = 1:length(waitperiod_index)
 end %this serves its purposes, generates exact TTL ID's for what we're calling successful wait periods
 
 
+%AT 4/2/20; the below code is for the manual curation of cases that
+%include things like trials (as detected by TTL sequences) preceding the
+%actual trials conducted with pts
+
+if caseNumb == 1
+    waitperiod_index_easilyscannable(1:13) = []; %first 13 trials were me doing pre-testing for case01
+    waitperiod_index_easilyscannable(39) = []; %deleting this element because of weird coincidence in timing/TTL nav code
+    waitperiod_index_easilyscannable = waitperiod_index_easilyscannable(1:69); %case01 didn't finish the last block, so its easier to cut out last 3 trials
+elseif caseNumb == 2
+    waitperiod_index_easilyscannable = waitperiod_index_easilyscannable; %for case 2, there's nothing that needs to be done here
+elseif caseNumb == 3
+    waitperiod_index_easilyscannable = waitperiod_index_easilyscannable; %for case 3, there's nothing that needs to be done here
+end
 
 %%
 %AT adding being on 3/29/20 in order to help filter through some of the
@@ -45,19 +60,38 @@ end %this serves its purposes, generates exact TTL ID's for what we're calling s
 %that have been identified.
 
 
-for i = 1:(length(waitperiod_index_easilyscannable)-1)
-    ddif(i,1) = waitperiod_index_easilyscannable(i)/44000;
+for i = 1:(length(waitperiod_index_easilyscannable))
+    TTLtimes_seconds(i,1) = waitperiod_index_easilyscannable(i)/44000;
 end
 
+%AT 4/2/20 the below 'dur' code is checking how long from the start of the first
+%trial until the start of the last trial.
+dur_rData = sum([rData(1:end-1).Start_loop])+sum([rData(1:end-1).Hold_time])+sum([rData(1:end-1).Postholdtime])+sum([rData(1:end-1).Writeuptime]);
+dur_TTL = TTLtimes_seconds(end) - TTLtimes_seconds(1);
+
+if abs(dur_rData - dur_TTL) > 2 || dur_TTL < dur_rData %we expect there to be some offset because tictocs aren't timing EVERYthing, likewise the TTL start to finish should be slightly longer than the output from rData for the same reason
+    error('mismatch in length of time (dur) measured by rData v TTLs')
+end
 
 
 for i = 1:(length(waitperiod_index_easilyscannable)-1)
     intertrialInterval_TTLnav(i) = (waitperiod_index_easilyscannable(i+1) - waitperiod_index_easilyscannable(i))/44000;
 end
+intertrialInterval_TTLnav = intertrialInterval_TTLnav';
 
-index_tooLong = intertrialInterval_TTLnav(:) > 30; %so this is saying that if the intertrialInterval is longer than 30 seconds, we dont want that TTL. It most likely is a trial that I ran PRIOR to the pt to check system, and it was included in the final output
+if caseNumb == 1
+    index_tooLong = [];
+else
+    index_tooLong = intertrialInterval_TTLnav(:) > 30; %so this is saying that if the intertrialInterval is longer than 30 seconds, we dont want that TTL. It most likely is a trial that I ran PRIOR to the pt to check system, and it was included in the final output
+end
+
 index_tooShort = intertrialInterval_TTLnav(:) < 3.5; %so this is saying that if the intertrialInterval is shorter than 3.5 seconds, we should kick it out. this is likely from a trial wherein pt responded too quickly to be possible but not so quickly that controller picked up on the OE
 
+if sum(index_tooLong) > 0
+    if index_tooLong(1) ~= 1
+        error('error in Case03_AOstart_adapter_V2; check that too long error makes sense')
+    end
+end
 
 %AT to account for the last trial needing a representation in the
 %indexes...
@@ -69,23 +103,97 @@ index = logical(index);
 
 waitperiod_index_easilyscannable_cleaned = waitperiod_index_easilyscannable;
 waitperiod_index_easilyscannable_cleaned(:,index) = []; %remove the whole row
+%for the above variable, it should now (cleanly) represent
 
-
-
+%AT 4/2/20 Should be zero for case01, case02, case03
 offset=sum(index_tooLong);
 
-for i = 1:(length(rData)-1)
-    ddif(i+offset,3) = (rData(i+1).Wholetrial - rData(i).Wholetrial);
+
+for i = 1:(length(rData))
+    rDatatime_seconds(i+offset,1) =rData(i).Start_loop + rData(i).Hold_time + rData(i).Postholdtime + rData(i).Writeuptime;
 end
 
-for i = 1:(length(rData)-1)
-    ddif(i+offset,4) =rData(i).Start_loop + rData(i).Hold_time + rData(i).Postholdtime + rData(i).Writeuptime;
-end
 
 for i = 1:(length(rData)-1)
-    ddif(i+offset,5) = rData(i).Start_loop + rData(i).Hold_time + rData(i).Postholdtime + rData(i).Writeuptime + rData(i).Writeread_response;
+    intertrialInterval_rData(i+offset,1) = ((rData(i+1).Wholetrial - rDatatime_seconds(i+1)) - (rData(i).Wholetrial - rDatatime_seconds(i)));
 end
 
+
+
+%The below code is dedicated to accounting for the presence of 'error'
+%trials; for each error trial in rData, we should find one less trial start
+%as identified by the TTL nav code. So I've manually inputted 'errorLoc' w/
+%location of the errors (aka out earlies) for each of the relevant cases
+%below.
+if caseNumb == 1
+    
+    errorLoc = 43;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    
+    errorLoc = 3; %theres an error on trial 2 AND 3, see adjust code below
+    intertrialInterval_rData(errorLoc-2,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1) + rDatatime_seconds(errorLoc-2,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    intertrialInterval_rData(errorLoc-1,:) = [];
+
+    
+elseif caseNumb == 2
+    errorLoc = 62;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    
+    
+    errorLoc = 40;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    
+    
+    errorLoc =  27;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    
+    
+    errorLoc = 12;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    
+    
+    errorLoc = 3;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+
+    elseif caseNumb == 3
+   
+    errorLoc = 71;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    
+    
+    errorLoc = 67;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    
+    
+    errorLoc =  33;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    
+    
+    errorLoc = 2;
+    intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
+    intertrialInterval_rData(errorLoc,:) = [];
+    
+    
+end
+
+
+sidebysideComparison = [intertrialInterval_TTLnav, intertrialInterval_rData];
+
+for k = 1:length(sidebysideComparison)
+    if abs(sidebysideComparison(k,1) - sidebysideComparison(k,2)) > 0.1
+        error('mismatch in indexing')
+    end
+end
 
 errorCount = zeros(length(rData),1);
 for k = 1:length(rData)
@@ -94,7 +202,8 @@ for k = 1:length(rData)
     end
 end
 
-completedTrials = length(rData) - sum(errorCount) - sum(index);
+
+completedTrials = length(rData) - sum(index) - sum(errorCount);%note, need to check this works out
 
 if completedTrials ~= length(waitperiod_index_easilyscannable_cleaned)
     error('see AOstart_adapter_VX; Problem with TTL indexing compared to behavior')
