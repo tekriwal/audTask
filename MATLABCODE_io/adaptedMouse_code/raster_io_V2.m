@@ -130,11 +130,11 @@ if no_plot_flag == 0 % do the plotting
         event_times_added = [event_times, addendum'];
         %         window
         
-        addendum = zeros(6, delta);
+        addendum = zeros(7, delta);
         secondary_event_times_added = [secondary_event_times, addendum];
         
         
-        addendum = zeros(delta, 6);
+        addendum = zeros(delta, 7);
         ref_secondary_event_times_added = [ref_secondary_event_times; addendum];
   
     else

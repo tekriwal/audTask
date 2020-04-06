@@ -57,7 +57,7 @@
 %
 
 % function [h1, fig_handle] = AT_CellSummary_SG_IS_V1(behav_file, spk_file, align_ind1, window_event1, ymaxx, NUM_TRIALS_TO_PLOT, PSTH_SMOOTH_FACTOR, saveFigure)
-function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V4(caseNumb, spikeFile, clust, align_ind1, raster_plotting, NUM_TRIALS_TO_PLOT, window_event1, PSTH_SMOOTH_FACTOR)
+function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V4(caseNumb, spikeFile, clust, align_ind1, raster_plotting, NUM_TRIALS_TO_PLOT, window_event1, PSTH_SMOOTH_FACTOR,saveFig)
 
 %3/22/20
 %below are some basic inputs we are going to want; to figure out what the
@@ -66,28 +66,36 @@ function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V4(caseNumb, spikeFile, clus
 %means that there were more than 1 cluster after spike sorting
 
 if nargin == 0
-    caseNumb = 4;
+    caseNumb = 1;
     spikeFile = 'spike3';
-    clust = 1; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
-    align_ind1 = 2; %which part of the trial do we want to look at as our 'zero' point?
+    clust = 3; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
+    align_ind1 = 7; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
+    window_event1 = [-3 3];
     
+    if align_ind1 == 2
+        window_event1 = [-1 4];
+    end
     raster_plotting = 'inOrder'; % 'inOrder' means that the raster plots things in numeric order, if this variable is set to 'default', then it plots the default way (randomly selects)
-    % raster_plotting = 'default';
+    %     raster_plotting = 'default';
     
-    
+    saveFig = 1;
     % window_event1 = [-1.5 4]; %window of time around align_ind1 that we want to look at
     % ymaxx
-    NUM_TRIALS_TO_PLOT = 20;
+    NUM_TRIALS_TO_PLOT = 25;
+    
+    if caseNumb == 5
+        NUM_TRIALS_TO_PLOT = round(NUM_TRIALS_TO_PLOT/2);
+    end
     % PSTH_SMOOTH_FACTOR = 75;
     
     %below sets up the y axis for psth, either 'zero' or 'half', zero means it
     %goes until zero while half means its half of ymax
     
-%     window_event1 = [-4 1];
-%     PSTH_SMOOTH_FACTOR = 155;
-
-    window_event1 = [-1 4];
+    %     window_event1 = [-4 1];
+    %     PSTH_SMOOTH_FACTOR = 155;
+    
+    
     PSTH_SMOOTH_FACTOR = 125;
 end
 
@@ -169,21 +177,26 @@ end
 
 [taskbase_io, ~, index_errors] = behav_file_adapter_V2(rData,inputmatrix, cutfirst3trials, cutNearOEs);
 
-if caseNumb == 4
-    taskbase_io = Case04_AOstart_adapter_V2(taskbase_io, Ephys_struct, 'trialStart', rData, index_errors); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
-elseif caseNumb == 3 || caseNumb == 2 || caseNumb == 1
-    taskbase_io = Case03_AOstart_adapter_V2(taskbase_io, Ephys_struct, 'trialStart', rData, index_errors); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
-else
-    taskbase_io = AOstart_adapter_V2(taskbase_io, Ephys_struct, 'trialStart', rData, index_errors); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
+
+% % if caseNumb == 4
+% %     taskbase_io = AOstart_adapter_V3(taskbase_io, Ephys_struct, 'trialStart', rData, index_errors, caseNumb); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
+% % else
+% if caseNumb == 1 || caseNumb == 2 || caseNumb == 3 || caseNumb == 4
+taskbase_io = AOstart_adapter_V3(taskbase_io, Ephys_struct, 'trialStart', rData, index_errors, caseNumb, cutNearOEs); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
+% else
+%     taskbase_io = AOstart_adapter_V2(taskbase_io, Ephys_struct, 'trialStart', rData, index_errors); %this should add output field in taskbase struct which contains the start of each trial in the time of the alphaomega clock.
+% end
+
+
+% %AT adding below on 3/20/20 to account for weirdness in the way file was
+% %saved.
+% if caseNumb == 1
+%     taskbase_io.trialStart_AO = taskbase_io.trialStart_AO(14:(end-5));
+% end
+
+if length(taskbase_io.trialStart_AO) ~= length(taskbase_io.events.goCue)
+    error('taskbase outputs don''t match')
 end
-
-%AT adding below on 3/20/20 to account for weirdness in the way file was
-%saved.
-if caseNumb == 1
-    taskbase_io.trialStart_AO = taskbase_io.trialStart_AO(14:(end-5));
-end
-
-
 
 % %AT adding below in order to get rid of the error'ed trials from
 % % index_errors = behavioral_matrix(:,5)==3; %this says, if column five has a 3 in it because 3 means they error'ed on that trial
@@ -206,9 +219,6 @@ end
 saveFigure = 0;
 
 
-
-
-
 %AT 2/18/20, I've adjusted the output of fx import_ephys_io_auditoryTask_V1
 %so that we're getting some indexing of spike times based on the cluster
 %ID. I need to make things a little smoother, but for now altering the
@@ -220,12 +230,14 @@ spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs;
 
 if clust == 1
     spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;
+    clustname = '_clust1_';
 elseif clust == 2
     spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;
+    clustname = '_clust2_';
 elseif clust == 3
     spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;
+    clustname = '_clust3_';
 end
-
 
 
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;
@@ -288,23 +300,50 @@ switch align_ind1
     case 1
         align_event1_times = 'trialStart_times'; % beginning of trial
     case 2
-        align_event1_times = 'upPressed_times'; % 
+        align_event1_times = 'upPressed_times'; %
     case 3
-        align_event1_times = 'stimDelivered_times'; % 
+        align_event1_times = 'stimDelivered_times'; %
     case 4
-        align_event1_times = 'goCue_times'; % 
+        align_event1_times = 'goCue_times'; %
     case 5
-        align_event1_times = 'leftUP_times'; % 
+        align_event1_times = 'leftUP_times'; %
     case 6
         align_event1_times = 'submitsResponse_times'; %
     case 7
-        align_event1_times = 'feedback_times'; % 
+        align_event1_times = 'feedback_times'; %
     otherwise
         error('align_ind1 must be -17, 0, 3, 4, or 8');
 end
 
 % %     [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
+if  caseNumb == 1
+    caseName = 'case01';
+elseif caseNumb == 2
+    caseName = 'case02';
+elseif caseNumb == 3
+    caseName = 'case03';
+elseif caseNumb == 4
+    caseName = 'case04';
+elseif caseNumb == 5
+    caseName = 'case05';
+elseif caseNumb == 6
+    caseName = 'case06';
+elseif caseNumb == 7
+    caseName = 'case07';
+elseif caseNumb == 8
+    caseName = 'case08';
+elseif caseNumb == 9
+    caseName = 'case09';
+elseif caseNumb == 10
+    caseName = 'case10';
+elseif caseNumb == 11
+    caseName = 'case11';
+elseif caseNumb == 12
+    caseName = 'case12';
+elseif caseNumb == 13
+    caseName = 'case13';
+end
 
 % % %AT, note that below is pretty convenient if needing to select different
 % % %colors.
@@ -327,6 +366,7 @@ NOCHOICE_STYLE = '-';
 % odorportout_col = [0 0 1];%   Navy Blue
 % waterportin_col = [1 1 1];%  white
 % watervalveon_col = [0 0 1];
+
 upPressed_color = [1 1 0];%   yellow
 stimDelivered_color = [.95    0.45    .1];%   orangey
 goCue_color = [0 0.8 0.3]; % mint green
@@ -336,17 +376,10 @@ feedback_color = [.3 0.7 1];%  light blue
 % %     [; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
 
-
-
 % L_COLOR = 0.5 * ones(1, 3);
 % R_COLOR = zeros(1, 3);
 ipsi_COLOR = [.2 .9 .9]; %cyanish
 contra_COLOR = [1 0 .5]; %magenta
-
-
-
-
-
 
 
 STE_COLOR = 0.75 * ones(1, 3);
@@ -502,7 +535,7 @@ hold on;
 
 [ref_spike_times, trial_inds, plot_handle] = raster_io_V2(NUM_TRIALS_TO_PLOT, spike_times, trialStart_times',...
     eval(align_event1_times), window_event1,...
-    [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
 %     [opi_times; ovo_times; gt_times; opo_times; wpi_times]
 %     [ ovo_times; gt_times; opo_times])
@@ -512,12 +545,12 @@ hold on;
 % set(plot_handle.secondary_events(:, 2), 'Color', gotone_col);
 % set(plot_handle.secondary_events(:, 3), 'Color', odorportout_col);
 
-set(plot_handle.secondary_events(:, 1), 'Color', upPressed_color);
-set(plot_handle.secondary_events(:, 2), 'Color', stimDelivered_color);
-set(plot_handle.secondary_events(:, 3), 'Color', goCue_color);
-set(plot_handle.secondary_events(:, 4), 'Color', leftUP_color);
-set(plot_handle.secondary_events(:, 5), 'Color', submitsResponse_color);
-set(plot_handle.secondary_events(:, 6), 'Color', feedback_color);
+set(plot_handle.secondary_events(:, 2), 'Color', upPressed_color);
+set(plot_handle.secondary_events(:, 3), 'Color', stimDelivered_color);
+set(plot_handle.secondary_events(:, 4), 'Color', goCue_color);
+set(plot_handle.secondary_events(:, 5), 'Color', leftUP_color);
+set(plot_handle.secondary_events(:, 6), 'Color', submitsResponse_color);
+set(plot_handle.secondary_events(:, 7), 'Color', feedback_color);
 
 set(gca, 'xticklabel', []);
 set(gca, 'ytick', []);
@@ -556,9 +589,9 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 [ref_spike_times, trial_inds, plot_handle] = raster_io_V2(NUM_TRIALS_TO_PLOT, spike_times, trialStart_times',...
     eval(align_event1_times), window_event1,...
-    [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], no_plot_flag);
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], no_plot_flag);
 
-% 
+%
 % [ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
 %     eval(align_event1_times), window_event1,...
 %     [ stimDelivered_times; goCue_times; leftUP_times], no_plot_flag);
@@ -578,10 +611,10 @@ SG_raster_info.ref_spike_times.L = ref_spike_times;
 SG_raster_info.trial_inds.L = trial_inds;
 
 SG_raster_info.raster_events.trial_start.L = trialStart_times';
-SG_raster_info.raster_events.trial_event_times.L =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
+SG_raster_info.raster_events.trial_event_times.L =  [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
 
 SG_raster_info.stim_params = [];
-SG_raster_info.align_ind = 1; %I think this corresponds with trial_event_times?
+SG_raster_info.align_ind = align_ind1; %I think this corresponds with trial_event_times?
 SG_raster_info.window = init_psth_window_event1;
 
 %% Look at L, no-choice trials %%%
@@ -665,7 +698,7 @@ hold on;
 
 [ref_spike_times, trial_inds, plot_handle] = raster_io_V2(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
     eval(align_event1_times), window_event1,...
-    [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
 %     [opi_times; ovo_times; gt_times; opo_times; wpi_times]
 %     [ ovo_times; gt_times; opo_times])
@@ -675,12 +708,12 @@ hold on;
 % set(plot_handle.secondary_events(:, 2), 'Color', gotone_col);
 % set(plot_handle.secondary_events(:, 3), 'Color', odorportout_col);
 
-set(plot_handle.secondary_events(:, 1), 'Color', upPressed_color);
-set(plot_handle.secondary_events(:, 2), 'Color', stimDelivered_color);
-set(plot_handle.secondary_events(:, 3), 'Color', goCue_color);
-set(plot_handle.secondary_events(:, 4), 'Color', leftUP_color);
-set(plot_handle.secondary_events(:, 5), 'Color', submitsResponse_color);
-set(plot_handle.secondary_events(:, 6), 'Color', feedback_color);
+set(plot_handle.secondary_events(:, 2), 'Color', upPressed_color);
+set(plot_handle.secondary_events(:, 3), 'Color', stimDelivered_color);
+set(plot_handle.secondary_events(:, 4), 'Color', goCue_color);
+set(plot_handle.secondary_events(:, 5), 'Color', leftUP_color);
+set(plot_handle.secondary_events(:, 6), 'Color', submitsResponse_color);
+set(plot_handle.secondary_events(:, 7), 'Color', feedback_color);
 
 set(gca, 'xticklabel', []);
 set(gca, 'ytick', []);
@@ -717,9 +750,9 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 [ref_spike_times, trial_inds, plot_handle] = raster_io_V2(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
     eval(align_event1_times), window_event1,...
-    [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], no_plot_flag);
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], no_plot_flag);
 
-% 
+%
 % [ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
 %     eval(align_event1_times), window_event1,...
 %     [ stimDelivered_times; goCue_times; leftUP_times], no_plot_flag);
@@ -740,10 +773,10 @@ IS_raster_info.ref_spike_times.L = ref_spike_times;
 IS_raster_info.trial_inds.L = trial_inds;
 
 IS_raster_info.raster_events.trial_start.L = trialStart_times';
-IS_raster_info.raster_events.trial_event_times.L =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
+IS_raster_info.raster_events.trial_event_times.L =  [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
 
 IS_raster_info.stim_params = [];
-IS_raster_info.align_ind = 1; %I think this corresponds with trial_event_times?
+IS_raster_info.align_ind = align_ind1; %I think this corresponds with trial_event_times?
 IS_raster_info.window = init_psth_window_event1;
 
 %% Look at R, choice (active decision making) trials %%%
@@ -828,7 +861,7 @@ hold on;
 
 [ref_spike_times, trial_inds, plot_handle] = raster_io_V2(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
     eval(align_event1_times), window_event1,...
-    [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
 %     [opi_times; ovo_times; gt_times; opo_times; wpi_times]
 %     [ ovo_times; gt_times; opo_times])
@@ -838,12 +871,12 @@ hold on;
 % set(plot_handle.secondary_events(:, 2), 'Color', gotone_col);
 % set(plot_handle.secondary_events(:, 3), 'Color', odorportout_col);
 
-set(plot_handle.secondary_events(:, 1), 'Color', upPressed_color);
-set(plot_handle.secondary_events(:, 2), 'Color', stimDelivered_color);
-set(plot_handle.secondary_events(:, 3), 'Color', goCue_color);
-set(plot_handle.secondary_events(:, 4), 'Color', leftUP_color);
-set(plot_handle.secondary_events(:, 5), 'Color', submitsResponse_color);
-set(plot_handle.secondary_events(:, 6), 'Color', feedback_color);
+set(plot_handle.secondary_events(:, 2), 'Color', upPressed_color);
+set(plot_handle.secondary_events(:, 3), 'Color', stimDelivered_color);
+set(plot_handle.secondary_events(:, 4), 'Color', goCue_color);
+set(plot_handle.secondary_events(:, 5), 'Color', leftUP_color);
+set(plot_handle.secondary_events(:, 6), 'Color', submitsResponse_color);
+set(plot_handle.secondary_events(:, 7), 'Color', feedback_color);
 
 set(gca, 'xticklabel', []);
 set(gca, 'ytick', []);
@@ -883,7 +916,7 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 [ref_spike_times, trial_inds, plot_handle] = raster_io_V2(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
     eval(align_event1_times), window_event1,...
-    [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], no_plot_flag);
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], no_plot_flag);
 
 %     [opi_times; ovo_times; gt_times; opo_times; wpi_times], no_plot_flag);
 
@@ -901,10 +934,10 @@ SG_raster_info.ref_spike_times.R = ref_spike_times;
 SG_raster_info.trial_inds.R = trial_inds;
 
 SG_raster_info.raster_events.trial_start.R = trialStart_times';
-SG_raster_info.raster_events.trial_event_times.R =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
+SG_raster_info.raster_events.trial_event_times.R =  [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
 
 SG_raster_info.stim_params = [];
-SG_raster_info.align_ind = 1; %I think this corresponds with trial_event_times?
+SG_raster_info.align_ind = align_ind1; %I think this corresponds with trial_event_times?
 SG_raster_info.window = init_psth_window_event1;
 
 %% Look at R, no-choice trials %%%
@@ -991,7 +1024,7 @@ hold on;
 
 [ref_spike_times, trial_inds, plot_handle] = raster_io_V2(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
     eval(align_event1_times), window_event1,...
-    [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
 %     [opi_times; ovo_times; gt_times; opo_times; wpi_times]
 %     [ ovo_times; gt_times; opo_times])
@@ -1001,12 +1034,12 @@ hold on;
 % set(plot_handle.secondary_events(:, 2), 'Color', gotone_col);
 % set(plot_handle.secondary_events(:, 3), 'Color', odorportout_col);
 
-set(plot_handle.secondary_events(:, 1), 'Color', upPressed_color);
-set(plot_handle.secondary_events(:, 2), 'Color', stimDelivered_color);
-set(plot_handle.secondary_events(:, 3), 'Color', goCue_color);
-set(plot_handle.secondary_events(:, 4), 'Color', leftUP_color);
-set(plot_handle.secondary_events(:, 5), 'Color', submitsResponse_color);
-set(plot_handle.secondary_events(:, 6), 'Color', feedback_color);
+set(plot_handle.secondary_events(:, 2), 'Color', upPressed_color);
+set(plot_handle.secondary_events(:, 3), 'Color', stimDelivered_color);
+set(plot_handle.secondary_events(:, 4), 'Color', goCue_color);
+set(plot_handle.secondary_events(:, 5), 'Color', leftUP_color);
+set(plot_handle.secondary_events(:, 6), 'Color', submitsResponse_color);
+set(plot_handle.secondary_events(:, 7), 'Color', feedback_color);
 
 set(gca, 'xticklabel', []);
 set(gca, 'ytick', []);
@@ -1038,9 +1071,9 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 [ref_spike_times, trial_inds, plot_handle] = raster_io_V2(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
     eval(align_event1_times), window_event1,...
-    [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], no_plot_flag);
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], no_plot_flag);
 
-% 
+%
 % [ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
 %     eval(align_event1_times), window_event1,...
 %     [ stimDelivered_times; goCue_times; leftUP_times], no_plot_flag);
@@ -1057,10 +1090,10 @@ IS_raster_info.ref_spike_times.R = ref_spike_times;
 IS_raster_info.trial_inds.R = trial_inds;
 
 IS_raster_info.raster_events.trial_start.R = trialStart_times';
-IS_raster_info.raster_events.trial_event_times.R =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
+IS_raster_info.raster_events.trial_event_times.R =  [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
 
 IS_raster_info.stim_params = [];
-IS_raster_info.align_ind = 1; %I think this corresponds with trial_event_times?
+IS_raster_info.align_ind = align_ind1; %I think this corresponds with trial_event_times?
 IS_raster_info.window = init_psth_window_event1;
 
 
@@ -1329,10 +1362,10 @@ end
 
 % IS_raster_info.L.ref_spike_times = ref_spike_times;
 % IS_raster_info.L.trial_inds = trial_inds;
-% 
+%
 % IS_raster_info.L.raster_events.trial_start = trialStart_times';
 % IS_raster_info.L.raster_events.trial_event_times =  [upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times];
-% 
+%
 % IS_raster_info.L.stim_params = [];
 % IS_raster_info.L.align_ind = 1; %I think this corresponds with trial_event_times?
 % IS_raster_info.L.window = init_psth_window_event1;
@@ -1341,18 +1374,54 @@ end
 IS_raster_info;
 SG_raster_info;
 
-raster_info = IS_raster_info;
 num_iter = 500;
 analysis_to_perform = 'leftchoice_vs_rightchoice';
-epochs = {[1 3]};
-%{[1 2]; [8 3]; [888 0 3 999 3 .250]; [999 3 0.250 999 4 0]; [3 4];}
-[preference, roc_p, activity_info] = CellPreference_io_V1(raster_info, num_iter, analysis_to_perform, epochs);
+if caseNumb == 1 || caseNumb == 2 || caseNumb == 3
+    epochs = {[2 3];[2 4];[2 5]; [888 -1 2 888 0.1 2 ];[888 -0.1 5 999 1 5]};
+else
+    epochs = {[2 3];[2 4];[2 5]; [888 -1 2 888 0.1 2 ];[888 -0.1 5 999 1 5];[2 7];[4 7];[888 -0.1 7 999 1 7];};
+end
+
+
+raster_info = IS_raster_info;
+%4/1/20; AT note - %%[888 -0.5 3 888 -0.25 3] - Between 0.5 and 0.25 seconds before event 3
+%input used for hemiPD: {[1 2]; [8 3]; [888 0 3 999 3 .250]; [999 3 0.250 999 4 0]; [3 4];}
+[IS_preference, IS_roc_p, IS_activity_info] = CellPreference_io_V1(raster_info, num_iter, analysis_to_perform, epochs);
+
+% [pref, p_values, activity_info] = CellPreference(raster_info, 500, 'leftchoice_vs_rightchoice', {[1 6]; [888 -0.25 1 999 1 .1];...
+%             [1 2]; odorsampleEpochTiming; [8 3]; [888 0 3 999 3 .250]; [999 3 0.250 999 4 0]; [3 4];});
+
+preference.IS_preference = IS_preference;
+roc_p.IS_roc_p = IS_roc_p;
+activity_info.IS_activity_info = IS_activity_info;
+
+
+
+raster_info = SG_raster_info;
+%4/1/20; AT note - %%[888 -0.5 3 888 -0.25 3] - Between 0.5 and 0.25 seconds before event 3
+%input used for hemiPD: {[1 2]; [8 3]; [888 0 3 999 3 .250]; [999 3 0.250 999 4 0]; [3 4];}
+[SG_preference, SG_roc_p, SG_activity_info] = CellPreference_io_V1(raster_info, num_iter, analysis_to_perform, epochs);
 
 % [pref, p_values, activity_info] = CellPreference(raster_info, 500, 'leftchoice_vs_rightchoice', {[1 6]; [888 -0.25 1 999 1 .1];...
 %             [1 2]; odorsampleEpochTiming; [8 3]; [888 0 3 999 3 .250]; [999 3 0.250 999 4 0]; [3 4];});
 
 
+preference.SG_preference = SG_preference;
+roc_p.SG_roc_p = SG_roc_p;
+activity_info.SG_activity_info = SG_activity_info;
 
 
+%below saves out the figure, hopefully
+figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','rasterPsth', caseName); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
+filename = (['/rasterPsth_' caseName, spikeFile, clustname, align_event1_times(1:8)]);
+if saveFig == 1
+    saveas(gcf,fullfile(figuresdir, filename), 'jpeg');
+end
+
+%below saves out the variables pertaining to preference
+filename2 = (['/prefVariables_' caseName, spikeFile, clustname, align_event1_times(1:8)]);
+if saveFig == 1
+    save(fullfile(figuresdir, filename2), 'preference', 'roc_p', 'activity_info');
+end
 
 return

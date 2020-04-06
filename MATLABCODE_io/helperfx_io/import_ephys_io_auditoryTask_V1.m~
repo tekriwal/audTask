@@ -51,6 +51,9 @@ if Ephys_struct.mer.timeStart >  Ephys_struct.ttlInfo.timeStart || Ephys_struct.
 end
 
 
+
+
+
 %4/5/20 need to check that stard and end times for ttl and mer match
 %reality.
 mer_timeLength = Ephys_struct.mer.timeEnd - Ephys_struct.mer.timeStart;
@@ -59,10 +62,13 @@ cspk_timeLength = length(Ephys_struct.CSPK_01)/Ephys_struct.mer.sampFreqHz;
 lfp_timeLength = Ephys_struct.lfp.timeEnd - Ephys_struct.lfp.timeStart;
 clfp_timeLength = length(Ephys_struct.CLFP_01)/Ephys_struct.lfp.sampFreqHz;
 
-Ephys_struct.mer.timeStart == Ephys_struct.mer.timeStart
+
+if Ephys_struct.mer.timeStart ~= Ephys_struct.mer.timeStart
 
 
 
+    
+    
 
 %AT 3/28/20; 
 delta = Ephys_struct.ttlInfo.timeStart - Ephys_struct.mer.timeStart;
