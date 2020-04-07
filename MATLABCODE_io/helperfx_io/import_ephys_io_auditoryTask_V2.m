@@ -52,7 +52,7 @@ end
 
 
 
-if ~strcmp(caseInfo_table.Properties.RowNames, '7') || ~strcmp(caseInfo_table.Properties.RowNames, '10') || ~strcmp(caseInfo_table.Properties.RowNames, '12') || ~strcmp(caseInfo_table.Properties.RowNames, '13')
+if ~strcmp(caseInfo_table.Properties.RowNames, '7') && ~strcmp(caseInfo_table.Properties.RowNames, '10') && ~strcmp(caseInfo_table.Properties.RowNames, '12') && ~strcmp(caseInfo_table.Properties.RowNames, '13')
     
     %4/5/20 need to check that stard and end times for ttl and mer match
     %reality. and that lfp matches spike for start times, if it doesn't we need
@@ -155,7 +155,7 @@ elseif strcmp(cell2mat(caseInfo_table.Properties.RowNames), '12')
     clustids = spike1.spikeDATA.clustIDS;
     
     %     clustIndex_0 = clustids  == 0;
-    clustIndex_1 = clustids  == 1;
+    clustIndex_1 = clustids  == 2;
     clustIndex_2 = clustids  == 3;
     %     clustIndex_3 = clustids  == 3;
     

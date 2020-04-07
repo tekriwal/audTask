@@ -52,45 +52,45 @@ end
 
 
 
-if caseInfo_table.Properties.RowNames
-
-%4/5/20 need to check that stard and end times for ttl and mer match
-%reality. and that lfp matches spike for start times, if it doesn't we need
-%to pad the lfp.
-mer_timeLength = Ephys_struct.mer.timeEnd - Ephys_struct.mer.timeStart;
-cspk_timeLength = length(Ephys_struct.CSPK_01)/Ephys_struct.mer.sampFreqHz;
-if round(mer_timeLength) ~= round(cspk_timeLength)
-    error('mismatched mer lengths')
-end
-
-
-
-lfp_timeLength = Ephys_struct.lfp.timeEnd - Ephys_struct.lfp.timeStart;
-clfp_timeLength = length(Ephys_struct.CLFP_01)/Ephys_struct.lfp.sampFreqHz;
-if round(lfp_timeLength) ~= round(clfp_timeLength)
-    error('mismatched lfp lengths')
-end
-
-
-
-if round(Ephys_struct.mer.timeStart) ~= round(Ephys_struct.lfp.timeStart)
+if ~strcmp(caseInfo_table.Properties.RowNames, '7') && ~strcmp(caseInfo_table.Properties.RowNames, '10') || ~strcmp(caseInfo_table.Properties.RowNames, '12') || ~strcmp(caseInfo_table.Properties.RowNames, '13')
     
-    if Ephys_struct.mer.timeStart < Ephys_struct.lfp.timeStart
-        delta = Ephys_struct.lfp.timeStart - Ephys_struct.mer.timeStart;
-        buffer = zeros(1, round((Ephys_struct.ttlInfo.sampFreqHz)*delta));
-        Ephys_struct.CLFP_01 = [buffer, Ephys_struct.CLFP_01];
-        %     if Ephys_struct.mer.timeStart < Ephys_struct.lfp.timeStart
-        error('check to see if fix worked - figureitout')
-        %     end
-    elseif Ephys_struct.mer.timeStart > Ephys_struct.lfp.timeStart
-        %we'll need to cut the first 'X' portion of lfp recording, will
-        %need to calculate what that should be based on diff in mer and lfp
-        %length.
-        error('figureitout')
+    %4/5/20 need to check that stard and end times for ttl and mer match
+    %reality. and that lfp matches spike for start times, if it doesn't we need
+    %to pad the lfp.
+    mer_timeLength = Ephys_struct.mer.timeEnd - Ephys_struct.mer.timeStart;
+    cspk_timeLength = length(Ephys_struct.CSPK_01)/Ephys_struct.mer.sampFreqHz;
+    if round(mer_timeLength) ~= round(cspk_timeLength)
+        error('mismatched mer lengths')
     end
     
-end
-
+    
+    
+    lfp_timeLength = Ephys_struct.lfp.timeEnd - Ephys_struct.lfp.timeStart;
+    clfp_timeLength = length(Ephys_struct.CLFP_01)/Ephys_struct.lfp.sampFreqHz;
+    if round(lfp_timeLength) ~= round(clfp_timeLength)
+        error('mismatched lfp lengths')
+    end
+    
+    
+    
+    if round(Ephys_struct.mer.timeStart) ~= round(Ephys_struct.lfp.timeStart)
+        
+        if Ephys_struct.mer.timeStart < Ephys_struct.lfp.timeStart
+            delta = Ephys_struct.lfp.timeStart - Ephys_struct.mer.timeStart;
+            buffer = zeros(1, round((Ephys_struct.ttlInfo.sampFreqHz)*delta));
+            Ephys_struct.CLFP_01 = [buffer, Ephys_struct.CLFP_01];
+            %     if Ephys_struct.mer.timeStart < Ephys_struct.lfp.timeStart
+            error('check to see if fix worked - figureitout')
+            %     end
+        elseif Ephys_struct.mer.timeStart > Ephys_struct.lfp.timeStart
+            %we'll need to cut the first 'X' portion of lfp recording, will
+            %need to calculate what that should be based on diff in mer and lfp
+            %length.
+            error('figureitout')
+        end
+        
+    end
+    
 end
 
 
