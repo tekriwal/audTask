@@ -436,6 +436,9 @@ elseif caseNumb == 12
     
 elseif caseNumb == 13
     
+    %errorLoc = 81;
+    intertrialInterval_rData(end) = intertrialInterval_rData(end) - 3.55; %AT 4/8/20; this is necessary because of error on last trial; it is not a true error but had to cut due to weird timing of
+    
     errorLoc = 76;
     intertrialInterval_rData(errorLoc-1,1) = rDatatime_seconds(errorLoc,1) + rDatatime_seconds(errorLoc-1,1);
     intertrialInterval_rData(errorLoc,:) = [];
@@ -466,6 +469,7 @@ elseif caseNumb == 13
     waitperiod_index_easilyscannable_cleaned(25) = waitperiod_index_easilyscannable_cleaned(25) + round(spliceError*44000);
     intertrialInterval_TTLnav(24) = (waitperiod_index_easilyscannable_cleaned(25) - waitperiod_index_easilyscannable_cleaned(24))/44000;
     
+    waitperiod_index_easilyscannable_cleaned(end) = [];
 end
 
 

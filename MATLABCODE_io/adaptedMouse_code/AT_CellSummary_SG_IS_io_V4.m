@@ -66,10 +66,10 @@ function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V4(caseNumb, spikeFile, clus
 %means that there were more than 1 cluster after spike sorting
 
 if nargin == 0
-    caseNumb = 12;
-    spikeFile = 'spike1';
-    clust = 1; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
-    align_ind1 = 7; %which part of the trial do we want to look at as our 'zero' point?
+    caseNumb = 13;
+    spikeFile = 'spike2';
+    clust = 2; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
+    align_ind1 = 3; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
     window_event1 = [-3 3];
     
@@ -103,7 +103,11 @@ end
 cutfirst3trials = 0; %set to 1 to cut first three trials of session
 miny = 'zero';
 
-
+if caseNumb == 13
+    locat = 'SouthWest';
+else
+    locat = 'NorthWest';
+end
 
 
 %AT 3/30/20 - we want to keep the cutNearOEs to '1', always.
@@ -1192,11 +1196,12 @@ l = line([xt(2) xt(2)], [0 max_y], 'Color', [0 0 0]);
 xlabel(['Time from ' align_event1_times(1:(end - 6)) ' (s)']);
 ylabel('Firing rate (spikes/s)');
 
+
 if strcmp(surgerySide, 'L')
-    legend([p1 p3],{'Ipsi (L)', 'Contra (R)'}, 'Location', 'NorthWest');
+    legend([p1 p3],{'Ipsi (L)', 'Contra (R)'}, 'Location', locat);
     
 elseif strcmp(surgerySide, 'R')
-    legend([p1 p3],{'Contra (L)', 'Ipsi (R)'}, 'Location', 'NorthWest');
+    legend([p1 p3],{'Contra (L)', 'Ipsi (R)'}, 'Location', locat);
 end%title('Stimulus guided');
 
 
@@ -1315,10 +1320,10 @@ l = line([xt(2) xt(2)], [0 max_y], 'Color', [0 0 0]);
 % ylabel('Firing rate (Hz)');
 
 if strcmp(surgerySide, 'L')
-    legend([p2 p4],{'Ipsi (L)', 'Contra (R)'}, 'Location', 'NorthWest');
+    legend([p2 p4],{'Ipsi (L)', 'Contra (R)'}, 'Location', locat);
     
 elseif strcmp(surgerySide, 'R')
-    legend([p2 p4],{'Contra (L)', 'Ipsi (R)'}, 'Location', 'NorthWest');
+    legend([p2 p4],{'Contra (L)', 'Ipsi (R)'}, 'Location', locat);
 end%title('Stimulus guided');
 
 fig_name = strcat([spk_file.spikeDATA.fileINFO.analyzDATE,'_', align_event1_times(1:6),spikeFile]);

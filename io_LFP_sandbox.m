@@ -5,8 +5,10 @@
 %%
 %%
 %%
+
+
 %%
-for n = 1
+for n = 12
     
     lfp_v4(n, 'movePreparation', 'LFP01', 0, 1, 1);
     lfp_v4(n, 'moveInitiation', 'LFP01', 0, 1, 1);
@@ -20,9 +22,9 @@ for n = 1
     lfp_v4(n, 'moveInitiation', 'LFP02', 0, 1, 1);
     lfp_v4(n, 'movePreparation', 'CMacro_LFP02', 0, 1, 1);
     lfp_v4(n, 'moveInitiation', 'CMacro_LFP02', 0, 1, 1);
-    close all
     WaitSecs(10)
-    
+    close all
+
     
     lfp_v4(n, 'movePreparation', 'LFP03', 0, 1, 1);
     lfp_v4(n, 'moveInitiation', 'LFP03', 0, 1, 1);
@@ -94,7 +96,71 @@ end
 
 
 
+%%
 
+
+%below is for taking the power of each trial
+%range below
+frequ1 = 0.5;
+frequ2 = 4;
+
+for ii = 1:size(signal,1)
+    struct.delta_pband(1,trial_num) = bandpower(signal(ii,:),Fs,[frequ1 frequ2]);
+end
+
+
+%below is for taking the power of each trial
+%range below
+frequ1 = 4;
+frequ2 = 8;
+
+for ii = 1:size(signal,1)
+    struct.theta_pband(1,trial_num) = bandpower(signal(ii,:),Fs,[frequ1 frequ2]);
+end
+
+
+%below is for taking the power of each trial
+%range below
+frequ1 = 8;
+frequ2 = 13;
+
+for ii = 1:size(signal,1)
+    struct.alpha_pband(1,trial_num) = bandpower(signal(ii,:),Fs,[frequ1 frequ2]);
+end
+
+
+%below is for taking the power of each trial
+%range below
+frequ1 = 13;
+frequ2 = 35;
+
+for ii = 1:size(signal,1)
+    struct.beta_pband(1,trial_num) = bandpower(signal(ii,:),Fs,[frequ1 frequ2]);
+end
+
+%below is for taking the power of each trial
+%range below
+frequ1 = 35;
+frequ2 = 80;
+
+for ii = 1:size(signal,1)
+    struct.lowgamma_pband(1,trial_num) = bandpower(signal(ii,:),Fs,[frequ1 frequ2]);
+end
+
+
+%below is for taking the power of each trial
+%range below
+frequ1 = 80;
+frequ2 = 200;
+
+for ii = 1:size(signal,1)
+    struct.highgamma_pband(1,trial_num) = bandpower(signal(ii,:),Fs,[frequ1 frequ2]);
+end
+
+
+struct.ptot_pband(1,trial_num) = struct.delta_pband(1,trial_num) + struct.theta_pband(1,trial_num) + struct.alpha_pband(1,trial_num) + struct.beta_pband(1,trial_num) + struct.lowgamma_pband(1,trial_num) + struct.highgamma_pband(1,trial_num);
+struct.ptot_pband_wOUT_delta(1,trial_num) = struct.theta_pband(1,trial_num) + struct.alpha_pband(1,trial_num) + struct.beta_pband(1,trial_num) + struct.lowgamma_pband(1,trial_num) + struct.highgamma_pband(1,trial_num);
+%%
 
 
 

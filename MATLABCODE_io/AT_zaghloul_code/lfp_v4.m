@@ -13,14 +13,31 @@ function [] = lfp_v4(caseNumb, epoch, LFPsource, cutfirst3trials, cutNearOEs, sa
 
 dbstop if error
 
+%AT 4/8/20 set below to 1 if we want bandpower out of 100%, set to 0 if we
+%want absolute values
+normalize = 1;
+
 %below is for running the LFP code
 % clearvars;
 % close all;
+
 clc;
+
+
+
+deltaColor = [1 1 1];
+thetaColor = [.5 .5 .5];
+alphaColor = [0 1 0];
+betaColor = [0 0 1];
+lowGammaColor = [1 .6 .4];
+highGammaColor = [1 0 0];
+
+
+
 
 if nargin == 0
     
-    caseNumb = 13;
+    caseNumb = 1;
 %     epoch = 'movePreparation';
     epoch = 'moveInitiation';
     
@@ -104,7 +121,7 @@ end
 %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 digits(6) %sets vars so they contain 6 digits at most
 p = genpath('/Users/andytek/Box/Auditory_task_SNr');
-addpath(p);
+addpath(p)
 p = genpath('/Users/andytek/Desktop/git/audTask/MATLABCODE_io');
 addpath(p);
 
@@ -216,23 +233,23 @@ saveFigure = 0;
 
 
 %option parameters
-normalize=1; % set to 1 to plot the data as % change from baseline. set to 0 to plot raw power.
-
-Duration=1.00; % time duration of each event in seconds
-Offset=.500;% Offset is the time you want to go back by. ie. Offset=.500; means 500ms BEFORE event began will be start of each trial
+% normalize=1; % set to 1 to plot the data as % change from baseline. set to 0 to plot raw power.
+% 
+% Duration=1.00; % time duration of each event in seconds
+% Offset=.500;% Offset is the time you want to go back by. ie. Offset=.500; means 500ms BEFORE event began will be start of each trial
 
 % LFPSamplerate=1000;
 % LFPSamplerate = 1375; %AT
 
 
-Buffer=200; waveletwidth=6;
-filelength=LFPSamplerate*Duration;
-if normalize==1
-    Offset_cue = 0; %1/21/20 was 0.375 before
-    Duration_cue = 0; %1/21/20 was 0.250 before
-end
-time=-(Offset-1/LFPSamplerate):1/LFPSamplerate:(-Offset+Duration); % set the time axis
-freqs=2.^((8:54)/8); %AT
+% Buffer=200; waveletwidth=6;
+% filelength=LFPSamplerate*Duration;
+% if normalize==1
+%     Offset_cue = 0; %1/21/20 was 0.375 before
+%     Duration_cue = 0; %1/21/20 was 0.250 before
+% end
+% time=-(Offset-1/LFPSamplerate):1/LFPSamplerate:(-Offset+Duration); % set the time axis
+% freqs=2.^((8:54)/8); %AT
 
 %set up file output names
 %AT 4/26/19 - below are what zag used, will need to replace with whatever
@@ -244,7 +261,7 @@ freqs=2.^((8:54)/8); %AT
 
 %% LOOK AT PHASE DATA
 
-tstart=tic;
+% tstart=tic;
 %     i
 
 %         close all %AT idk why they have this here
@@ -428,15 +445,20 @@ IS_R = struct();
 
 
 
-%
-% %quick stacked bar plot
-% figure()
-% % y = SG_L.delta_pband; SG_L.alpha_pband; SG_L.theta_pband, SG_L.beta_pband, SG_L.lowgamma_pband, SG_L.highgamma_pband
-SG_L_stacked = [mean(SG_L.delta_pband), mean(SG_L.alpha_pband), mean(SG_L.theta_pband), mean(SG_L.beta_pband), mean(SG_L.lowgamma_pband), mean(SG_L.highgamma_pband)];
-IS_L_stacked = [mean(IS_L.delta_pband), mean(IS_L.alpha_pband), mean(IS_L.theta_pband), mean(IS_L.beta_pband), mean(IS_L.lowgamma_pband), mean(IS_L.highgamma_pband)];
-SG_R_stacked = [mean(SG_R.delta_pband), mean(SG_R.alpha_pband), mean(SG_R.theta_pband), mean(SG_R.beta_pband), mean(SG_R.lowgamma_pband), mean(SG_R.highgamma_pband)];
-IS_R_stacked = [mean(IS_R.delta_pband), mean(IS_R.alpha_pband), mean(IS_R.theta_pband), mean(IS_R.beta_pband), mean(IS_R.lowgamma_pband), mean(IS_R.highgamma_pband)];
-
+if normalize == 0
+    % %quick stacked bar plot
+    % figure()
+    % % y = SG_L.delta_pband; SG_L.alpha_pband; SG_L.theta_pband, SG_L.beta_pband, SG_L.lowgamma_pband, SG_L.highgamma_pband
+    SG_L_stacked = [mean(SG_L.delta_pband), mean(SG_L.theta_pband), mean(SG_L.alpha_pband), mean(SG_L.beta_pband), mean(SG_L.lowgamma_pband), mean(SG_L.highgamma_pband)];
+    IS_L_stacked = [mean(IS_L.delta_pband), mean(IS_L.theta_pband), mean(IS_L.alpha_pband), mean(IS_L.beta_pband), mean(IS_L.lowgamma_pband), mean(IS_L.highgamma_pband)];
+    SG_R_stacked = [mean(SG_R.delta_pband), mean(SG_R.theta_pband), mean(SG_R.alpha_pband),mean(SG_R.beta_pband), mean(SG_R.lowgamma_pband), mean(SG_R.highgamma_pband)];
+    IS_R_stacked = [mean(IS_R.delta_pband), mean(IS_R.theta_pband), mean(IS_R.alpha_pband), mean(IS_R.beta_pband), mean(IS_R.lowgamma_pband), mean(IS_R.highgamma_pband)];
+elseif normalize == 1
+    SG_L_stacked = [mean(SG_L.delta_perc_power), mean(SG_L.theta_perc_power), mean(SG_L.alpha_perc_power), mean(SG_L.beta_perc_power), mean(SG_L.lowgamma_perc_power), mean(SG_L.highgamma_perc_power)];
+    IS_L_stacked = [mean(IS_L.delta_perc_power), mean(IS_L.theta_perc_power), mean(IS_L.alpha_perc_power), mean(IS_L.beta_perc_power), mean(IS_L.lowgamma_perc_power), mean(IS_L.highgamma_perc_power)];
+    SG_R_stacked = [mean(SG_R.delta_perc_power), mean(SG_R.theta_perc_power), mean(SG_R.alpha_perc_power), mean(SG_R.beta_perc_power), mean(SG_R.lowgamma_perc_power), mean(SG_R.highgamma_perc_power)];
+    IS_R_stacked = [mean(IS_R.delta_perc_power), mean(IS_R.theta_perc_power),  mean(IS_R.alpha_perc_power), mean(IS_R.beta_perc_power), mean(IS_R.lowgamma_perc_power), mean(IS_R.highgamma_perc_power)];
+end
 % y = [SG_L_stacked; IS_L_stacked; SG_R_stacked; IS_R_stacked];
 % bar(y,'stacked')
 
@@ -451,10 +473,12 @@ elseif strcmp(surgerySide, 'R')
 end
 
 h = bar(y_combined, 'stacked');
-% set(h, {'FaceColor'}, { [.1 .1 1]; [.5 .5 .5]; [.9 .1 .1]});
+
+set(h, {'FaceColor'}, { deltaColor; thetaColor; alphaColor; betaColor; lowGammaColor; highGammaColor })
+
 set(gca, 'xtick', [1:4], 'xticklabel', names)
-l = cell(1,5);
-l{1} = 'Delta'; l{2} =  'Alpha'; l{3} = 'Theta'; l{4} = 'Beta'; l{5} = 'Low Gamma'; l{6} = 'High Gamma';
+l = cell(1,6);
+l{1} = 'Delta'; l{2} =  'Theta'; l{3} = 'Alpha'; l{4} = 'Beta'; l{5} = 'Low Gamma'; l{6} = 'High Gamma';
 % l{1} = 'Significant FR decrease'; l{2} = 'No FR change'; l{3} =  'Significance FR increase';
 title(strcat(['Case#: ' mat2str(caseNumb),'  LFP#: ' mat2str(LFPsource),'  Epoch:' mat2str(epoch), '  All bands']))
 % if strcmp(subfolder_name, 'MI')
@@ -469,8 +493,8 @@ box off
 
 
 
-figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','LFP_stackedbars', caseName); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
-filename = (['/allBands' caseName, contact, epoch]);
+figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','LFP_stackedbars', caseName, contact); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
+filename = ([ caseName, contact, epoch, '_allBands']);
 if saveFig == 1
 saveas(gcf,fullfile(figuresdir, filename), 'jpeg');
 end
@@ -478,15 +502,21 @@ end
 
 
 
+if normalize == 0
+    %quick stacked bar plot; Excluding delta
+    SG_L_stacked = [mean(SG_L.theta_pband), mean(SG_L.alpha_pband), mean(SG_L.beta_pband), mean(SG_L.lowgamma_pband), mean(SG_L.highgamma_pband)];
+    IS_L_stacked = [mean(IS_L.theta_pband), mean(IS_L.alpha_pband), mean(IS_L.beta_pband), mean(IS_L.lowgamma_pband), mean(IS_L.highgamma_pband)];
+    SG_R_stacked = [mean(SG_R.theta_pband), mean(SG_R.alpha_pband), mean(SG_R.beta_pband), mean(SG_R.lowgamma_pband), mean(SG_R.highgamma_pband)];
+    IS_R_stacked = [mean(IS_R.theta_pband), mean(IS_R.alpha_pband), mean(IS_R.beta_pband), mean(IS_R.lowgamma_pband), mean(IS_R.highgamma_pband)];
+elseif normalize == 1
+    SG_L_stacked = [mean(SG_L.theta_perc_power_wOUT_delta), mean(SG_L.alpha_perc_power_wOUT_delta), mean(SG_L.beta_perc_power_wOUT_delta), mean(SG_L.lowgamma_perc_power_wOUT_delta), mean(SG_L.highgamma_perc_power_wOUT_delta)];
+    IS_L_stacked = [mean(IS_L.theta_perc_power_wOUT_delta), mean(IS_L.alpha_perc_power_wOUT_delta), mean(IS_L.beta_perc_power_wOUT_delta), mean(IS_L.lowgamma_perc_power_wOUT_delta), mean(IS_L.highgamma_perc_power_wOUT_delta)];
+    SG_R_stacked = [mean(SG_R.theta_perc_power_wOUT_delta), mean(SG_R.alpha_perc_power_wOUT_delta), mean(SG_R.beta_perc_power_wOUT_delta), mean(SG_R.lowgamma_perc_power_wOUT_delta), mean(SG_R.highgamma_perc_power_wOUT_delta)];
+    IS_R_stacked = [mean(IS_R.theta_perc_power_wOUT_delta), mean(IS_R.alpha_perc_power_wOUT_delta), mean(IS_R.beta_perc_power_wOUT_delta), mean(IS_R.lowgamma_perc_power_wOUT_delta), mean(IS_R.highgamma_perc_power_wOUT_delta)];
+end
 
-%quick stacked bar plot; Excluding delta
-% figure()
-% % y = SG_L.delta_pband; SG_L.alpha_pband; SG_L.theta_pband, SG_L.beta_pband, SG_L.lowgamma_pband, SG_L.highgamma_pband
-SG_L_stacked = [mean(SG_L.alpha_pband), mean(SG_L.theta_pband), mean(SG_L.beta_pband), mean(SG_L.lowgamma_pband), mean(SG_L.highgamma_pband)];
-IS_L_stacked = [mean(IS_L.alpha_pband), mean(IS_L.theta_pband), mean(IS_L.beta_pband), mean(IS_L.lowgamma_pband), mean(IS_L.highgamma_pband)];
-SG_R_stacked = [mean(SG_R.alpha_pband), mean(SG_R.theta_pband), mean(SG_R.beta_pband), mean(SG_R.lowgamma_pband), mean(SG_R.highgamma_pband)];
-IS_R_stacked = [mean(IS_R.alpha_pband), mean(IS_R.theta_pband), mean(IS_R.beta_pband), mean(IS_R.lowgamma_pband), mean(IS_R.highgamma_pband)];
-
+    
+    
 % y = [SG_L_stacked; IS_L_stacked; SG_R_stacked; IS_R_stacked];
 % bar(y,'stacked')
 
@@ -504,10 +534,10 @@ elseif strcmp(surgerySide, 'R')
 end
 
 h = bar(y_combined, 'stacked');
-% set(h, {'FaceColor'}, { [.1 .1 1]; [.5 .5 .5]; [.9 .1 .1]});
+set(h, {'FaceColor'}, { thetaColor; alphaColor; betaColor; lowGammaColor; highGammaColor })
 set(gca, 'xtick', [1:4], 'xticklabel', names)
 l = cell(1,5);
-l{1} =  'Alpha'; l{2} = 'Theta'; l{3} = 'Beta'; l{4} = 'Low Gamma'; l{5} = 'High Gamma';
+l{1} =  'Theta'; l{2} = 'Alpha'; l{3} = 'Beta'; l{4} = 'Low Gamma'; l{5} = 'High Gamma';
 % l{1} = 'Significant FR decrease'; l{2} = 'No FR change'; l{3} =  'Significance FR increase';
 title(strcat(['Case#: ' mat2str(caseNumb),'  LFP#: ' mat2str(LFPsource),'  Epoch:' mat2str(epoch), '  All bands, except Delta']))
 % if strcmp(subfolder_name, 'MI')
@@ -519,8 +549,8 @@ xtickangle(45)
 box off
 
 
-figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','LFP_stackedbars', caseName); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
-filename = (['/noDeltaBand' caseName, contact, epoch]);
+figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','LFP_stackedbars', caseName, contact); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
+filename = ([caseName, contact, epoch, '_noDeltaBand']);
 if saveFig == 1
 saveas(gcf,fullfile(figuresdir, filename), 'jpeg');
 end

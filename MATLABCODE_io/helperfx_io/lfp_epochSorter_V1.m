@@ -38,8 +38,8 @@ function [struct] = lfp_epochSorter_V1(struct, trial_inds, trial_start_times, ta
             struct.ref_LFP_epoch = [struct.ref_LFP_epoch; trial_LFP_epoch(:)];
             struct.trial_inds = [struct.trial_inds; (ones(length(trial_LFP_epoch), 1) * trial_num)];
             
-            %AT PICK UP WITH BELOW FX!
-            [struct] = lfp_bandpowers_V1(struct, trial_num, trial_LFP_epoch, LFPSamplerate);
+            %AT updated the bandpowers fx to V2 on 4/7/20
+            [struct] = lfp_bandpowers_V2(struct, trial_num, trial_LFP_epoch, LFPSamplerate);
 
             
         end
