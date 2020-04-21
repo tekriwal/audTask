@@ -5,7 +5,12 @@
 %%
 %%
 %%
-
+behavior_V1(8)
+behavior_V1(9)
+behavior_V1(10)
+behavior_V1(11)
+behavior_V1(12)
+behavior_V1(13)
 
 %%
 for n = 12

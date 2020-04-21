@@ -66,10 +66,10 @@ function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V4(caseNumb, spikeFile, clus
 %means that there were more than 1 cluster after spike sorting
 
 if nargin == 0
-    caseNumb = 12;
-    spikeFile = 'spike1';
-    clust = 2; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
-    align_ind1 = 4; %which part of the trial do we want to look at as our 'zero' point?
+    caseNumb = 1;
+    spikeFile = 'spike2';
+    clust = 3; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
+    align_ind1 = 5; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
     window_event1 = [-3 3];
     

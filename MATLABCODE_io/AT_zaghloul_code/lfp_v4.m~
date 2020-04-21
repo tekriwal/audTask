@@ -39,13 +39,13 @@ if nargin == 0
     
     caseNumb = 13;
 %     epoch = 'movePreparation';
-    epoch = 'moveInitiation';
+%     epoch = 'moveInitiation';
     
 %     LFPsource = 'LFP01';
-    LFPsource = 'LFP02';
+    % LFPsource = 'LFP02';
     % LFPsource = 'LFP03';
-%     LFPsource = 'CMacro_LFP01';
-%     LFPsource = 'CMacro_LFP02';
+    LFPsource = 'CMacro_LFP01';
+    % LFPsource = 'CMacro_LFP02';
     % LFPsource = 'CMacro_LFP03';
     
     cutfirst3trials = 0;

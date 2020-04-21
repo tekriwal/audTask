@@ -100,7 +100,7 @@ R_SG_correct_structs = rsp_master_v3(R_SG_correct==1);
 
 %AT adding below 4/20/20 to account errors
 Errors.ISerrors = sum(errors == 1 & ISindex == 1); %gives numb of errors that occurred during IS trials
-Errors.SGerrors = sum(errors) - Errors.ISerrors;
+Errors.SGerrors = sum(errors) - errors.ISerrors;
 Errors.sumErrors = sum(errors);
 
 
