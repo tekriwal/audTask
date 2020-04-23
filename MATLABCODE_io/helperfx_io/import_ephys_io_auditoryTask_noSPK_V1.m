@@ -23,7 +23,7 @@ function [Ephys_struct] = import_ephys_io_auditoryTask_noSPK_V1(caseInfo_table ,
 % spikeMethod_folder = 'processed_spikes_BClust';
 
 
-neuraldata_folder = caseInfo_table.("Name of subfolder with neural data on box.com ");
+neuraldata_folder = caseInfo_table.("Name of subfolder with neural data on box.com");
 
 ephysfile_name = caseInfo_table.("Name of raw ephys file");
 
