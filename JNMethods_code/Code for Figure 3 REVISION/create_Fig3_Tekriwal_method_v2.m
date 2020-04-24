@@ -225,7 +225,7 @@ switch FigureNum
                     figure;
                     
             end
-
+            
             correctSI = [reshape(correctSI1,9,4) , reshape(correctSI2,9,4) , reshape(correctSI3, 9, 4)];
             
             leftBlocks = correctSI(:,[1 3 5 7]);
@@ -239,12 +239,12 @@ switch FigureNum
             
             leftSD = std(leftFracC);
             rightSD = std(1-rightFracC);
-
+            
             hold on
-
+            
             bar([leftMean , rightMean])
             ylim([0 1.25])
-%             xlim([0.75 2.25])
+            %             xlim([0.75 2.25])
             errorbar([leftMean , rightMean],[leftSD , rightSD])
             
             xticks([1 2])

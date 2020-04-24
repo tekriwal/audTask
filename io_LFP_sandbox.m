@@ -5,12 +5,9 @@
 %%
 %%
 %%
-behavior_V1(8)
-behavior_V1(9)
-behavior_V1(10)
-behavior_V1(11)
-behavior_V1(12)
-behavior_V1(13)
+for i = 1:13
+    behavior_V1(i)
+end
 
 %%
 for n = 12
