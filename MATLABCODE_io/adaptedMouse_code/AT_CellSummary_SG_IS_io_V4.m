@@ -66,9 +66,9 @@ function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V4(caseNumb, spikeFile, clus
 %means that there were more than 1 cluster after spike sorting
 
 if nargin == 0
-    caseNumb = 12;
+    caseNumb = 1;
     spikeFile = 'spike1';
-    clust = 2; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
+    clust = 1; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     align_ind1 = 4; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
     window_event1 = [-3 3];
@@ -79,7 +79,7 @@ if nargin == 0
     raster_plotting = 'inOrder'; % 'inOrder' means that the raster plots things in numeric order, if this variable is set to 'default', then it plots the default way (randomly selects)
     %     raster_plotting = 'default';
     
-    saveFig = 1;
+    saveFig = 0;
     % window_event1 = [-1.5 4]; %window of time around align_ind1 that we want to look at
     % ymaxx
     NUM_TRIALS_TO_PLOT = 25;

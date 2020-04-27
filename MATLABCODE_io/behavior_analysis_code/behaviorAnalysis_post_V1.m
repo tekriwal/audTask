@@ -40,7 +40,7 @@ for i = 1:length(caseIndex)
     
     caseID = caseIndex{i};
     
-    substruct = 'mean_rxnTime';
+    substruct = 'median_rxnTime';
     substruct2 = 'SG';
     SGrxntime(i).(ONorOFF) = postIO_behavior.(caseID).(ONorOFF).(substruct).(substruct2);
     
@@ -85,7 +85,7 @@ for i = 1:length(caseIndex)
     
     caseID = caseIndex{i};
     
-    substruct = 'mean_rxnTime';
+    substruct = 'median_rxnTime';
     substruct2 = 'SG';
     SGrxntime(i).(ONorOFF) = postIO_behavior.(caseID).(ONorOFF).(substruct).(substruct2);
     

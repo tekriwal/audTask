@@ -1,4 +1,152 @@
 %started 2/16/20, sandbox for io related work
+% below generate the structs JT wanted
+casen = 1;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+close all
+casen = 2;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+close all
+
+casen = 3;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+close all
+
+casen = 4;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+close all
+
+casen = 5;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 3, 2, 1)
+
+close all
+casen = 6;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 3, 2, 1)
+
+close all
+casen = 7;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 3, 2, 1)
+
+close all
+casen = 8;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 3, 2, 1)
+close all
+
+casen = 9;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 3, 2, 1)
+
+close all
+casen = 10;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 3, 2, 1)
+
+close all
+
+casen = 11;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 3, 2, 1)
+
+close all
+casen = 12;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 3, 2, 1)
+close all
+
+casen = 13;
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 1, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike1', 3, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 1, 2, 1)
+spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike2', 3, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 1, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 2, 2, 1)
+% spiketrainexaction_AnalysisStruct_V1(casen, 'spike3', 3, 2, 1)
+
 %%
 CDIG_IN_1_Up_1;
 CDIG_IN_1_Up_2;
