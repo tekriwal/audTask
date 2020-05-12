@@ -1,3 +1,12 @@
+%5/9 V4 is meant to take some measure of the psth if possible and calculate
+%some peri-feedback period.
+
+%4/29/20 - V3 incorporates the waveform output as with the spiketime
+
+%V2 on 4/27/20, goal is to extend previous fx to generate epoch and whole
+%trial specific spike trains, plus the ave FR during the spike train in
+%question
+
 %AT 4/26/20 change name to spiketrainexaction_AnalysisStruct_V1
 %V1 burst analysis struct created to generate the structs containing input
 %to fx that JT has written for us. Based off of AT_CellSummary_SG_IS_io_V4
@@ -62,25 +71,34 @@
 %
 
 % function [h1, fig_handle] = AT_CellSummary_SG_IS_V1(behav_file, spk_file, align_ind1, window_event1, ymaxx, NUM_TRIALS_TO_PLOT, PSTH_SMOOTH_FACTOR, saveFigure)
-function [h1, fig_handle] = spiketrainexaction_AnalysisStruct_V1(caseNumb, spikeFile, clust, align_ind1, saveFig)
+function [h1, fig_handle] = spiketrainexaction_AnalysisStruct_V4(caseNumb, spikeFile, clust, saveFig)
+
+
+%4/27/20; epochInfo will be a four column matrix. First column is event for
+%start of epoch, second column will be that offset (if any). Third column is event
+%for end of epoch, fourth column will be that offset (if any)
+epochInfo.epochs = {'upPressed_times', -.5, 'feedback_times', 0.5;...
+    'upPressed_times', -.5, 'stimDelivered_times', 0;...
+    'stimDelivered_times', 0, 'stimDelivered_times', 0.3;...
+    'stimDelivered_times', 0.3, 'goCue_times', 0;...
+    'goCue_times', 0, 'submitsResponse_times', 0;...
+    'submitsResponse_times', 0, 'feedback_times', 0.5};
+
+epochInfo.epochNames = {'wholeTrial';...
+    'priors';...
+    'sensoryProcessing';...
+    'movePrep';...
+    'moveInit';...
+    'periReward'};
+
+spiketrainStrct.epochInfo = epochInfo;
+
 
 %3/22/20
 %below are some basic inputs we are going to want; to figure out what the
 %appropriate spike# and clust# is, refer to the datafiles on box,
 %specifically the 'processed_spikes_V2' folder. If there's a .jpg file,
 %means that there were more than 1 cluster after spike sorting
-
-% ref_time_start_offset = 0; %this gives some finer control over what we set as out full trial length
-% ref_time_end_offset = 0;%this gives some finer control over what we set as out full trial length
-
-ref_time_start_offset = -0.2; %this gives some finer control over what we set as out full trial length
-ref_time_end_offset = 0.2;%this gives some finer control over what we set as out full trial length
-
-
-burstStrct.info.ref_time_start_offset = ref_time_start_offset;
-burstStrct.info.ref_time_end_offset = ref_time_end_offset;
-burstStrct.info.epoch = ('from pressedUP to feedback');
-
 
 if nargin == 0
     caseNumb = 1;
@@ -90,7 +108,7 @@ if nargin == 0
     
     %AT 4/27/20; note that align_ind1 should always be set to '2',
     %corresponds to pushedUP aka trial start
-    align_ind1 = 2; %which part of the trial do we want to look at as our 'zero' point?
+%     align_ind1 = 2; %which part of the trial do we want to look at as our 'zero' point?
     
     
     
@@ -122,14 +140,6 @@ if caseNumb == 5
     NUM_TRIALS_TO_PLOT = round(NUM_TRIALS_TO_PLOT/2);
 end
 cutfirst3trials = 1; %set to 1 to cut first three trials of session
-miny = 'zero';
-
-if caseNumb == 13
-    locat = 'SouthWest';
-else
-    locat = 'NorthWest';
-end
-
 
 %AT 3/30/20 - we want to keep the cutNearOEs to '1', always.
 cutNearOEs = 1; %point of this input is to remove trials in which rxn is essentially zero; means that pt had already initiate movement before go tone could have been heard
@@ -161,7 +171,7 @@ surgerySide = caseInfo_table.("Target (R/L STN)");
 % possible; while _V2 were clustered to 3SD and largely left unrefined.
 
 % [Ephys_struct, spike1, spike2, spike3] = import_ephys_io_auditoryTask_V1(caseInfo_table, 'processed_spikes_BClust');
-[Ephys_struct, spike1, spike2, spike3] = import_ephys_io_auditoryTask_V2(caseInfo_table, 'processed_spikes_V2');
+[Ephys_struct, spike1, spike2, spike3] = import_ephys_io_auditoryTask_V3(caseInfo_table, 'processed_spikes_V2');
 
 
 %AT 1/8/20; adding below so we can do some analyses on the imported data
@@ -242,7 +252,6 @@ elseif strcmp(spikeFile,'spike3')
     spk_file = spike3;
 end
 
-saveFigure = 0;
 
 
 %AT 2/18/20, I've adjusted the output of fx import_ephys_io_auditoryTask_V1
@@ -256,14 +265,26 @@ spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs;
 
 if clust == 1
     spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_1;
+    waveformfeatures = spk_file.spikeDATA.features_clustIndex_1;  
+    waveform = spk_file.spikeDATA.waveform_clustIndex_1;  
+
     clustname = '_clust1_';
 elseif clust == 2
     spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;
+    waveformfeatures = spk_file.spikeDATA.features_clustIndex_2;  
+    waveform = spk_file.spikeDATA.waveform_clustIndex_2;  
+
     clustname = '_clust2_';
 elseif clust == 3
     spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_3;
+    waveformfeatures = spk_file.spikeDATA.features_clustIndex_3;  
+    waveform = spk_file.spikeDATA.waveform_clustIndex_3;  
+
     clustname = '_clust3_';
 end
+
+spiketrainStrct.waveformfeatures = waveformfeatures;
+spiketrainStrct.waveform = waveform;
 
 
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;
@@ -322,24 +343,24 @@ GetPhysioGlobals_io_V1;
 %% set names of variables based on desired event alignments
 %AT remember that whatever we set the below to, there's 'TRIAL_EVENTS' in
 %the GetPhysio fx that should correspond
-switch align_ind1
-    case 1
-        align_event1_times = 'trialStart_times'; % beginning of trial
-    case 2
-        align_event1_times = 'upPressed_times'; %
-    case 3
-        align_event1_times = 'stimDelivered_times'; %
-    case 4
-        align_event1_times = 'goCue_times'; %
-    case 5
-        align_event1_times = 'leftUP_times'; %
-    case 6
-        align_event1_times = 'submitsResponse_times'; %
-    case 7
-        align_event1_times = 'feedback_times'; %
-    otherwise
-        error('align_ind1 must be -17, 0, 3, 4, or 8');
-end
+% switch align_ind1
+%     case 1
+%         align_event1_times = 'trialStart_times'; % beginning of trial
+%     case 2
+%         align_event1_times = 'upPressed_times'; %
+%     case 3
+%         align_event1_times = 'stimDelivered_times'; %
+%     case 4
+%         align_event1_times = 'goCue_times'; %
+%     case 5
+%         align_event1_times = 'leftUP_times'; %
+%     case 6
+%         align_event1_times = 'submitsResponse_times'; %
+%     case 7
+%         align_event1_times = 'feedback_times'; %
+%     otherwise
+%         error('align_ind1 must be -17, 0, 3, 4, or 8');
+% end
 
 % %     [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
 
@@ -371,55 +392,55 @@ elseif caseNumb == 13
     caseName = 'case13';
 end
 
-% % %AT, note that below is pretty convenient if needing to select different
-% % %colors.
-% % odorportin_col =  uisetcolor;
-
-% [1 0.5 1];%   hot pink
-% [1 1 1];%   white
-% [0 0.75 0.75];%  Turquoise
-% waterportin_col = [1 0.5 1];%  Hot Pink
-%
-% L_COLOR = 0.5 * ones(1, 3);
-% R_COLOR = zeros(1, 3);
-
-CHOICE_STYLE = '-';
-NOCHOICE_STYLE = '-';
-
-% trialStart = [1 1 0];%   yellow
-% endDelayEpoch = [.95    0.45    .1];%   orangey
-% gotone_col = [0 0.8 0.3]; %
-% odorportout_col = [0 0 1];%   Navy Blue
-% waterportin_col = [1 1 1];%  white
-% watervalveon_col = [0 0 1];
-
-upPressed_color = [1 1 0];%   yellow
-stimDelivered_color = [.95    0.45    .1];%   orangey
-goCue_color = [0 0.8 0.3]; % mint green
-leftUP_color = [1 0.5 1];%   hot pink
-submitsResponse_color = [0 0.75 0.75];%  Turquoise
-feedback_color = [.3 0.7 1];%  light blue
-% %     [; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
-
-
-% L_COLOR = 0.5 * ones(1, 3);
-% R_COLOR = zeros(1, 3);
-ipsi_COLOR = [.2 .9 .9]; %cyanish
-contra_COLOR = [1 0 .5]; %magenta
-
-
-STE_COLOR = 0.75 * ones(1, 3);
+% % % %AT, note that below is pretty convenient if needing to select different
+% % % %colors.
+% % % odorportin_col =  uisetcolor;
+% 
+% % [1 0.5 1];%   hot pink
+% % [1 1 1];%   white
+% % [0 0.75 0.75];%  Turquoise
+% % waterportin_col = [1 0.5 1];%  Hot Pink
+% %
+% % L_COLOR = 0.5 * ones(1, 3);
+% % R_COLOR = zeros(1, 3);
+% 
+% CHOICE_STYLE = '-';
+% NOCHOICE_STYLE = '-';
+% 
+% % trialStart = [1 1 0];%   yellow
+% % endDelayEpoch = [.95    0.45    .1];%   orangey
+% % gotone_col = [0 0.8 0.3]; %
+% % odorportout_col = [0 0 1];%   Navy Blue
+% % waterportin_col = [1 1 1];%  white
+% % watervalveon_col = [0 0 1];
+% 
+% upPressed_color = [1 1 0];%   yellow
+% stimDelivered_color = [.95    0.45    .1];%   orangey
+% goCue_color = [0 0.8 0.3]; % mint green
+% leftUP_color = [1 0.5 1];%   hot pink
+% submitsResponse_color = [0 0.75 0.75];%  Turquoise
+% feedback_color = [.3 0.7 1];%  light blue
+% % %     [; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
+% 
+% 
+% % L_COLOR = 0.5 * ones(1, 3);
+% % R_COLOR = zeros(1, 3);
+% ipsi_COLOR = [.2 .9 .9]; %cyanish
+% contra_COLOR = [1 0 .5]; %magenta
+% 
+% 
+% STE_COLOR = 0.75 * ones(1, 3);
 
 %% Raster display setup constants
-raster_u_buff = 0.04;
-total_rasters_h = 0.5; % fraction of total figure height to devote to rasters
-inter_raster_space = 0.005;
-available_rasters_h = total_rasters_h - (4 * inter_raster_space);
-textbuff = 0.04;
-
-SHOW_GRIDS = 0;
-PresentationFigSetUp_AT_V1;
-fig_handle = fig;
+% raster_u_buff = 0.04;
+% total_rasters_h = 0.5; % fraction of total figure height to devote to rasters
+% inter_raster_space = 0.005;
+% available_rasters_h = total_rasters_h - (4 * inter_raster_space);
+% textbuff = 0.04;
+% 
+% SHOW_GRIDS = 0;
+% PresentationFigSetUp_AT_V1;
+% fig_handle = fig;
 
 %%% PLOT EXAMPLE RASTERS AND PSTHS %%%
 
@@ -613,11 +634,10 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
 
-[ref_spike_times, trial_inds, plot_handle, ref_spike_times_bursting] = raster_io_spikeextraction_V1(NUM_TRIALS_TO_PLOT, spike_times, trialStart_times',...
-    eval(align_event1_times), window_event1,...
-    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], ref_time_start_offset, ref_time_end_offset);
+[ref_spike_times, trial_inds, plot_handle, spikestruct] = raster_io_spikeextraction_V3(NUM_TRIALS_TO_PLOT, spike_times, trialStart_times',...
+    epochInfo, window_event1,[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], waveformfeatures, waveform);
 
-burstStrct.SG.L = ref_spike_times_bursting;
+spiketrainStrct.SG.L = spikestruct;
 
 
 % %
@@ -777,11 +797,11 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
 
-[ref_spike_times, trial_inds, plot_handle, ref_spike_times_bursting] = raster_io_spikeextraction_V1(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
-    eval(align_event1_times), window_event1,...
-    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], ref_time_start_offset, ref_time_end_offset);
+[ref_spike_times, trial_inds, plot_handle, spikestruct] = raster_io_spikeextraction_V3(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
+    epochInfo, window_event1,...
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], waveformfeatures, waveform);
 
-burstStrct.IS.L = ref_spike_times_bursting;
+spiketrainStrct.IS.L = spikestruct;
 
 %
 % [ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
@@ -945,11 +965,11 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 %     eval(align_event1_times), window_event1,...
 %     [ stimDelivered_times; goCue_times; leftUP_times], no_plot_flag);
 
-[ref_spike_times, trial_inds, plot_handle, ref_spike_times_bursting] = raster_io_spikeextraction_V1(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
-    eval(align_event1_times), window_event1,...
-    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], ref_time_start_offset, ref_time_end_offset);
+[ref_spike_times, trial_inds, plot_handle, spikestruct] = raster_io_spikeextraction_V3(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
+    epochInfo, window_event1,...
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], waveformfeatures, waveform);
 
-burstStrct.SG.R = ref_spike_times_bursting;
+spiketrainStrct.SG.R = spikestruct;
 
 %     [opi_times; ovo_times; gt_times; opo_times; wpi_times], no_plot_flag);
 
@@ -1102,11 +1122,11 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 
 
 
-[ref_spike_times, trial_inds, plot_handle, ref_spike_times_bursting] = raster_io_spikeextraction_V1(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
-    eval(align_event1_times), window_event1,...
-    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], ref_time_start_offset, ref_time_end_offset);
+[ref_spike_times, trial_inds, plot_handle, spikestruct] = raster_io_spikeextraction_V3(NUM_TRIALS_TO_PLOT,spike_times, trialStart_times',...
+    epochInfo, window_event1,...
+    [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], waveformfeatures, waveform);
 
-burstStrct.IS.R = ref_spike_times_bursting;
+spiketrainStrct.IS.R = spikestruct;
 
 %
 % [ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
@@ -1452,10 +1472,8 @@ burstStrct.IS.R = ref_spike_times_bursting;
 
 
 
-
-
 % %below saves out the figure, hopefully
-figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','burstAnalysis_new', caseName); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
+figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis', caseName); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 % filename = (['/rasterPsth_' caseName, spikeFile, clustname, align_event1_times(1:8)]);
 % if saveFig == 1
 %     saveas(gcf,fullfile(figuresdir, filename), 'jpeg');
@@ -1463,9 +1481,9 @@ figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','gener
 
 %below saves out the variables pertaining to preference
 % filename2 = (['/wholetrialSpiketrain_', caseName, spikeFile, clustname]);
-filename2 = (['/burstStruct', caseName, spikeFile, clustname]);
+filename2 = (['/spiketrainStrct_', caseName, spikeFile, clustname]);
 if saveFig == 1
-    save(fullfile(figuresdir, filename2), 'burstStrct');
+    save(fullfile(figuresdir, filename2), 'spiketrainStrct');
 end
 
 
