@@ -1,23 +1,29 @@
-%%% TO ADD
-%%% X flatten
-%%% Y flatten
+function [] = at_io_finalPlots_v1(inputARGS)
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
 
-clear; close all
-
-datCell = cell(13,1);
-for ci = 1:13
-    close all;
-    datCell{ci} = final_AT_DBSrecLoc_v1(ci);
+arguments
+    inputARGS.plotNum = 1
 end
 
-cd('D:\Neuroimaging\dataForPlotting')
-save('ai_io_plotting.mat','datCell')
+
+switch inputARGS.plotNum
+    case 1
+        
+    case 2
+        
+    case 3
+        
+end
 
 %%
+cd('D:\Neuroimaging\dataForPlotting')
+load('ai_io_plotting.mat','datCell')
+
 close all;
+% Create data
 allSpk = nan(50,2);
 spkC = 1;
-snrIOc = 0;
 xyzAll = nan(50,3);
 locAll = cell(50,1);
 for ti = 1:13
@@ -52,51 +58,36 @@ allSpkf = allSpk(~isnan(allSpk(:,1)),:);
 allXYZ = xyzAll(~isnan(allSpk(:,1)),:);
 allLOC = locAll(~isnan(allSpk(:,1)),:);
 
-allSpkFrac = sum(allSpkf(:,1)) / size(allSpkf,1);
-
-snrSpkFrac = sum(allSpkf(logical(allSpkf(:,2)),1)) / numel(allSpkf(logical(allSpkf(:,2)),1));
+% allSpkFrac = sum(allSpkf(:,1)) / size(allSpkf,1);
+% 
+% snrSpkFrac = sum(allSpkf(logical(allSpkf(:,2)),1)) / numel(allSpkf(logical(allSpkf(:,2)),1));
 
 %%
 
-% make all recordings right and remove z
-rXY2d = allXYZ(:,1:2);
-rXY2d(:,1) = abs(rXY2d(:,1));
+% plot3(1:10,1:10,1:10,'.')
+% patch([1,10,10,1],[5,5,5,5],[1,1,10,10],'r','FaceAlpha',0.3,'EdgeColor','none');
+% patch([1,10,10,1],[5,5,5,5],[1,1,10,10],'r','FaceAlpha',0.3,'EdgeColor','none');
+% patch([1,10,10,1],[5,5,5,5],[1,1,10,10],'r','FaceAlpha',0.3,'EdgeColor','none');
 
-rXY3d = allXYZ;
-rXY3d(:,1) = abs(rXY3d(:,1));
 
-% Get boundary for mid z slice for SN
-snInd = allSpkf(:,2) == 1;
-snVerInd = allSpkf(:,1) == 1 & allSpkf(:,2) == 1;
-sn_medianZ = round(median(allXYZ(snInd,3)));
 
+%%
+
+% Create Absolutized data set: make all recordings right and remove z
+% 2D 
 
 % Stock SN block
+cd('D:\Neuroimaging\FinalCheck')
 nd = dir('*.mat');
 nd2 = {nd.name};
 tmpN = nd2{1};
 load(tmpN,'finalMesh')
 tmpTD = finalMesh.SNR.R;
 tmpTTD = finalMesh.SNR.R;
-tmpTTD.vertices(:,4) = round(tmpTTD.vertices(:,3));
 
-medZbound = tmpTTD.vertices(:,4) == sn_medianZ;
-tmpSVerts = tmpTTD.vertices(medZbound,:);
+rXY3d = allXYZ;
+rXY3d(:,1) = abs(rXY3d(:,1));
 
-k = boundary(tmpSVerts(:,1),tmpSVerts(:,2));
-figure;
-plot(tmpSVerts(k,1),tmpSVerts(k,2),'Color',[0.5 0.5 0.5],'LineWidth',2)
-hold on
-plot(rXY2d(snInd,1),rXY2d(snInd,2),'go')
-plot(rXY2d(snVerInd,1),rXY2d(snVerInd,2),'bo')
-xlabel('Medial - Lateral')
-ylabel('Posterior - Anterior')
-axis square
-
-xticks([])
-yticks([])
-
-%%
 
 figure;
 d = drawMesh(tmpTD.vertices, tmpTD.faces);
@@ -104,6 +95,52 @@ d.FaceColor = 'k';
 d.FaceAlpha = 0.1;
 d.EdgeColor = 'none';
 hold on
+
+snInd = allSpkf(:,2) == 1;
+snVerInd = (allSpkf(:,1) == 1 & allSpkf(:,2) == 1);
+
+for ci = 1:3
+    
+    all3 = [1,2,3];
+    use2 = all3(~ismember(all3,ci));
+    
+    tu1 = use2(1);
+    tu2 = use2(2);
+    
+    rXY2d = allXYZ;
+    rXY2d(:,1) = abs(rXY2d(:,1));
+    
+    sn_medianZ = round(median(allXYZ(snInd,ci)));
+    
+    tmpTTD.vertices(:,4) = round(tmpTTD.vertices(:,ci));
+    medZbound = tmpTTD.vertices(:,4) == sn_medianZ;
+    tmpSVerts = tmpTTD.vertices(medZbound,:);
+    
+    
+    k = boundary(tmpSVerts(:,tu1),tmpSVerts(:,tu2));
+    
+    hold on
+    %     figure;
+    xLM = get(gca,'xlim')
+    yLM = get(gca,'ylim')
+    zLM = get(gca,'zlim')
+    switch ci
+        case 1
+            plot3(repmat(sn_medianZ,size(tmpSVerts(k,1))),tmpSVerts(k,2),tmpSVerts(k,3),'Color',[0.5 0.5 0.5],'LineWidth',2)
+%             patch([sn_medianZ,sn_medianZ,sn_medianZ,sn_medianZ],[yLM(1),yLM(2),yLM(2),yLM(1)],...
+%                 [zLM(1),zLM(1),zLM(2),zLM(2)],'r','FaceAlpha',0.3,'EdgeColor','none');
+        case 2
+            plot3(tmpSVerts(k,1),repmat(sn_medianZ,size(tmpSVerts(k,2))),tmpSVerts(k,3),'Color',[0.5 0.5 0.5],'LineWidth',2)
+        case 3
+           plot3(tmpSVerts(k,1),tmpSVerts(k,2),repmat(sn_medianZ,size(tmpSVerts(k,2))),'Color',[0.5 0.5 0.5],'LineWidth',2)
+%            patch([xLM(1),xLM(2),xLM(2),xLM(1)],[yLM(1),yLM(2),yLM(2),yLM(1)],...
+%                [sn_medianZ,sn_medianZ,sn_medianZ,sn_medianZ],'r','FaceAlpha',0.3,'EdgeColor','none');
+    end
+
+    
+end
+
+
 scatter3(rXY3d(snInd,1),rXY3d(snInd,2),rXY3d(snInd,3),30,'g','filled')
 
 scatter3(rXY3d(snVerInd,1),rXY3d(snVerInd,2),rXY3d(snVerInd,3),30,'b','filled')
@@ -113,6 +150,23 @@ axis square
 xticks([])
 yticks([])
 zticks([])
+
+
+
+%% 3D
+
+
+ view([90,0])
+view([90,90])
+ view([180,0])
+
+
+
+
+
+
+%%
+
 % xlabel('Medial - Lateral')
 % ylabel('Posterior - Anterior')
 % zlabel('Ventral - Dorsal')
@@ -177,4 +231,22 @@ bar(uniCounts)
 xticklabels(uniLocs)
 ylabel('Neuron count')
 axis square
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end
 
