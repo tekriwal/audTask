@@ -951,14 +951,8 @@ set(gca, 'FontSize', 18, 'FontName', 'Georgia')
 
 if hx_sg == 0 && hx_is == 0
     str = strcat({' 2tailed p value equals '}, num2str(p_ttest_paired));
-    %more stats 5/22/20
-    [h_zeroTest_input1,p_zeroTest_input1] = ttest(input1);
-    [h_zeroTest_input2,p_zeroTest_input2] = ttest(input2);
-    
 else
     str = strcat({' 2tailed p value equals '}, num2str(p_ttest_nonparapaired));
-    [p_zeroTest_input1,h_zeroTest_input1] = signrank(input1);
-    [p_zeroTest_input2,h_zeroTest_input2] = signrank(input2);
 end
 title(str);
 
@@ -1045,19 +1039,22 @@ set(gca, 'FontSize', 18, 'FontName', 'Georgia')
 if hx_sg == 0 && hx_is == 0
     str = strcat({' 2tailed p value equals '}, num2str(p_ttest_paired));
     %more stats 5/22/20
-    [h_zeroTest_input1,p_zeroTest_input1] = ttest(input1);
-    [h_zeroTest_input2,p_zeroTest_input2] = ttest(input2);
-    
+    [h_zeroTest_input1,p_zeroTest_input1 = ttest(
 else
     str = strcat({' 2tailed p value equals '}, num2str(p_ttest_nonparapaired));
-    [p_zeroTest_input1,h_zeroTest_input1] = signrank(input1);
-    [p_zeroTest_input2,h_zeroTest_input2] = signrank(input2);
 end
 title(str);
 
 
 % ylim([0 1.5]);
 xlim([.99 1.04]);
+
+
+
+%more stats
+
+
+
 
 
 
@@ -1129,14 +1126,8 @@ set(gca, 'FontSize', 18, 'FontName', 'Georgia')
 
 if hx_sg == 0 && hx_is == 0
     str = strcat({' 2tailed p value equals '}, num2str(p_ttest_paired));
-    %more stats 5/22/20
-    [h_zeroTest_input1,p_zeroTest_input1] = ttest(input1);
-    [h_zeroTest_input2,p_zeroTest_input2] = ttest(input2);
-    
 else
     str = strcat({' 2tailed p value equals '}, num2str(p_ttest_nonparapaired));
-    [p_zeroTest_input1,h_zeroTest_input1] = signrank(input1);
-    [p_zeroTest_input2,h_zeroTest_input2] = signrank(input2);
 end
 title(str);
 
@@ -1218,14 +1209,8 @@ set(gca, 'FontSize', 18, 'FontName', 'Georgia')
 
 if hx_sg == 0 && hx_is == 0
     str = strcat({' 2tailed p value equals '}, num2str(p_ttest_paired));
-    %more stats 5/22/20
-    [h_zeroTest_input1,p_zeroTest_input1] = ttest(input1);
-    [h_zeroTest_input2,p_zeroTest_input2] = ttest(input2);
-    
 else
     str = strcat({' 2tailed p value equals '}, num2str(p_ttest_nonparapaired));
-    [p_zeroTest_input1,h_zeroTest_input1] = signrank(input1);
-    [p_zeroTest_input2,h_zeroTest_input2] = signrank(input2);
 end
 title(str);
 

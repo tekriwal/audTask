@@ -1,5 +1,6 @@
 %5/9 V4 is meant to take some measure of the psth if possible and calculate
-%some peri-feedback period.
+%some peri-feedback period. 5/12/20, I think we're going to want to edit
+%the raster_io code to index certain trials out based on FR.
 
 %4/29/20 - V3 incorporates the waveform output as with the spiketime
 
@@ -91,7 +92,7 @@ epochInfo.epochNames = {'wholeTrial';...
     'moveInit';...
     'periReward'};
 
-spiketrainStrct.epochInfo = epochInfo;
+spiketrainStrct_V2.epochInfo = epochInfo;
 
 
 %3/22/20
@@ -101,8 +102,8 @@ spiketrainStrct.epochInfo = epochInfo;
 %means that there were more than 1 cluster after spike sorting
 
 if nargin == 0
-    caseNumb = 1;
-    spikeFile = 'spike1';
+    caseNumb = 2;
+    spikeFile = 'spike3';
     clust = 1; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     
     
@@ -283,8 +284,8 @@ elseif clust == 3
     clustname = '_clust3_';
 end
 
-spiketrainStrct.waveformfeatures = waveformfeatures;
-spiketrainStrct.waveform = waveform;
+spiketrainStrct_V2.waveformfeatures = waveformfeatures;
+spiketrainStrct_V2.waveform = waveform;
 
 
 % spike_timestamp = spk_file.spikeDATA.waveforms.posWaveInfo.posLocs_clustIndex_2;
@@ -620,6 +621,12 @@ end
 % % % % % wpi_times = taskbase.WaterPokeIn(trial_inds)';
 % % % % % wvo_times = taskbase.WaterDeliv(trial_inds)';
 
+%AT 5/12/20 below is new, point is to index out the trials we don't want
+%reflected in ephys analysis because of intermittent neuron firing (tissue
+%relaxation etc)
+structLabel = strcat(caseName,'_',spikeFile,clustname(1:7));
+taskbase_io.response  = intermittentNeuron_helperfx_V1(taskbase_io.response, structLabel);
+
 trial_inds = find((taskbase_io.response == 1) & (choice_trials == 1));
 trial_start_times = taskbase_io.events.trialStart(trial_inds)';
 % trial_start_times_AO = taskbase_io.trialStart_AO(trial_inds)';
@@ -637,7 +644,7 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
 [ref_spike_times, trial_inds, plot_handle, spikestruct] = raster_io_spikeextraction_V3(NUM_TRIALS_TO_PLOT, spike_times, trialStart_times',...
     epochInfo, window_event1,[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], waveformfeatures, waveform);
 
-spiketrainStrct.SG.L = spikestruct;
+spiketrainStrct_V2.SG.L = spikestruct;
 
 
 % %
@@ -801,7 +808,7 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
     epochInfo, window_event1,...
     [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], waveformfeatures, waveform);
 
-spiketrainStrct.IS.L = spikestruct;
+spiketrainStrct_V2.IS.L = spikestruct;
 
 %
 % [ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
@@ -969,7 +976,7 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
     epochInfo, window_event1,...
     [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], waveformfeatures, waveform);
 
-spiketrainStrct.SG.R = spikestruct;
+spiketrainStrct_V2.SG.R = spikestruct;
 
 %     [opi_times; ovo_times; gt_times; opo_times; wpi_times], no_plot_flag);
 
@@ -1126,7 +1133,7 @@ feedback_times = taskbase_io.events.feedback(trial_inds)';
     epochInfo, window_event1,...
     [trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times], waveformfeatures, waveform);
 
-spiketrainStrct.IS.R = spikestruct;
+spiketrainStrct_V2.IS.R = spikestruct;
 
 %
 % [ref_spike_times, trial_inds, plot_handle] = raster_io_V1(spike_times, trial_start_times',...
@@ -1479,11 +1486,22 @@ figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','gener
 %     saveas(gcf,fullfile(figuresdir, filename), 'jpeg');
 % end
 
+
+%load in spiketrain (V1) and extraxt the waveform features that JT
+%organized for me.
+
+filename11 = (['/spiketrainStrct_', caseName, spikeFile, clustname]);
+load(fullfile(figuresdir, filename11), 'spiketrainStrct');
+
+spiketrainStrct_V2.waveRawFeat = spiketrainStrct.waveRawFeat;
+spiketrainStrct_V2.waveNormFeat = spiketrainStrct.waveNormFeat;
+
+
 %below saves out the variables pertaining to preference
 % filename2 = (['/wholetrialSpiketrain_', caseName, spikeFile, clustname]);
-filename2 = (['/spiketrainStrct_', caseName, spikeFile, clustname]);
+filename2 = (['/spiketrainStrct_V2_', caseName, spikeFile, clustname]);
 if saveFig == 1
-    save(fullfile(figuresdir, filename2), 'spiketrainStrct');
+    save(fullfile(figuresdir, filename2), 'spiketrainStrct_V2');
 end
 
 

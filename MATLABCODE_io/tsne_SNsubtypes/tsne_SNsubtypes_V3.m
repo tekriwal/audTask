@@ -4,23 +4,26 @@
 
 
 %% below input is important if not trying to run new clustering inputs
-filename2Yinput = ('/fantastic_tsne6'); %'/fantastic_tsne6' is a good one too
+% newYinput = 0; %set to 1 to calculate new tsne input, or 0 if loading old
+filename2Yinput = ('/fantastic_tsne_May30_V1'); %'/fantastic_tsne6' is a good one too
 
+loadY = 1; %set to 1 if we want to use old 'Y', redundant with newYinput?
 
+indexSTNmanual = 0; %this input is pretty important, if set to 0 then the STN stay in, otherwise they get cut one way or another
+checkFRdistribution = 0; %this is for checking that the FR distributions are mono-peaked
 
-saveFig = 1;
-
+saveFig = 0;
 % function [] = FRanalysis_V1(caseNumb, spikeFile, clust, saveFig)
 
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis');
-filename2 = ('/masterspikestruct');
-load(fullfile(figuresdir, filename2), 'masterspikestruct');
+filename2 = ('/masterspikestruct_V2');
+load(fullfile(figuresdir, filename2), 'masterspikestruct_V2');
 subName2_index = {'SGandIS';'SG';'IS';'L';'R'};
 
-for i = 1:length(masterspikestruct.clustfileIndex)
+for i = 1:length(masterspikestruct_V2.clustfileIndex)
     
-    structLabel = masterspikestruct.clustfileIndex{i};
+    structLabel = masterspikestruct_V2.clustfileIndex{i};
     
     % subName = 'FR'; %either 'FR' or 'spiketrain'
     %below gives summary data combining across SG/IS and L/R (aka 'all')
@@ -28,84 +31,84 @@ for i = 1:length(masterspikestruct.clustfileIndex)
         subName2 = subName2_index{k};
         
         epochName = 'wholeTrial';
-        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
-        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct.Mean_ave.(structLabel).(epochName).(subName2);
-        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct.Median_ave.(structLabel).(epochName).(subName2);
+        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2);
+        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2);
         
         
         epochName = 'priors';
-        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
-        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct.Mean_ave.(structLabel).(epochName).(subName2);
-        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct.Median_ave.(structLabel).(epochName).(subName2);
+        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2);
+        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2);
         
         epochName = 'sensoryProcessing';
-        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
-        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct.Mean_ave.(structLabel).(epochName).(subName2);
-        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct.Median_ave.(structLabel).(epochName).(subName2);
+        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2);
+        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2);
         
         epochName = 'movePrep';
-        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
-        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct.Mean_ave.(structLabel).(epochName).(subName2);
-        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct.Median_ave.(structLabel).(epochName).(subName2);
+        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2);
+        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2);
         
         epochName = 'moveInit';
-        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
-        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct.Mean_ave.(structLabel).(epochName).(subName2);
-        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct.Median_ave.(structLabel).(epochName).(subName2);
+        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2);
+        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2);
         
         epochName = 'periReward';
-        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
-        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct.Mean_ave.(structLabel).(epochName).(subName2);
-        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct.Median_ave.(structLabel).(epochName).(subName2);
+        % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.Mean_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2);
+        groupvar.Median_ave.(epochName).(subName2)(i) = masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2);
         
         %         epochName = 'periReward';
-        %         % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
-        %         groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
+        %         % groupvar.FRstruct.(epochName).(subName2)(i) = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
+        %         groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
         
     end
     
     
-    groupvar.waveRawFeat.EnergyMedian(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.Energy.median;
-    groupvar.waveRawFeat.EnergyVar(i) = masterspikestruct.Mean_ave.(structLabel).waveRawFeat.Energy.vari;
+    groupvar.waveRawFeat.EnergyMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.Energy.median;
+    groupvar.waveRawFeat.EnergyVar(i) = masterspikestruct_V2.Mean_ave.(structLabel).waveRawFeat.Energy.vari;
     
-    groupvar.waveNormFeat.EnergyMedian(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.Energy.median;
-    groupvar.waveNormFeat.EnergyVar(i) = masterspikestruct.Mean_ave.(structLabel).waveNormFeat.Energy.vari;
+    groupvar.waveNormFeat.EnergyMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.Energy.median;
+    groupvar.waveNormFeat.EnergyVar(i) = masterspikestruct_V2.Mean_ave.(structLabel).waveNormFeat.Energy.vari;
     
-    groupvar.waveRawFeat.PtoPwidthMSMedian(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.PtoPwidthMS.median;
-    groupvar.waveRawFeat.PtoPwidthMSVar(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.PtoPwidthMS.vari;
+    groupvar.waveRawFeat.PtoPwidthMSMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.PtoPwidthMS.median;
+    groupvar.waveRawFeat.PtoPwidthMSVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.PtoPwidthMS.vari;
     
-    groupvar.waveNormFeat.PtoPwidthMSMedian(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.PtoPwidthMS.median;
-    groupvar.waveNormFeat.PtoPwidthMSVar(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.PtoPwidthMS.vari;
+    groupvar.waveNormFeat.PtoPwidthMSMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.PtoPwidthMS.median;
+    groupvar.waveNormFeat.PtoPwidthMSVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.PtoPwidthMS.vari;
     
-    groupvar.waveRawFeat.FDminMedian(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.FDmin.median;
-    groupvar.waveRawFeat.FDminVar(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.FDmin.vari;
+    groupvar.waveRawFeat.FDminMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.FDmin.median;
+    groupvar.waveRawFeat.FDminVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.FDmin.vari;
     
-    groupvar.waveNormFeat.FDminMedian(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.FDmin.median;
-    groupvar.waveNormFeat.FDminVar(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.FDmin.vari;
+    groupvar.waveNormFeat.FDminMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.FDmin.median;
+    groupvar.waveNormFeat.FDminVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.FDmin.vari;
     
-    groupvar.waveRawFeat.SDminMedian(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.SDmin.median;
-    groupvar.waveRawFeat.SDminVar(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.SDmin.vari;
+    groupvar.waveRawFeat.SDminMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.SDmin.median;
+    groupvar.waveRawFeat.SDminVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.SDmin.vari;
     
-    groupvar.waveNormFeat.SDminMedian(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.SDmin.median;
-    groupvar.waveNormFeat.SDminVar(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.SDmin.vari;
+    groupvar.waveNormFeat.SDminMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.SDmin.median;
+    groupvar.waveNormFeat.SDminVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.SDmin.vari;
     
-    groupvar.waveRawFeat.SDmaxMedian(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.SDmax.median;
-    groupvar.waveRawFeat.SDmaxVar(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.SDmax.vari;
+    groupvar.waveRawFeat.SDmaxMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.SDmax.median;
+    groupvar.waveRawFeat.SDmaxVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.SDmax.vari;
     
-    groupvar.waveNormFeat.SDmaxMedian(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.SDmax.median;
-    groupvar.waveNormFeat.SDmaxVar(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.SDmax.vari;
+    groupvar.waveNormFeat.SDmaxMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.SDmax.median;
+    groupvar.waveNormFeat.SDmaxVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.SDmax.vari;
     
-    groupvar.waveRawFeat.PosPeakMedian(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.PosPeak.median;
-    groupvar.waveRawFeat.PosPeakVar(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.PosPeak.vari;
+    groupvar.waveRawFeat.PosPeakMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.PosPeak.median;
+    groupvar.waveRawFeat.PosPeakVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.PosPeak.vari;
     
-    groupvar.waveNormFeat.PosPeakMedian(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.PosPeak.median;
-    groupvar.waveNormFeat.PosPeakVar(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.PosPeak.vari;
+    groupvar.waveNormFeat.PosPeakMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.PosPeak.median;
+    groupvar.waveNormFeat.PosPeakVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.PosPeak.vari;
     
-    groupvar.waveRawFeat.NegPeakMedian(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.NegPeak.median;
-    groupvar.waveRawFeat.NegPeakVar(i) = masterspikestruct.FRstruct.(structLabel).waveRawFeat.NegPeak.vari;
+    groupvar.waveRawFeat.NegPeakMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.NegPeak.median;
+    groupvar.waveRawFeat.NegPeakVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveRawFeat.NegPeak.vari;
     
-    groupvar.waveNormFeat.NegPeakMedian(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.NegPeak.median;
-    groupvar.waveNormFeat.NegPeakVar(i) = masterspikestruct.FRstruct.(structLabel).waveNormFeat.NegPeak.vari;
+    groupvar.waveNormFeat.NegPeakMedian(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.NegPeak.median;
+    groupvar.waveNormFeat.NegPeakVar(i) = masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.NegPeak.vari;
     
 end
 
@@ -285,6 +288,144 @@ input13_2 = groupvar.(wavedata).NegPeakMedian;
 
 input14_2 = groupvar.(wavedata).NegPeakVar;
 
+%%
+%%
+%% Need to figure out which cells have intermittent firing and which do not
+
+%% below is what im working on 5/11/20
+%%
+%%
+
+if checkFRdistribution == 1
+    FRindex_casebycase = zeros(size(masterspikestruct_V2.clustfileIndex));
+    Peaksindex_casebycase = ones(size(masterspikestruct_V2.clustfileIndex));
+    cutIntermits = 0;
+    
+    for i = 1:length(masterspikestruct_V2.clustfileIndex)
+        
+        structLabel = masterspikestruct_V2.clustfileIndex{i};
+        epochName = 'wholeTrial';
+        subName2 = 'SGandIS';
+        
+        %     for k = 1:length(subName2_index)
+        %     subName2 = subName2_index{k};
+        
+        individ_trialInfo = cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2));
+        
+        %%Below fx is what accounts for intermittent neurons
+        if cutIntermits == 1
+            individ_trialInfo  = intermittentNeuron_helperfx_V1(individ_trialInfo, structLabel);
+        end
+        
+        individ_trialInfo(individ_trialInfo==0) = [];
+        
+        FRindex_wholeTrialstdFR = zeros(size(individ_trialInfo'));
+        %     FRindex_individ_trialInfo = zeros(size(individ_trialInfo'));
+        
+        std_input1 = std(individ_trialInfo); %1 means nonpara, 0 means normally distrib
+        mean_input1 = mean(individ_trialInfo);
+        stdMultiplier = 1;
+        
+        
+        pd = fitdist(individ_trialInfo','Kernel', 'Bandwidth', 7);
+        
+        x_values = 1:1:150;
+        y = pdf(pd,x_values);
+        plot(x_values,y,'LineWidth',2)
+        
+        %     findpeaks(individ_trialInfo,'MinPeakDistance',6)
+        %     pks = findpeaks(y,'MinPeakDistance',(std_input1*stdMultiplier));
+        [pks,locs] = findpeaks(y,'MinPeakDistance',(std_input1*2));
+        
+        if length(pks) > 1 && max(pks)/10 < min(pks)
+            structLabel
+            disp('bi modal?')
+            maxpeak = max(pks);
+            
+            numbpeaks = 0;
+            for kk = 1:length(pks)
+                if pks(kk) > 0.01
+                    numbpeaks = numbpeaks+1;
+                end
+            end
+            
+            
+            
+            Peaksindex_casebycase(i) = sum(numbpeaks);
+            histogram(individ_trialInfo, 'BinWidth',3)
+            
+            
+        end
+        
+        
+        
+        %     %below is for case by case evaluation
+        %     for m = 1:length(FRindex_wholeTrialstdFR)
+        %
+        %         input1 = individ_trialInfo(m);
+        %
+        %         if input1 > (mean_input1 + (stdMultiplier*std_input1))
+        %             FRindex_wholeTrialstdFR(m) = 1; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+        %
+        %         elseif input1 < (mean_input1 - (stdMultiplier*std_input1))
+        %             FRindex_wholeTrialstdFR(m) = -1; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+        %
+        %         end
+        %     end
+        %
+        %
+        %
+        %     if sum(abs(FRindex_wholeTrialstdFR)) > 3
+        %         FRindex_casebycase(i) = 1;
+        %     end
+        
+        
+        
+        
+        
+        
+        %     end
+    end
+    
+end
+
+
+
+
+
+
+if loadY == 1
+    figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes');
+    %     filename2 = ('/fantastic_tsne5'); %'/fantastic_tsne6' is a good one too
+    load(fullfile(figuresdir, filename2Yinput), 'Y');
+else
+    tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
+    tsneInput = [input3_1',input3_2',input4_1',input4_2',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
+    Y = tsne(tsneInput);
+end
+
+
+% tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
+% tsneInput = [input3_1',input3_2',input4_1',input4_2',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
+% Y = tsne(tsneInput);
+% % Y(32,:) = [];
+
+
+% figure()
+% % % Y = tsne(tsneInput);
+% % gscatter(Y(:,1),Y(:,2),FRindex_feedbackvswholeTrial)
+% % % c = cell2mat(masterspikestruct_V2.clustfileIndex);
+% % c = cell2mat(masterspikestruct_V2.clustfileIndex);
+% % text(Y(:,1)+dx, Y(:,2)+dy, c);
+% %
+% % title('something')
+% % set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+
+
+
+
+
+
 %% ROC, preference
 %
 % [pref, rp] = ROC_preference(L_spikes', R_spikes', num_iter); % Calls new ROC function
@@ -325,87 +466,6 @@ end
 % % [input1_1',  input3_1',  input5_1', input7_1', input9_1',  input11_1', input13_1']
 % % [input1_2',  input3_2',  input5_2', input7_2', input9_2',  input11_2', input13_2']
 
-subName = 'SGandIS';
-meanORmedian = 'Median_ave';
-epochName = 'wholeTrial';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'priors';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'sensoryProcessing';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'movePrep';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'moveInit';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'periReward';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-
-subName = 'SG';
-meanORmedian = 'Median_ave';
-epochName = 'wholeTrial';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'priors';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'sensoryProcessing';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'movePrep';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'moveInit';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'periReward';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-
-subName = 'IS';
-meanORmedian = 'Median_ave';
-epochName = 'wholeTrial';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'priors';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'sensoryProcessing';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'movePrep';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'moveInit';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'periReward';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-
-subName = 'L';
-meanORmedian = 'Median_ave';
-epochName = 'wholeTrial';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'priors';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'sensoryProcessing';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'movePrep';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'moveInit';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'periReward';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-
-subName = 'R';
-meanORmedian = 'Median_ave';
-epochName = 'wholeTrial';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'priors';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'sensoryProcessing';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'movePrep';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'moveInit';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-epochName = 'periReward';
-groupvar.(meanORmedian).(epochName).(subName)(32) = [];
-
-masterspikestruct.anatomLocation(32) = [];
-masterspikestruct.clustfileIndex(32) = [];
-FRindex(32) = [];
-
-
-
 dx = 0.1; dy = 0.1; % displacement so the text does not overlay the data points
 
 %AT 5/7/20; below is replicating Ramayya's analysis on our neurons
@@ -425,43 +485,171 @@ for i = 1:length(FRindex_Ramayya)
     end
 end
 
-FRindex_Ramayya(32) = [];
-inputFR(32) = [];
-inputWvWdth(32) = [];
+
+if indexSTNmanual == 1
+    STNindex = [32, 28, 20, 8];
+    %     STNindex = [32, 28];
+    
+    for i = 1:length(STNindex)
+        k = STNindex(i);
+        subName = 'SGandIS';
+        meanORmedian = 'Median_ave';
+        epochName = 'wholeTrial';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'priors';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'sensoryProcessing';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'movePrep';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'moveInit';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'periReward';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        
+        subName = 'SG';
+        meanORmedian = 'Median_ave';
+        epochName = 'wholeTrial';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'priors';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'sensoryProcessing';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'movePrep';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'moveInit';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'periReward';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        
+        subName = 'IS';
+        meanORmedian = 'Median_ave';
+        epochName = 'wholeTrial';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'priors';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'sensoryProcessing';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'movePrep';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'moveInit';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'periReward';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        
+        subName = 'L';
+        meanORmedian = 'Median_ave';
+        epochName = 'wholeTrial';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'priors';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'sensoryProcessing';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'movePrep';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'moveInit';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'periReward';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        
+        subName = 'R';
+        meanORmedian = 'Median_ave';
+        epochName = 'wholeTrial';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'priors';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'sensoryProcessing';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'movePrep';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'moveInit';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'periReward';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        
+        masterspikestruct_V2.anatomLocation(k) = [];
+        masterspikestruct_V2.clustfileIndex(k) = [];
+        FRindex(k) = [];
+        FRindex_Ramayya(k) = [];
+        inputFR(k) = [];
+        inputWvWdth(k) = [];
+        
+    end
+end
+
+
+
 
 
 %remove STN neurons for this part
-STNindex = ~strcmp(masterspikestruct.anatomLocation, 'STNn');
+if indexSTNmanual == 2
+    
+    STNindex = ~strcmp(masterspikestruct_V2.SNr_or_STN_IMAGING, 'STN');
+    
+    inputFR_noSTN = inputFR(STNindex);
+    inputWvWdth_noSTN = inputWvWdth(STNindex);
+    FRindex_Ramayya_noSTN = FRindex_Ramayya(STNindex);
+    %     c = cell2mat(masterspikestruct_V2.clustfileIndex(STNindex));
+    gscatter(inputFR_noSTN, inputWvWdth_noSTN, FRindex_Ramayya_noSTN)
+    %     text(inputFR_noSTN+dx, inputWvWdth_noSTN(:,2)+dy, c);
+    
+else
+    
+    %     c = cell2mat(masterspikestruct_V2.clustfileIndex);
+    gscatter(inputFR, inputWvWdth, FRindex_Ramayya)
+    %     text(inputFR+dx, inputWvWdth(:,2)+dy, c);
+    
+end
 
-inputFR_noSTN = inputFR(STNindex);
-inputWvWdth_noSTN = inputWvWdth(STNindex);
-FRindex_Ramayya_noSTN = FRindex_Ramayya(STNindex);
 
-gscatter(inputFR_noSTN, inputWvWdth_noSTN, FRindex_Ramayya_noSTN)
+
+
 line([15,15], [0, 1], 'Color',[.5 .5 .5],'LineStyle','--')
 line([0, 120],[0.7,0.7], 'Color',[.5 .5 .5],'LineStyle','--')
 
 xlabel('Baseline FR')
 ylabel('Wavewidth (ms)')
 legend('Dopa','Gaba', 'Unclassified')
-title('Replicating Ramayya''s classification strategy')
+title('Replicating Ramayya''s classification strategy (possible supp figure)')
 
 
 
 
 
+figure()
 
 tsneInput = [input1_SGandIS', input3_1'];
 
-Y = tsne(tsneInput);
-Y(32,:) = [];
-%below is simplified input rep. classic way this is done
-figure()
-gscatter(Y(:,1),Y(:,2),FRindex_Ramayya)
-% c = cell2mat(masterspikestruct.clustfileIndex);
-c = cell2mat(masterspikestruct.anatomLocation);
-text(Y(:,1)+dx, Y(:,2)+dy, c);
-title('tSNE using same inputs as Ramayya''s strategy ')
+Y_ramayya_comparison = tsne(tsneInput);
+c = cell2mat(masterspikestruct_V2.clustfileIndex);
+
+STNindex = ~strcmp(masterspikestruct_V2.SNr_or_STN_IMAGING, 'STN');
+
+if indexSTNmanual == 2
+    Y_noSTN_ramayya_comparison = Y_ramayya_comparison(any(STNindex,2),:); %indexes across multiple columns in Y
+    FRindex_Ramayya_noSTN = FRindex_Ramayya(STNindex);
+    c = cell2mat(masterspikestruct_V2.clustfileIndex(STNindex));
+    gscatter(Y_noSTN_ramayya_comparison(:,1),Y_noSTN_ramayya_comparison(:,2),FRindex_Ramayya_noSTN)
+    % c = cell2mat(masterspikestruct_V2.clustfileIndex);
+    text(Y_noSTN_ramayya_comparison(:,1)+dx, Y_noSTN_ramayya_comparison(:,2)+dy, c);
+elseif indexSTNmanual == 1
+    Y_noSTN_ramayya_comparison = Y_ramayya_comparison(any(STNindex,2),:); %indexes across multiple columns in Y
+    c = cell2mat(masterspikestruct_V2.clustfileIndex);
+    gscatter(Y_noSTN_ramayya_comparison(:,1),Y_noSTN_ramayya_comparison(:,2),FRindex_Ramayya)
+    % c = cell2mat(masterspikestruct_V2.clustfileIndex);
+    text(Y_noSTN_ramayya_comparison(:,1)+dx, Y_noSTN_ramayya_comparison(:,2)+dy, c);
+else
+    
+    % Y(32,:) = [];
+    %below is simplified input rep. classic way this is done
+    gscatter(Y_ramayya_comparison(:,1),Y_ramayya_comparison(:,2),FRindex_Ramayya)
+    % c = cell2mat(masterspikestruct_V2.clustfileIndex);
+    text(Y_ramayya_comparison(:,1)+dx, Y_ramayya_comparison(:,2)+dy, c);
+    
+end
+
+
+title('tSNE using same inputs as Ramayya''s strategy (possible supp figure)')
 set(gca, 'FontSize', 14, 'FontName', 'Georgia')
 
 
@@ -471,44 +659,136 @@ set(gca, 'FontSize', 14, 'FontName', 'Georgia')
 %5/5/20, we can mess with the below as needed, different input strings give
 %slightly different performances.
 
-newinput = 0;
-if newinput == 1
-    % rng('default') % For reproducibility
-    %     tsneInput = [input1_SGandIS', input1_1', input3_1', input5_1', input11_1', input12_1', input13_1', input14_1', ((input6_IS - input1_IS)'-(input6_SG - input1_SG)'), ((input3_IS - input1_IS)'- (input3_SG - input1_SG)')];
-    %     tsneInput = [input1_SGandIS', input1_1', input3_1', input5_1', input11_1', input12_1', input13_1', input14_1'];
-    %     tsneInput = [input1_1', input3_1', input5_1', input11_1', input12_1', input13_1', input14_1']; %this is great
-    %     tsneInput = [input1_1', input3_1', input5_1', input7_1', input9_1',input11_1', input12_1', input13_1', input14_1']; %this is great
-    %
-    %     tsneInput = [input2_1', input4_1', input6_1',  input8_1',  input10_1', input12_1',  input14_1']; %this is great
-    tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
-    % % % %     tsneInput = [input1_1',input3_1',input5_1', input7_1',  input13_1']; %best so far, 'fantastic_tsne2'
-end
+% if newYinput == 1
+%     % rng('default') % For reproducibility
+%     %     tsneInput = [input1_SGandIS', input1_1', input3_1', input5_1', input11_1', input12_1', input13_1', input14_1', ((input6_IS - input1_IS)'-(input6_SG - input1_SG)'), ((input3_IS - input1_IS)'- (input3_SG - input1_SG)')];
+%     %     tsneInput = [input1_SGandIS', input1_1', input3_1', input5_1', input11_1', input12_1', input13_1', input14_1'];
+%     %     tsneInput = [input1_1', input3_1', input5_1', input11_1', input12_1', input13_1', input14_1']; %this is great
+%     %     tsneInput = [input1_1', input3_1', input5_1', input7_1', input9_1',input11_1', input12_1', input13_1', input14_1']; %this is great
+%     %
+%     %     tsneInput = [input2_1', input4_1', input6_1',  input8_1',  input10_1', input12_1',  input14_1']; %this is great
+%     tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
+%     % % % %     tsneInput = [input1_1',input3_1',input5_1', input7_1',  input13_1']; %best so far, 'fantastic_tsne2'
+% end
 
 
-loadY = 1;
-if loadY == 1
-    figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes');
-    %     filename2 = ('/fantastic_tsne5'); %'/fantastic_tsne6' is a good one too
-    load(fullfile(figuresdir, filename2Yinput), 'Y');
-else
-    Y = tsne(tsneInput);
-end
+% if loadY == 1
+%     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes');
+%     %     filename2 = ('/fantastic_tsne5'); %'/fantastic_tsne6' is a good one too
+%     load(fullfile(figuresdir, filename2Yinput), 'Y');
+% else
+%     tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
+%     tsneInput = [input3_1',input3_2',input4_1',input4_2',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
+%     Y = tsne(tsneInput);
+% end
 
 %5/5/20; load in 'fantastic_tsne1.mat' or related mat file
 
 % %AT 5/5/20 neurons that we want to cut out
-Y(32,:) = [];
+% Y(32,:) = [];
+
+%     tsneInput = [input3_1',input3_2',input4_1',input4_2',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
+%
+%     %as of night's work, this one works great:
+%     tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1'];
+%     Y = tsne(tsneInput);
+if indexSTNmanual ~= 0
+    Y_noSTN = Y(any(STNindex,2),:); %indexes across multiple columns in Y
+elseif indexSTNmanual == 0
+    Y_noSTN = Y;
+end
+
+
+
+groupsAsOfJune1st = ones(size(inputFR'));
+groupsAsOfJune1st(6) = 2; %2's are dopamine
+groupsAsOfJune1st(7) = 2;
+groupsAsOfJune1st(16) = 2;
+groupsAsOfJune1st(30) = 2;
+
+groupsAsOfJune1st(8) = 3; %3's are STN
+groupsAsOfJune1st(20) = 3; %3's are STN
+groupsAsOfJune1st(28) = 3; %3's are STN
+groupsAsOfJune1st(32) = 3; %3's are STN
+
+% for i = 1:length(groupsAsOfJune1st)
+%     if inputFR(i) < 15 && inputWvWdth(i) > 0.7 %Ramayya used .8 for waveform duration,
+%         groupsAsOfJune1st(i) = 1; %Dopa
+%     elseif inputFR(i) > 15 && inputWvWdth(i) < 0.7
+%         groupsAsOfJune1st(i) = 2; %Gaba
+%     else
+%         groupsAsOfJune1st(i) = 3; %Misc
+%     end
+% end
+% tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1'];
+%
+%
+% tsneInput = [input1_1',input2_1', input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1'];
+%
+
+%below is the fantastictsne inputs for March 30th V1
+% tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1'];
+% Y = tsne(tsneInput);
+Y_noSTN = Y;
+figure()
+% Y = tsne(tsneInput);
+gscatter(Y_noSTN(:,1),Y_noSTN(:,2),groupsAsOfJune1st)
+% c = cell2mat(masterspikestruct_V2.clustfileIndex);
+c = cell2mat(masterspikestruct_V2.clustfileIndex);
+text(Y_noSTN(:,1)+dx, Y_noSTN(:,2)+dy, c);
+title('tSNE')
+set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+
+
+
+
+
+
+%validation of tsne
+
+figure()
+
+if strcmp(filename2Yinput,'/fantastic_tsne2')
+    idx = dbscan(Y,80,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filename2Yinput,'/fantastic_tsne3')
+    idx = dbscan(Y,145,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filename2Yinput,'/fantastic_tsne4')
+    idx = dbscan(Y,45,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filename2Yinput,'/fantastic_tsne5')
+    idx = dbscan(Y,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filename2Yinput,'/fantastic_tsne6')
+    idx = dbscan(Y,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filename2Yinput,'/fantastic_tsne_May30_V1')
+    idx = dbscan(Y,300,1); % for this one, from 300 until 204 gives just 2 clusters
+end
+
+
+gscatter(Y(:,1),Y(:,2),idx);
+% c = cell2mat(masterspikestruct_V2.clustfileIndex);
+c = cell2mat(masterspikestruct_V2.clustfileIndex);
+text(Y(:,1)+dx, Y(:,2)+dy, c);
+title('DBSCAN Using Euclidean Distance Metric')
+set(gca, 'FontSize', 14, 'FontName', 'Georgia')
 
 
 
 figure()
-% Y = tsne(tsneInput);
-gscatter(Y(:,1),Y(:,2),masterspikestruct.anatomLocation,[0 0 0])
-% c = cell2mat(masterspikestruct.clustfileIndex);
-c = cell2mat(masterspikestruct.anatomLocation);
+kidx = kmeans(Y, 2); % The default distance metric is squared Euclidean distance
+gscatter(Y(:,1),Y(:,2),kidx);
+% c = cell2mat(masterspikestruct_V2.clustfileIndex);
+c = cell2mat(masterspikestruct_V2.clustfileIndex);
 text(Y(:,1)+dx, Y(:,2)+dy, c);
-title('tSNE')
+title('K-Means Using Squared Euclidean Distance Metric')
 set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+
+
+
+
 
 %% AT we need to assess whether or not there's differences in some neurons in perireward vs others
 
@@ -526,7 +806,7 @@ baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-% logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+% logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 % inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 inputinfo1 = input1 - baselineFR1;
 
@@ -545,7 +825,7 @@ end
 
 
 % input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-% % logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+% % logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 % % inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 % inputinfo2 = input2 - baselineFR2;
 
@@ -561,7 +841,7 @@ baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-% logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+% logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 % inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 inputinfo1 = input1 - baselineFR1;
 
@@ -586,30 +866,30 @@ end
 
 % below is using significance values to make some comparisons
 
-for i = 1:length(masterspikestruct.clustfileIndex)
+for i = 1:length(masterspikestruct_V2.clustfileIndex)
     
-    structLabel = masterspikestruct.clustfileIndex{i};
+    structLabel = masterspikestruct_V2.clustfileIndex{i};
     
     for k = 1:length(subName2_index)
         subName2 = subName2_index{k};
         
         epochName = 'wholeTrial';
-        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
         
         epochName = 'priors';
-        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
         
         epochName = 'sensoryProcessing';
-        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
         
         epochName = 'movePrep';
-        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
         
         epochName = 'moveInit';
-        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
         
         epochName = 'periReward';
-        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct.FRstruct.(structLabel).(epochName).(subName2);
+        groupvar.FRstruct.(epochName).(subName2){i} = masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2);
         
     end
 end
@@ -662,8 +942,8 @@ end
 figure()
 % Y = tsne(tsneInput);
 gscatter(Y(:,1),Y(:,2),FRindex_feedbackvswholeTrial)
-% c = cell2mat(masterspikestruct.clustfileIndex);
-c = cell2mat(masterspikestruct.clustfileIndex);
+% c = cell2mat(masterspikestruct_V2.clustfileIndex);
+c = cell2mat(masterspikestruct_V2.clustfileIndex);
 text(Y(:,1)+dx, Y(:,2)+dy, c);
 
 title('something')
@@ -671,111 +951,6 @@ set(gca, 'FontSize', 14, 'FontName', 'Georgia')
 
 
 
-%% below is what im working on 5/11/20
-%%
-%%
-
-FRindex_casebycase = zeros(size(masterspikestruct.clustfileIndex));
-PKindex_casebycase = zeros(size(masterspikestruct.clustfileIndex));
-
-for i = 1:length(masterspikestruct.clustfileIndex)
-    
-    structLabel = masterspikestruct.clustfileIndex{i};
-    epochName = 'wholeTrial';
-    subName2 = 'SGandIS';
-    
-    %     for k = 1:length(subName2_index)
-    %     subName2 = subName2_index{k};
-    
-    individ_trialInfo = cell2mat(masterspikestruct.FRstruct.(structLabel).(epochName).(subName2));
-    FRindex_wholeTrialstdFR = zeros(size(individ_trialInfo'));
-    %     FRindex_individ_trialInfo = zeros(size(individ_trialInfo'));
-    
-    std_input1 = std(individ_trialInfo); %1 means nonpara, 0 means normally distrib
-    mean_input1 = mean(individ_trialInfo);
-    stdMultiplier = 1;
-    
-    
-    pd = fitdist(individ_trialInfo','Kernel', 'Bandwidth', 3);
-    
-    x_values = 1:1:150;
-    y = pdf(pd,x_values);
-    plot(x_values,y,'LineWidth',2)
-    
-    %     findpeaks(individ_trialInfo,'MinPeakDistance',6)
-%     pks = findpeaks(y,'MinPeakDistance',(std_input1*stdMultiplier));
-    pks = findpeaks(y,'MinPeakDistance',20);
-    
-    if length(pks) > 1
-        disp('bi modal?')
-        maxpeak = max(pks);
-        
-        for kk = 1:length(pks)
-            if pks(kk) > max(pks)/2
-            
-            
-            
-            
-        PKindex_casebycase(i) = 1;
-        histogram(individ_trialInfo, 'BinWidth',3)
-        
-        
-    end
-    
-    
-    
-    %below is for case by case evaluation
-    for m = 1:length(FRindex_wholeTrialstdFR)
-        
-        input1 = individ_trialInfo(m);
-        
-        if input1 > (mean_input1 + (stdMultiplier*std_input1))
-            FRindex_wholeTrialstdFR(m) = 1; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
-            
-        elseif input1 < (mean_input1 - (stdMultiplier*std_input1))
-            FRindex_wholeTrialstdFR(m) = -1; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
-            
-        end
-    end
-    
-    
-    
-    if sum(abs(FRindex_wholeTrialstdFR)) > 3
-        FRindex_casebycase(i) = 1;
-    end
-    
-    
-    
-    
-    
-    
-    %     end
-end
-
-
-
-
-
-
-
-
-
-
-tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
-tsneInput = [input3_1',input3_2',input4_1',input4_2',input5_1', input7_1',  input9_1', input11_1',  input13_1']; %this is great, created fantastic_tsne4 and 6, I think
-Y = tsne(tsneInput);
-Y(32,:) = [];
-
-
-figure()
-% Y = tsne(tsneInput);
-gscatter(Y(:,1),Y(:,2),FRindex_feedbackvswholeTrial)
-% c = cell2mat(masterspikestruct.clustfileIndex);
-c = cell2mat(masterspikestruct.clustfileIndex);
-text(Y(:,1)+dx, Y(:,2)+dy, c);
-
-title('something')
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
 
 
 %%
@@ -802,11 +977,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -830,11 +1005,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -877,11 +1052,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -905,11 +1080,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -954,11 +1129,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -982,11 +1157,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1036,11 +1211,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1064,11 +1239,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1094,43 +1269,46 @@ end
 
 
 %% below begins all the clustering stuff based on the DA and GABA labels generated above
-figure()
-
-if strcmp(filename2Yinput,'/fantastic_tsne2')
-    idx = dbscan(Y,80,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
-    
-elseif strcmp(filename2Yinput,'/fantastic_tsne3')
-    idx = dbscan(Y,145,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
-    
-elseif strcmp(filename2Yinput,'/fantastic_tsne4')
-    idx = dbscan(Y,45,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
-    
-elseif strcmp(filename2Yinput,'/fantastic_tsne5')
-    idx = dbscan(Y,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
-    
-elseif strcmp(filename2Yinput,'/fantastic_tsne6')
-    idx = dbscan(Y,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
-end
-
-
-gscatter(Y(:,1),Y(:,2),idx);
-% c = cell2mat(masterspikestruct.clustfileIndex);
-c = cell2mat(masterspikestruct.anatomLocation);
-text(Y(:,1)+dx, Y(:,2)+dy, c);
-title('DBSCAN Using Euclidean Distance Metric')
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
-
-
-
-figure()
-kidx = kmeans(Y, 3); % The default distance metric is squared Euclidean distance
-gscatter(Y(:,1),Y(:,2),kidx);
-% c = cell2mat(masterspikestruct.clustfileIndex);
-c = cell2mat(masterspikestruct.anatomLocation);
-text(Y(:,1)+dx, Y(:,2)+dy, c);
-title('K-Means Using Squared Euclidean Distance Metric')
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
-
+% figure()
+%
+% if strcmp(filename2Yinput,'/fantastic_tsne2')
+%     idx = dbscan(Y,80,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+%
+% elseif strcmp(filename2Yinput,'/fantastic_tsne3')
+%     idx = dbscan(Y,145,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+%
+% elseif strcmp(filename2Yinput,'/fantastic_tsne4')
+%     idx = dbscan(Y,45,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+%
+% elseif strcmp(filename2Yinput,'/fantastic_tsne5')
+%     idx = dbscan(Y,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+%
+% elseif strcmp(filename2Yinput,'/fantastic_tsne6')
+%     idx = dbscan(Y,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+%
+% elseif strcmp(filename2Yinput,'/fantastic_tsne_May30_V1')
+%     idx = dbscan(Y,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+% end
+%
+%
+% gscatter(Y(:,1),Y(:,2),idx);
+% % c = cell2mat(masterspikestruct_V2.clustfileIndex);
+% c = cell2mat(masterspikestruct_V2.clustfileIndex);
+% text(Y(:,1)+dx, Y(:,2)+dy, c);
+% title('DBSCAN Using Euclidean Distance Metric')
+% set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+%
+%
+%
+% figure()
+% kidx = kmeans(Y, 3); % The default distance metric is squared Euclidean distance
+% gscatter(Y(:,1),Y(:,2),kidx);
+% % c = cell2mat(masterspikestruct_V2.clustfileIndex);
+% c = cell2mat(masterspikestruct_V2.clustfileIndex);
+% text(Y(:,1)+dx, Y(:,2)+dy, c);
+% title('K-Means Using Squared Euclidean Distance Metric')
+% set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+%
 
 
 
@@ -1144,8 +1322,8 @@ set(gca, 'FontSize', 14, 'FontName', 'Georgia')
 
 ploton = 1;
 if ploton == 1
-    masterspikestruct.anatomLocation
-    masterspikestruct.anatomLocation
+    masterspikestruct_V2.anatomLocation
+    masterspikestruct_V2.anatomLocation
     
     
     subName1 = 'SGandIS';
@@ -1158,11 +1336,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1201,11 +1379,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1248,11 +1426,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1296,11 +1474,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1343,11 +1521,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1395,11 +1573,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1436,8 +1614,8 @@ if ploton == 1
     
     %% SG
     
-    masterspikestruct.anatomLocation
-    masterspikestruct.anatomLocation
+    masterspikestruct_V2.anatomLocation
+    masterspikestruct_V2.anatomLocation
     
     
     subName1 = 'SG';
@@ -1450,11 +1628,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1493,11 +1671,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1540,11 +1718,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1588,11 +1766,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1635,11 +1813,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1687,11 +1865,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1726,8 +1904,8 @@ if ploton == 1
     
     %% IS
     
-    masterspikestruct.anatomLocation
-    masterspikestruct.anatomLocation
+    masterspikestruct_V2.anatomLocation
+    masterspikestruct_V2.anatomLocation
     
     
     subName1 = 'IS';
@@ -1740,11 +1918,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1783,11 +1961,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1830,11 +2008,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1878,11 +2056,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1925,11 +2103,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1977,11 +2155,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2023,11 +2201,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2051,11 +2229,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2098,11 +2276,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2126,11 +2304,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2173,11 +2351,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2201,11 +2379,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2246,11 +2424,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2274,11 +2452,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2320,11 +2498,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2348,11 +2526,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2394,11 +2572,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2422,11 +2600,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2476,11 +2654,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2504,11 +2682,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2556,11 +2734,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2584,11 +2762,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2638,11 +2816,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2666,11 +2844,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2716,11 +2894,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2744,11 +2922,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2794,11 +2972,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2822,11 +3000,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';

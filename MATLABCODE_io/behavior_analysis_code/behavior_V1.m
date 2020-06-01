@@ -1,5 +1,6 @@
 %V1 creating behavior analysis code based off of cellsumm_v4
-
+%this code is used to create master behavioral output structs, use fx
+%'behaviorAnalysis_IO_V1' to generate plots
 
 
 

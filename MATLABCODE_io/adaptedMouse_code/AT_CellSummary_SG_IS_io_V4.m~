@@ -69,10 +69,10 @@ if nargin == 0
     caseNumb = 10;
     spikeFile = 'spike1';
     clust = 1; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
-    align_ind1 = 4; %which part of the trial do we want to look at as our 'zero' point?
+    align_ind1 = 7; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
-    window_event1 = [-.5 4.5];
-    PSTH_SMOOTH_FACTOR = 85;
+    window_event1 = [-1 1];
+    PSTH_SMOOTH_FACTOR = 45;
 
     %for align_ind1 = 2; -1.5 to 6 I used 100, 
     %for align_ind1 = 2; -1.5 to 1 I used 60
@@ -1236,8 +1236,6 @@ max_psth = max([max(get(p1, 'YData')) max(get(p3, 'YData'))]); %...
 %     max(get(p9, 'YData')) max(get(p10, 'YData')) max(get(p11, 'YData')) max(get(p12, 'YData'))]);
 max_y = ((ceil(max_psth / 10)) * 10)+10;
 
-max_y = 70;
-
 plot_window_event1 = init_psth_window_event1 + [+((RESOLUTION/1000)/2) -((RESOLUTION/1000)/2)]; %b/c raster output has been padded
 
 
@@ -1360,7 +1358,7 @@ set(gcf, 'CurrentAxes', event1_psth);
 %     max(get(p5, 'YData')) max(get(p6, 'YData')) max(get(p7, 'YData')) max(get(p8, 'YData'))...
 %     max(get(p9, 'YData')) max(get(p10, 'YData')) max(get(p11, 'YData')) max(get(p12, 'YData'))]);
 max_y = ((ceil(max_psth / 10)) * 10)+10;
-max_y = 70;
+
 plot_window_event1 = init_psth_window_event1 + [+((RESOLUTION/1000)/2) -((RESOLUTION/1000)/2)]; %b/c raster output has been padded
 
 

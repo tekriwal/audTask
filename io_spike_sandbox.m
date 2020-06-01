@@ -2,21 +2,9 @@
 %%
 %%
 
-
-
-meanORmedian = 'Mean_ave';
-
-input1Mean  = (groupvar.(meanORmedian).(epochName1).(subName1));
-% logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
-% inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1); 
-inputinfo1 = input1 - baselineFR1; 
-
-input2Mean  = groupvar.(meanORmedian).(epochName2).(subName2);
-
 %%
 
-
-
+%%
 
 % below generate the structs JT wanted
 casen = 1;
@@ -165,6 +153,324 @@ spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
 % spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
 % spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
 % spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+
+
+
+
+
+casen = 1;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+close all
+casen = 2;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+close all
+
+casen = 3;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+close all
+
+casen = 4;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+close all
+
+casen = 5;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 6;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 7;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 8;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+close all
+
+casen = 9;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 10;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+
+casen = 11;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 12;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+close all
+
+casen = 13;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+
+%%
+casen = 1;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+close all
+casen = 2;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+close all
+
+casen = 3;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+close all
+
+casen = 4;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+close all
+
+casen = 5;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 6;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 7;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 8;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+close all
+
+casen = 9;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 10;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+
+casen = 11;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+close all
+casen = 12;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+close all
+
+casen = 13;
+FRanalysis_helperfx_V2(casen, 'spike1', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike1', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike1', 3,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 1,1)
+FRanalysis_helperfx_V2(casen, 'spike2', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike2', 3,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 1,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 2,1)
+% FRanalysis_helperfx_V2(casen, 'spike3', 3,1)
+
+
+%%
+
+meanORmedian = 'Mean_ave';
+
+input1Mean  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct.anatomLocation, SNrsubtype1);
+% inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1); 
+inputinfo1 = input1 - baselineFR1; 
+
+input2Mean  = groupvar.(meanORmedian).(epochName2).(subName2);
+
+%%
+
+
+
+
 
 
 %%
