@@ -1,3 +1,6 @@
+% 6/24/20, AT keeping the V2 version of this code but adding output field
+% 'index_errorsPtHeard'; these are the errrors pt heard 
+
 %V2; AT 3/28/20 - adding code to remove the first three trials as they are
 %'practice'; see input cutfirst3trials
 
@@ -17,7 +20,7 @@
 %messing anything up too much.
 
 %AT 3/28/20 - index_errors added to output
-function [taskbase_io, behavioral_matrix, index_errors] = behav_file_adapter_V2(rData, inputmatrix, cutfirst3trials, cutNearOEs)
+function [taskbase_io, behavioral_matrix, index_errors, index_errorsPtHeard] = behav_file_adapter_V2(rData, inputmatrix, cutfirst3trials, cutNearOEs)
 
 trialsperblock = 9;
 taskbase_io = struct();
@@ -94,6 +97,7 @@ for i = 1:length(rData)
 
 end
 index_errors = behavioral_matrix(:,5)==3; %this says, if column five has a 3 in it because 3 means they error'ed on that trial
+index_errorsPtHeard = behavioral_matrix(:,5)==3;
 
 nearOEcounter = 0;
 threshRxn = 0.10; %in case 11, there are rxn that ~ 0.05 seconds, this causes errors with TTL nav code. This threshold may be too relaxed, unsure

@@ -12,7 +12,7 @@ function [] = behavior_V1(caseNumb)
 %appropriate spike# and clust# is, refer to the datafiles on box,
 %specifically the 'processed_spikes_V2' folder. If there's a .jpg file,
 %means that there were more than 1 cluster after spike sorting
-exclusionFilter = 2; %set to 1 if we want to exclude 5050's; set to 2 if we want to exclude 5050's AND hard trials
+exclusionFilter = 0; %set to 1 if we want to exclude 5050's; set to 2 if we want to exclude 5050's AND hard trials
 
 if exclusionFilter == 0
     load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_IO/behavior_struct_IO_nofilter.mat', 'behavior')

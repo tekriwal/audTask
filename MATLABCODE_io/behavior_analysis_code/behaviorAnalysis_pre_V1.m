@@ -10,19 +10,23 @@
 function [] = behaviorAnalysis_pre_V1()
 
 
-filterlevel = 1;
+szz = 600;
+
+filterlevel = 0;
+
 
 
 if filterlevel == 0
-    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_IO/behavior_struct_IO_nofilter.mat', 'behavior')
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_preIO/behavior_struct_preIO_nofilter.mat', 'preIO_behavior')
 elseif filterlevel == 1
-    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_IO/behavior_struct_IO_no5050s.mat', 'behavior')
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_preIO/behavior_struct_preIO_no5050s.mat', 'preIO_behavior')
 elseif filterlevel == 2
-    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_IO/behavior_struct_IO_no5050snoHardSG.mat', 'behavior')
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_preIO/behavior_struct_preIO_no5050snoHardSG.mat', 'preIO_behavior')
 end
 
 
-caseIndex = {'case01';'case02';'case03';'case04';'case05';'case06';'case07';'case08';'case09';'case10';'case11';'case12';'case13'};
+caseIndex = {'case106';'case11';'case12';'case108'};
+% caseIndex = {'case106';'case11';'case12'};
 
 
 
@@ -33,67 +37,211 @@ ISperccorr = [];
 SGerrorCount = [];
 ISerrorCount = [];
 
-for i = 1:13
+for i = 1:length(caseIndex)
     
     caseID = caseIndex{i};
     
     
     
-    substruct = 'median_rxnTime';
+    substruct = 'mean_rxnTime';
     substruct2 = 'SG';
-    SGrxntime(i) = behavior.(caseID).(substruct).(substruct2);
+    SGrxntime(i) = preIO_behavior.(caseID).(substruct).(substruct2);
     
     substruct2 = 'IS';
-    ISrxntime(i) = behavior.(caseID).(substruct).(substruct2);
+    ISrxntime(i) = preIO_behavior.(caseID).(substruct).(substruct2);
     
+    
+    substruct = 'mean_rxnTime_wholetrial';
+    substruct2 = 'SG';
+    SGmean_rxnTime_wholetrial(i) = preIO_behavior.(caseID).(substruct).(substruct2);
+    
+    substruct2 = 'IS';
+    ISmean_rxnTime_wholetrial(i) = preIO_behavior.(caseID).(substruct).(substruct2);
     
     
     substruct = 'percCorr';
     substruct2 = 'SG';
-    SGperccorr(i) = behavior.(caseID).(substruct).(substruct2);
+    SGperccorr(i) = preIO_behavior.(caseID).(substruct).(substruct2);
     
     substruct2 = 'IS';
-    ISperccorr(i) = behavior.(caseID).(substruct).(substruct2);
+    ISperccorr(i) = preIO_behavior.(caseID).(substruct).(substruct2);
     
     
     
     substruct = 'errors';
     substruct2 = 'SG';
-    SGerrorCount(i) = behavior.(caseID).(substruct).(substruct2);
+    SGerrorCount(i) = preIO_behavior.(caseID).(substruct).(substruct2);
     
     substruct2 = 'IS';
-    ISerrorCount(i) = behavior.(caseID).(substruct).(substruct2);
+    ISerrorCount(i) = preIO_behavior.(caseID).(substruct).(substruct2);
+    
+    
+    substruct = 'percerrors';
+    substruct2 = 'SG';
+    SGpercerrors(i) = preIO_behavior.(caseID).(substruct).(substruct2);
+    
+    substruct2 = 'IS';
+    ISpercerrors(i) = preIO_behavior.(caseID).(substruct).(substruct2);
+    
+    substruct = 'errors_errorsPtHeard';
+    substruct2 = 'SG';
+    SGerrorCount_errorsPtHeard(i) = preIO_behavior.(caseID).(substruct).(substruct2);
+    
+    substruct2 = 'IS';
+    ISerrorCount_errorsPtHeard(i) = preIO_behavior.(caseID).(substruct).(substruct2);
+    
+    
+    substruct = 'percerrors_errorsPtHeard';
+    substruct2 = 'SG';
+    SGpercerrors_errorsPtHeard(i) = preIO_behavior.(caseID).(substruct).(substruct2);
+    
+    substruct2 = 'IS';
+    ISpercerrors_errorsPtHeard(i) = preIO_behavior.(caseID).(substruct).(substruct2);
+    
+    
     
     
 end
 
 
-%cut case 8 and 9 from spaghetti analysis because no IS trials
-i = 9;
-SGrxntime(i) = [];
-ISrxntime(i) = [];
-SGperccorr(i) = [];
-ISperccorr(i) = [];
-SGerrorCount(i) = [];
-ISerrorCount(i) = [];
-i = 8;
-SGrxntime(i) = [];
-ISrxntime(i) = [];
-SGperccorr(i) = [];
-ISperccorr(i) = [];
-SGerrorCount(i) = [];
-ISerrorCount(i) = [];
+
+%AT 6/24/20; let's look at things within subject and generate some
+%analyses, starting with rxn time
+% caseIndex = {'case01';'case02';'case03';'case04';'case05';'case06';'case07';'case08';'case09';'case10';'case11';'case12';'case13'};
+% caseIndex = {'case01';'case02';'case03';'case04';'case05';'case06';'case07';'case10';'case11';'case12';'case13'};
+
+for i = 1:length(caseIndex)
+    
+    caseID = caseIndex{i};
+    
+    substruct = 'rxnTime';
+    substruct2 = 'SG';
+    SG_indivRxntime = preIO_behavior.(caseID).(substruct).(substruct2);
+    %     SG_indivRxntime_all(i) = SG_indivRxntime;
+    substruct2 = 'IS';
+    IS_indivRxntime= preIO_behavior.(caseID).(substruct).(substruct2);
+    %     IS_indivRxntime_all(i) = IS_indivRxntime;
+    
+    
+    [pvalue,outcome,paraORnonpara] = stats_subfx1tailed(SG_indivRxntime,IS_indivRxntime);
+    pvalue_allrxnTime(i) = pvalue;
+    outcome_allrxnTime{i} = outcome;
+    paraORnonpara_allrxnTime{i} = paraORnonpara;
+    
+    
+    
+end
 
 
+% caseIndex = {'case01';'case02';'case03';'case04';'case05';'case06';'case07';'case10';'case11';'case12';'case13'};
+
+for i = 1:length(caseIndex)
+    
+    caseID = caseIndex{i};
+    
+    substruct = 'rxnTime_wholetrial';
+    substruct2 = 'SG';
+    SG_indivRxntime = preIO_behavior.(caseID).(substruct).(substruct2);
+    %     SG_indivRxntime_all(i) = SG_indivRxntime;
+    substruct2 = 'IS';
+    IS_indivRxntime= preIO_behavior.(caseID).(substruct).(substruct2);
+    %     IS_indivRxntime_all(i) = IS_indivRxntime;
+    
+    
+    [pvalue,outcome,paraORnonpara] = stats_subfx1tailed(SG_indivRxntime,IS_indivRxntime);
+    pvalue_allrxnTime_wholetrial(i) = pvalue;
+    outcome_allrxnTime_wholetrial{i} = outcome;
+    paraORnonpara_allrxnTime_wholetrial{i} = paraORnonpara;
+    
+    
+    
+end
+
+
+
+% caseIndex = {'case01';'case02';'case03';'case04';'case05';'case06';'case07';'case10';'case11';'case12';'case13'};
+
+for i = 1:length(caseIndex)
+    
+    caseID = caseIndex{i};
+    
+    substruct = 'rxnTime_leftUPtillFeedback';
+    substruct2 = 'SG';
+    SG_indivRxntime = preIO_behavior.(caseID).(substruct).(substruct2);
+    %     SG_indivRxntime_all(i) = SG_indivRxntime;
+    substruct2 = 'IS';
+    IS_indivRxntime= preIO_behavior.(caseID).(substruct).(substruct2);
+    %     IS_indivRxntime_all(i) = IS_indivRxntime;
+    
+    
+    [pvalue,outcome,paraORnonpara] = stats_subfx1tailed(SG_indivRxntime,IS_indivRxntime);
+    pvalue_allrxnTime_leftUPtillFeedback(i) = pvalue;
+    outcome_allrxnTime_leftUPtillFeedback{i} = outcome;
+    paraORnonpara_allrxnTime_leftUPtillFeedback{i} = paraORnonpara;
+    
+    
+    
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% 
+% %cut case 8 and 9 from spaghetti analysis because no IS trials
+% i = 9;
+% SGrxntime(i) = [];
+% ISrxntime(i) = [];
+% SGmedian_rxnTime_wholetrial(i) = [];
+% ISmedian_rxnTime_wholetrial(i) = [];
+% SGperccorr(i) = [];
+% ISperccorr(i) = [];
+% SGerrorCount(i) = [];
+% ISerrorCount(i) = [];
+% SGerrorCount_errorsPtHeard(i) = [];
+% ISerrorCount_errorsPtHeard(i) = [];
+% SGpercerrors_errorsPtHeard(i) = [];
+% ISpercerrors_errorsPtHeard(i) = [];
+% SGpercerrors(i) = [];
+% ISpercerrors(i) = [];
+% i = 8;
+% SGrxntime(i) = [];
+% ISrxntime(i) = [];
+% SGmedian_rxnTime_wholetrial(i) = [];
+% ISmedian_rxnTime_wholetrial(i) = [];
+% SGperccorr(i) = [];
+% ISperccorr(i) = [];
+% SGerrorCount(i) = [];
+% ISerrorCount(i) = [];
+% SGerrorCount_errorsPtHeard(i) = [];
+% ISerrorCount_errorsPtHeard(i) = [];
+% SGpercerrors_errorsPtHeard(i) = [];
+% ISpercerrors_errorsPtHeard(i) = [];
+% SGpercerrors(i) = [];
+% ISpercerrors(i) = [];
 
 
 
 figure()
-szz = 75;
 
 input1 = SGrxntime;
 input2 = ISrxntime;
 %stats
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+[pvalue1,outcome1,paraORnonpara1] = stats_subfx_compToZero(input1)
+[pvalue2,outcome2,paraORnonpara2] = stats_subfx_compToZero(input2)
+
 hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
 hx_is = lillietest(input2);
 
@@ -114,34 +262,34 @@ xaxis_onPairedSG(:) = 1;
 xaxis_onPairedSG = xaxis_onPairedSG + x1;
 
 xaxis_onPairedIS = 1:(length(input2));
-xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS(:) = 1.03;
 xaxis_onPairedIS = xaxis_onPairedIS + x1;
 
-scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
 hold on
-scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceColor', [.5 .5 .5],'MarkerFaceAlpha',3/8)
 
 hold on
 for j = 1:length(input2)
-    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 3);
     plot1.Color(4) = 3/8;
     hold on
 end
 
 hold on
-scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+scatter(1, mean(input1), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
 hold on
 
-scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+scatter(1.03, mean(input2), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
 
 hold on
-plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 
 
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
-set(gca, 'XTick', [1 1.2]);
+set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
 
 xticklabels({'SG', 'IS'});
 ylabel('Reaction time'); %, 'FontSize', 14);
@@ -156,14 +304,8 @@ end
 title(str);
 
 
-ylim([0 3.5]);
-xlim([.95 1.25]);
-
-
-
-
-
-
+% ylim([0 3.0]);
+xlim([.99 1.04]);
 
 
 
@@ -174,12 +316,95 @@ xlim([.95 1.25]);
 
 
 figure()
-szz = 75;
+
+input1 = SGmean_rxnTime_wholetrial;
+input2 = ISmean_rxnTime_wholetrial;
+%stats
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+[pvalue1,outcome1,paraORnonpara1] = stats_subfx_compToZero(input1)
+[pvalue2,outcome2,paraORnonpara2] = stats_subfx_compToZero(input2)
+
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.03;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceColor', [.5 .5 .5],'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 3);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, mean(input1), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.03, mean(input2), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.03]);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+xticklabels({'SG', 'IS'});
+ylabel('Whole trial time'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p value equals '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p value equals '}, num2str(p_ttest_nonparapaired));
+end
+title(str);
+
+
+% ylim([0 3.0]);
+xlim([.99 1.04]);
+
+
+
+
+
+
+
+figure()
 
 input1 = SGperccorr;
 input2 = ISperccorr;
 
 %stats
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+[pvalue1,outcome1,paraORnonpara1] = stats_subfx_compToZero(input1)
+[pvalue2,outcome2,paraORnonpara2] = stats_subfx_compToZero(input2)
+
 hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
 hx_is = lillietest(input2);
 
@@ -201,34 +426,34 @@ xaxis_onPairedSG(:) = 1;
 xaxis_onPairedSG = xaxis_onPairedSG + x1;
 
 xaxis_onPairedIS = 1:(length(input2));
-xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS(:) = 1.03;
 xaxis_onPairedIS = xaxis_onPairedIS + x1;
 
-scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
 hold on
-scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
 
 hold on
 for j = 1:length(input2)
-    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 3);
     plot1.Color(4) = 3/8;
     hold on
 end
 
 hold on
-scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+scatter(1, mean(input1), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
 hold on
 
-scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+scatter(1.03, mean(input2), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
 
 hold on
-plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 
 
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
-set(gca, 'XTick', [1 1.2]);
+set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
 
 xticklabels({'SG', 'IS'});
 ylabel('Percent correct'); %, 'FontSize', 14);
@@ -243,8 +468,8 @@ end
 title(str);
 
 
-ylim([0 1.5]);
-xlim([.95 1.25]);
+ylim([0 1]);
+xlim([.99 1.04]);
 
 
 
@@ -260,12 +485,15 @@ xlim([.95 1.25]);
 
 
 figure()
-szz = 75;
 
 input1 = SGerrorCount;
 input2 = ISerrorCount;
 
 %stats
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+[pvalue1,outcome1,paraORnonpara1] = stats_subfx_compToZero(input1)
+[pvalue2,outcome2,paraORnonpara2] = stats_subfx_compToZero(input2)
+
 hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
 hx_is = lillietest(input2);
 
@@ -287,34 +515,34 @@ xaxis_onPairedSG(:) = 1;
 xaxis_onPairedSG = xaxis_onPairedSG + x1;
 
 xaxis_onPairedIS = 1:(length(input2));
-xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS(:) = 1.03;
 xaxis_onPairedIS = xaxis_onPairedIS + x1;
 
-scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
 hold on
-scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
 
 hold on
 for j = 1:length(input2)
-    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 3);
     plot1.Color(4) = 3/8;
     hold on
 end
 
 hold on
-scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+scatter(1, mean(input1), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
 hold on
 
-scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+scatter(1.03, mean(input2), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
 
 hold on
-plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 
 
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
-set(gca, 'XTick', [1 1.2]);
+set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
 
 xticklabels({'SG', 'IS'});
 ylabel('Number of out earlies'); %, 'FontSize', 14);
@@ -330,12 +558,482 @@ title(str);
 
 
 ylim([-1 8]);
-xlim([.95 1.25]);
+xlim([.99 1.04]);
 
 
 
 
 
+
+
+
+
+figure()
+
+input1 = SGpercerrors;
+input2 = ISpercerrors;
+
+%stats
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+[pvalue1,outcome1,paraORnonpara1] = stats_subfx_compToZero(input1)
+[pvalue2,outcome2,paraORnonpara2] = stats_subfx_compToZero(input2)
+
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.03;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 3);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, mean(input1), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.03, mean(input2), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.03]);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+xticklabels({'SG', 'IS'});
+ylabel('Number of out earlies as %'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p value equals '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p value equals '}, num2str(p_ttest_nonparapaired));
+end
+title(str);
+
+
+ylim([-0.1 0.3]);
+xlim([.99 1.04]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+figure()
+
+input1 = SGerrorCount_errorsPtHeard;
+input2 = ISerrorCount_errorsPtHeard;
+
+%stats
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+[pvalue1,outcome1,paraORnonpara1] = stats_subfx_compToZero(input1)
+[pvalue2,outcome2,paraORnonpara2] = stats_subfx_compToZero(input2)
+
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.03;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 3);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, mean(input1), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.03, mean(input2), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.03]);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+xticklabels({'SG', 'IS'});
+ylabel('Number of out earlies (errors pt heard)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p value equals '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p value equals '}, num2str(p_ttest_nonparapaired));
+end
+title(str);
+
+
+ylim([-1 8]);
+xlim([.99 1.04]);
+
+
+
+
+
+
+
+
+
+
+figure()
+
+input1 = SGpercerrors_errorsPtHeard;
+input2 = ISpercerrors_errorsPtHeard;
+
+%stats
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+[pvalue1,outcome1,paraORnonpara1] = stats_subfx_compToZero(input1)
+[pvalue2,outcome2,paraORnonpara2] = stats_subfx_compToZero(input2)
+
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.03;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 3);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, mean(input1), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.03, mean(input2), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.03]);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+xticklabels({'SG', 'IS'});
+ylabel('Number of out earlies as % (errors pt heard)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p value equals '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p value equals '}, num2str(p_ttest_nonparapaired));
+end
+title(str);
+
+
+ylim([-1 8]);
+xlim([.99 1.04]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%do some analysises
+
+
+
+
+    function [pvalue,outcome,paraORnonpara] = stats_subfx1tailed(stats_subfx1tailedinput1,stats_subfx1tailedinput2)
+        
+        outcome = 'nodiffs';
+        pvalue = NaN;
+        
+        hx_input1 = lillietest(stats_subfx1tailedinput1);
+        hx_input2 = lillietest(stats_subfx1tailedinput2);
+        input2_lessthan_input1 = [];
+        input2_greaterthan_input1 = [];
+        if hx_input1 == 0 && hx_input2 == 0
+            [h_ttest, p_ttest] = ttest2(stats_subfx1tailedinput1, stats_subfx1tailedinput2, 'Tail', 'left') ; %'left' tests the hypothesis that x2 > x1
+            if h_ttest == 1
+                input2_greaterthan_input1 = 1;
+                outcome = 'input2_greaterthan_input1';
+                pvalue = p_ttest;
+                
+            end
+            [h_ttest, p_ttest] = ttest2(stats_subfx1tailedinput1, stats_subfx1tailedinput2, 'Tail', 'right') ; %'left' tests the hypothesis that x2 > x1
+            if h_ttest == 1
+                input2_lessthan_input1 = 1;
+                outcome = 'input2_lessthan_input1';
+                pvalue = p_ttest;
+                
+            end
+            %             pvalue = p_ttest;
+            paraORnonpara = 'para';
+        elseif hx_input1 == 1 || hx_input2 == 1
+            %for ranksum....
+            % H=0 indicates that
+            %   the null hypothesis ("medians are equal") cannot be rejected at the 5%
+            %   level. H=1 indicates that the null hypothesis can be rejected at the
+            %   5% level
+            [p_ttest1, h_ttest1] = ranksum(stats_subfx1tailedinput1, stats_subfx1tailedinput2, 'Tail', 'left') ; %'left' tests the hypothesis that x2 > x1
+            if h_ttest1 == 1
+                input2_greaterthan_input1 = 1;
+                outcome = 'input2_greaterthan_input1';
+                pvalue = p_ttest1;
+                
+            end
+            [p_ttest1, h_ttest1] = ranksum(stats_subfx1tailedinput1, stats_subfx1tailedinput2, 'Tail', 'right') ; %'left' tests the hypothesis that x2 > x1
+            if h_ttest1 == 1
+                input2_lessthan_input1 = 1;
+                outcome = 'input2_lessthan_input1';
+                pvalue = p_ttest1;
+                
+            end
+            %             pvalue = p_ttest1;
+            paraORnonpara = 'nonpara';
+            
+        end
+        
+        if input2_greaterthan_input1 == 1
+            disp('input2_greaterthan_input1')
+        elseif input2_lessthan_input1 == 1
+            disp('input2_lessthan_input1')
+        elseif isempty(input2_greaterthan_input1) && isempty(input2_lessthan_input1)
+            disp('no differences')
+        end
+        
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function [pvalue,paraORnonpara] = stats_subfx2tailed(input1_stats_subfx2tailed,input2_stats_subfx2tailed, pairedORnotpaired)
+        
+        
+        hx_input1 = lillietest(input1_stats_subfx2tailed);
+        hx_input2 = lillietest(input2_stats_subfx2tailed);
+        input2_lessthan_input1 = [];
+        input2_greaterthan_input1 = [];
+        if hx_input1 == 0 && hx_input2 == 0
+            [h_ttest1, p_ttest1] = ttest2(input1_stats_subfx2tailed, input2_stats_subfx2tailed) ; %'left' tests the hypothesis that x2 > x1
+            
+            paraORnonpara = 'para';
+            %below is paired
+            [h_ttest11, p_ttest11] = ttest(input1_stats_subfx2tailed, input2_stats_subfx2tailed) ; %'left' tests the hypothesis that x2 > x1
+            if strcmp(pairedORnotpaired, 'notpaired')
+                pvalue = p_ttest1;
+            elseif strcmp(pairedORnotpaired, 'paired')
+                pvalue = p_ttest11;
+            end
+        elseif hx_input1 == 1 || hx_input2 == 1
+            %for ranksum....
+            % H=0 indicates that
+            %   the null hypothesis ("medians are equal") cannot be rejected at the 5%
+            %   level. H=1 indicates that the null hypothesis can be rejected at the
+            %   5% level
+            [p_ttest2, h_ttest2] = ranksum(input1_stats_subfx2tailed, input2_stats_subfx2tailed) ; %'left' tests the hypothesis that x2 > x1
+            
+            pvalue = p_ttest2;
+            paraORnonpara = 'nonpara';
+            %below is paired
+            [p_ttest22, h_ttest22] = signrank(input1_stats_subfx2tailed, input2_stats_subfx2tailed) ; %'left' tests the hypothesis that x2 > x1
+            if strcmp(pairedORnotpaired, 'notpaired')
+                pvalue = p_ttest2;
+            elseif strcmp(pairedORnotpaired, 'paired')
+                pvalue = p_ttest22;
+            end
+        end
+        
+        
+    end
+
+
+
+
+
+
+
+
+    function [pvalue,outcome,paraORnonpara] = stats_subfx_compToZero(stats_subfx1tailedinput1)
+        
+        
+        outcome = 'nodiffs';
+        
+        hx_input1 = lillietest(stats_subfx1tailedinput1);
+        %         hx_input2 = lillietest(stats_subfx1tailedinput2);
+        input1_diffthan_zero = [];
+        if hx_input1 == 0
+            [h_ttest, p_ttest] = ttest(stats_subfx1tailedinput1) ; %'left' tests the hypothesis that x2 > x1
+            if h_ttest == 1
+                input1_diffthan_zero = 1;
+                outcome = 'input1_diffthan_zero';
+            end
+            pvalue = p_ttest;
+            paraORnonpara = 'para';
+        elseif hx_input1 == 1
+            %for ranksum....
+            % H=0 indicates that
+            %   the null hypothesis ("medians are equal") cannot be rejected at the 5%
+            %   level. H=1 indicates that the null hypothesis can be rejected at the
+            %   5% level
+            [p_ttest1, h_ttest1] = signrank(stats_subfx1tailedinput1) ; %'left' tests the hypothesis that x2 > x1
+            if h_ttest1 == 1
+                input1_diffthan_zero = 1;
+                outcome = 'input1_diffthan_zero';
+                
+            end
+            pvalue = p_ttest1;
+            paraORnonpara = 'nonpara';
+            
+        end
+        if input1_diffthan_zero == 1
+            disp('input1_diffthan_zero')
+        elseif isempty(input1_diffthan_zero)
+            disp('no differences')
+        end
+        
+    end
 
 
 

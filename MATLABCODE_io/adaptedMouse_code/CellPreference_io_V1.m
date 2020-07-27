@@ -374,7 +374,6 @@ if (strcmpi(analysis_to_perform, analysis_name) || strcmpi(analysis_to_perform, 
 %         elseif length(R_spikes) > length(L_spikes)
 %             R_spikes = R_spikes(1:length(L_spikes));
 %         end
-        [pref, rp] = ROC_preference(L_spikes', R_spikes', num_iter); % Calls new ROC function
         
         preference.(analysis_name)(epoch_ind) = pref;
         roc_p.(analysis_name)(epoch_ind) = rp;

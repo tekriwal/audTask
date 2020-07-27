@@ -315,6 +315,434 @@ masterspikestruct_V2.FRstruct.(structLabel).waveNormFeat.SDmin.vari = var(spiket
 
 
 
+
+
+
+
+%below is added on 6/3/20; for CORRECTS
+%below gives summary data combining across SG/IS and L/R (aka 'all')
+epochName = 'wholeTrial';
+subName = 'FR'; %either 'FR' or 'spiketrain'
+subName2 = 'Corrects';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'priors';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'movePrep';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'moveInit';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'periReward';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+
+
+
+
+
+
+%below is added on 6/3/20; for INCORRECTS
+%below gives summary data combining across SG/IS and L/R (aka 'all')
+epochName = 'wholeTrial';
+subName = 'FR'; %either 'FR' or 'spiketrain'
+subName2 = 'Incorrects';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'priors';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'movePrep';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'moveInit';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+epochName = 'periReward';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName2) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName2) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName2)));
+
+
+
+
+
+%AT adding below on 6/11/20 to account for ipsi/contra stuff
+
+%below gives summary data combining across SG and ipsi
+epochName = 'wholeTrial';
+subName = 'FR'; %either 'FR' or 'spiketrain'
+condition = 'SG';
+subName2 = 'ipsi';
+subName3 = strcat(condition,subName2);
+
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'priors';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'movePrep';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'moveInit';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'periReward';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+
+
+
+
+
+
+%below gives summary data combining across SG and contra
+epochName = 'wholeTrial';
+subName = 'FR'; %either 'FR' or 'spiketrain'
+condition = 'SG';
+subName2 = 'contra';
+subName3 = strcat(condition,subName2);
+
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'priors';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'movePrep';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'moveInit';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'periReward';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+
+
+
+
+
+
+
+%below gives summary data combining across IS and ipsi
+epochName = 'wholeTrial';
+subName = 'FR'; %either 'FR' or 'spiketrain'
+condition = 'IS';
+subName2 = 'ipsi';
+subName3 = strcat(condition,subName2);
+
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'priors';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'movePrep';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'moveInit';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'periReward';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+
+
+
+
+
+
+
+%below gives summary data combining across IS and contra
+epochName = 'wholeTrial';
+subName = 'FR'; %either 'FR' or 'spiketrain'
+condition = 'IS';
+subName2 = 'contra';
+subName3 = strcat(condition,subName2);
+
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'priors';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'movePrep';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'moveInit';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+epochName = 'periReward';
+masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+masterspikestruct_V2.Mean_ave.(structLabel).(epochName).(subName3) = mean(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+masterspikestruct_V2.Median_ave.(structLabel).(epochName).(subName3) = median(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(epochName).(subName3)));
+
+
+
+
+
+
+%AT adding below 6/20/20 to save out the epochTiming info that JT wanted
+%for LFP analyses
+
+%below gives summary data combining across SG and ipsi
+epochName = 'wholeTrial';
+subName = 'epochTimes'; %either 'FR' or 'spiketrain'
+condition = 'SG';
+subName2 = 'ipsi';
+subName3 = strcat(condition,subName2);
+
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'priors';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'movePrep';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'moveInit';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'periReward';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+
+
+
+
+
+
+%below gives summary data combining across SG and contra
+epochName = 'wholeTrial';
+subName = 'epochTimes'; %either 'epochTimes' or 'spiketrain'
+condition = 'SG';
+subName2 = 'contra';
+subName3 = strcat(condition,subName2);
+
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'priors';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'movePrep';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'moveInit';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'periReward';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+
+
+
+
+
+
+
+%below gives summary data combining across IS and ipsi
+epochName = 'wholeTrial';
+subName = 'epochTimes'; %either 'epochTimes' or 'spiketrain'
+condition = 'IS';
+subName2 = 'ipsi';
+subName3 = strcat(condition,subName2);
+
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'priors';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'movePrep';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'moveInit';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'periReward';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+
+
+
+
+
+
+
+%below gives summary data combining across IS and contra
+epochName = 'wholeTrial';
+subName = 'epochTimes'; %either 'epochTimes' or 'spiketrain'
+condition = 'IS';
+subName2 = 'contra';
+subName3 = strcat(condition,subName2);
+
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'priors';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'movePrep';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'moveInit';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+epochName = 'periReward';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName3) = [spiketrainStrct_V2.(condition).(subName2).(epochName).(subName)]; 
+
+
+
+
+
+epochName = 'wholeTrial';
+subName = 'epochTimes'; %either 'FR' or 'spiketrain'
+subName2 = 'Corrects';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+
+epochName = 'priors';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+
+epochName = 'movePrep';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+
+epochName = 'moveInit';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+
+epochName = 'periReward';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.corrects.(epochName).(subName)]; 
+
+
+
+
+
+epochName = 'wholeTrial';
+subName = 'epochTimes'; %either 'FR' or 'spiketrain'
+subName2 = 'Incorrects';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+
+epochName = 'priors';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+
+epochName = 'sensoryProcessing';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+
+epochName = 'movePrep';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+
+epochName = 'moveInit';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+
+epochName = 'periReward';
+masterspikestruct_V2.epochTimesstruct.(structLabel).(epochName).(subName2) = [spiketrainStrct_V2.incorrects.(epochName).(subName)]; 
+
+
+
+
+
+
+
+
+
 if saveFig == 1
     %save out the masterspikestruct
     %load in masterspikestruct file

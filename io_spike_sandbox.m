@@ -1,162 +1,2555 @@
 %started 2/16/20, sandbox for io related work
 %%
+
 %%
+%%
+
 
 %%
 
-%%
-
-% below generate the structs JT wanted
+% below generate the structs we need 
 casen = 1;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
 close all
 casen = 2;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
 close all
 
 casen = 3;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
 close all
 
 casen = 4;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
 close all
 
 casen = 5;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
 
 close all
 casen = 6;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
 
 close all
 casen = 7;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
 
 close all
 casen = 8;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
 close all
 
 casen = 9;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
 
 close all
 casen = 10;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
 
 close all
 
 casen = 11;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'L')
 
 close all
 casen = 12;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'L')
 close all
 
 casen = 13;
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 1,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike1', 3,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 1,1)
-spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike2', 3,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 1,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 2,1)
-% spiketrainexaction_AnalysisStruct_V4(casen, 'spike3', 3,1)
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'L')
 
 
 
 
+
+
+
+
+
+
+
+
+%%
+
+%%
+for i = 1:13
+    behavior_V2(i)
+end
+%%
+%%
+%%
+
+
+%%
+
+
+%AT below is new as of 7/19/20
+
+SNrsubtype1 = 'cluster2'; %contributes to title of plots
+subName1 = 'SG';
+subName2 = 'IS';
+meanORmedian = 'intraTrialFR_mean';
+
+spaghett_io_helperfx_V1(SNrsubtype1, subName1, subName2, meanORmedian, groupvar, masterspikestruct_V2)
+
+
+
+SNrsubtype1 = 'cluster2'; %contributes to title of plots
+subName1 = 'ipsi';
+subName2 = 'contra';
+meanORmedian = 'intraTrialFR_mean';
+
+spaghett_io_helperfx_V1(SNrsubtype1, subName1, subName2, meanORmedian, groupvar, masterspikestruct_V2)
+
+
+
+SNrsubtype1 = 'cluster2'; %contributes to title of plots
+subName1 = 'Corrects';
+subName2 = 'Incorrects';
+meanORmedian = 'intraTrialFR_mean';
+
+spaghett_io_helperfx_V1(SNrsubtype1, subName1, subName2, meanORmedian, groupvar, masterspikestruct_V2)
+
+
+
+%% AT adding below for spaghetti of the above
+
+  
+  
+
+
+%ALL neurons, not indexing for GABA/DA
+subplotting = 1;
+kWidth = .5;
+figure()
+if subplotting == 1
+    subplot(1, 5, 1)
+else
+    figure()
+end
+subplot(1, 5, 1)
+subName1 = 'ipsi';
+epochName1 = 'priors';
+SNrsubtype1 = 'All neurons';
+subName2 = 'contra';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = (input1/baselineFR1)*100;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = (input2/baselineFR2)*100;
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'};
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Change in Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = .75;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.25;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(.75, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.25, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([.75 1.25], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [.75 1.25]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({'2td p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({'2td p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, str);
+title(titletext)
+
+ylim([-20 20])
+xlim([ 0.6 1.4])
+
+
+
+
+
+
+
+
+if subplotting == 1
+    subplot(1, 5, 2)
+else
+    figure()
+end
+subName1 = 'ipsi';
+epochName1 = 'sensoryProcessing';
+SNrsubtype1 = 'All neurons';
+subName2 = 'contra';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = (input1/baselineFR1)*100;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = (input2/baselineFR2)*100;
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'};
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Change in Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = .75;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.25;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(.75, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.25, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([.75 1.25], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [.75 1.25]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({'2td p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({'2td p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, str);
+title(titletext)
+
+
+ylim([-20 20])
+xlim([ 0.6 1.4])
+
+
+
+
+
+
+
+
+if subplotting == 1
+    subplot(1, 5, 3)
+else
+    figure()
+end
+subName1 = 'ipsi';
+epochName1 = 'movePrep';
+SNrsubtype1 = 'All neurons';
+subName2 = 'contra';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = (input1/baselineFR1)*100;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = (input2/baselineFR2);
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'};
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Change in Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = .75;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.25;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(.75, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.25, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([.75 1.25], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [.75 1.25]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({'2td p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({'2td p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, str);
+title(titletext)
+
+
+ylim([-20 20])
+xlim([ 0.6 1.4])
+
+
+
+
+
+
+
+
+
+
+
+
+if subplotting == 1
+    subplot(1, 5, 4)
+else
+    figure()
+end
+subName1 = 'ipsi';
+epochName1 = 'moveInit';
+SNrsubtype1 = 'All neurons';
+subName2 = 'contra';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = (input1/baselineFR1)*100;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = (input2/baselineFR2)*100;
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'};
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Change in Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = .75;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.25;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(.75, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.25, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([.75 1.25], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [.75 1.25]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({'2td p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({'2td p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, str);
+title(titletext)
+
+
+ylim([-20 20])
+xlim([ 0.6 1.4])
+
+
+
+
+
+
+
+
+
+if subplotting == 1
+    subplot(1, 5, 5)
+else
+    figure()
+end
+subName1 = 'ipsi';
+epochName1 = 'periReward';
+SNrsubtype1 = 'All neurons';
+subName2 = 'contra';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = (input1/baselineFR1)*100;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = (input2/baselineFR2)*100;
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'};
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Change in Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = .75;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.25;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(.75, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.25, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([.75 1.25], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [.75 1.25]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({'2td p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({'2td p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, str);
+title(titletext)
+
+
+ylim([-20 20])
+xlim([ 0.6 1.4])
+
+
+
+
+
+%%
+
+%idea
+%plot ave FR for each epoch
+
+
+subName1 = 'SG';
+epochName1 = 'priors';
+SNrsubtype1 = 'All neurons';
+subName2 = 'contra';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+SGpriors = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+ISpriors = input2 - baselineFR2;
+
+
+
+
+
+
+
+subName1 = 'SG';
+epochName1 = 'sensoryProcessing';
+SNrsubtype1 = 'All neurons';
+subName2 = 'IS';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+SGsensoryProcessing = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+ISsensoryProcessing = input2 - baselineFR2;
+
+
+
+
+
+
+subName1 = 'SG';
+epochName1 = 'movePrep';
+SNrsubtype1 = 'All neurons';
+subName2 = 'IS';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+SGmovePrep = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+ISmovePrep = input2 - baselineFR2;
+
+
+
+
+
+
+subName1 = 'SG';
+epochName1 = 'moveInit';
+SNrsubtype1 = 'All neurons';
+subName2 = 'IS';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+SGmoveInit = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+ISmoveInit = input2 - baselineFR2;
+
+
+
+
+
+
+
+subName1 = 'SG';
+epochName1 = 'periReward';
+SNrsubtype1 = 'All neurons';
+subName2 = 'IS';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+SGperiReward = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+ISperiReward = input2 - baselineFR2;
+
+
+
+
+
+%so now we should have 5 pts for each neuron
+szz = 250;
+
+figure()
+subplot(2,1,1)
+
+
+input1 = SGpriors;
+inputnext = SGsensoryProcessing;
+x1pos = 1;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+input1 = SGsensoryProcessing;
+inputnext = SGmovePrep;
+x1pos = 2;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+
+input1 = SGsensoryProcessing;
+inputnext = SGmovePrep;
+x1pos = 3;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+
+input1 = SGmovePrep;
+inputnext = SGmoveInit;
+x1pos = 4;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+
+
+input1 = SGmoveInit;
+inputnext = SGperiReward;
+x1pos = 5;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+
+
+input1 = SGperiReward;
+x1pos = 1;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+
+
+
+
+
+
+subplot(2,1,2)
+
+
+input1 = ISpriors;
+inputnext = ISsensoryProcessing;
+x1pos = 1;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+input1 = ISsensoryProcessing;
+inputnext = ISmovePrep;
+x1pos = 2;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+
+input1 = ISsensoryProcessing;
+inputnext = ISmovePrep;
+x1pos = 3;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+
+input1 = ISmovePrep;
+inputnext = ISmoveInit;
+x1pos = 4;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+
+
+input1 = ISmoveInit;
+inputnext = ISperiReward;
+x1pos = 5;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+
+for j = 1:length(input1)
+    plot1 = plot([xaxis_onPaired(j) (xaxis_onPaired(j)+1)], [input1(j)' inputnext(j)'], 'Color', 'r', 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+
+
+
+
+input1 = ISperiReward;
+x1pos = 1;
+
+xaxis_onPaired = 1:(length(input1));
+xaxis_onPaired(:) = x1pos;
+xaxis_onPaired = xaxis_onPaired;
+
+scatter(xaxis_onPaired(:),input1(:), szz,  'r', 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+
+
+%%
+%%
+%AT 7/17/20
+
+
+
+
+
+
+
+
+
+
+
+input1 = SGpriors;
+input2 = ISpriors;
+x1pos = 1;
+x2pos = 2;
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = x1pos;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = x2pos;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(x1pos, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(x2pos, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+
+
+input1 = SGsensoryProcessing;
+input2 = ISsensoryProcessing;
+x1pos = 2;
+x2pos = 3;
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = x1pos;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = x2pos;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(x1pos, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(x2pos, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+
+
+
+%%
+
+%ALL neurons, not indexing for GABA/DA
+subplotting = 1;
+kWidth = .5;
+figure()
+if subplotting == 1
+    subplot(1, 5, 1)
+else
+    figure()
+end
+subplot(1, 5, 1)
+subName1 = 'SG';
+epochName1 = 'priors';
+SNrsubtype1 = 'All neurons';
+subName2 = 'IS';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = input2 - baselineFR2;
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'}; 
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input1);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.4;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.4, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.4], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.4]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, subName1,{'; '}, epochName1, {'   vs  '}, epochName2, str);
+title(titletext)
+
+% ylim([-20 120]);
+xlim([.85 1.2]);
+
+
+
+
+
+
+
+
+if subplotting == 1
+    subplot(1, 5, 2)
+else
+    figure()
+end
+subName1 = 'SG';
+epochName1 = 'sensoryProcessing';
+SNrsubtype1 = 'All neurons';
+subName2 = 'IS';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = input2 - baselineFR2;
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'}; 
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input1);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.4;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.4, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.4], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.4]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, subName1,{'; '}, epochName1, {'   vs  '}, epochName2, str);
+title(titletext)
+
+% ylim([-20 120]);
+xlim([.85 1.2]);
+
+
+
+
+
+
+
+
+if subplotting == 1
+    subplot(1, 5, 3)
+else
+    figure()
+end
+subName1 = 'SG';
+epochName1 = 'movePrep';
+SNrsubtype1 = 'All neurons';
+subName2 = 'IS';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = input2 - baselineFR2;
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'};
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input1);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.4;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.4, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.4], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.4]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, subName1,{'; '}, epochName1, {'   vs  '}, epochName2, str);
+title(titletext)
+
+% ylim([-20 120]);
+xlim([.85 1.2]);
+
+
+
+
+
+
+
+
+
+
+
+
+if subplotting == 1
+    subplot(1, 5, 4)
+else
+    figure()
+end
+subName1 = 'SG';
+epochName1 = 'moveInit';
+SNrsubtype1 = 'All neurons';
+subName2 = 'IS';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = input2 - baselineFR2;
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'};
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input1);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.4;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.4, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.4], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.4]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, subName1,{'; '}, epochName1, {'   vs  '}, epochName2, str);
+title(titletext)
+
+% ylim([-20 120]);
+xlim([.85 1.2]);
+
+
+
+
+
+
+
+
+
+if subplotting == 1
+    subplot(1, 5, 5)
+else
+    figure()
+end
+subName1 = 'SG';
+epochName1 = 'periReward';
+SNrsubtype1 = 'All neurons';
+subName2 = 'IS';
+epochName2 = epochName1;
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+% baselineFR1  = 0;
+% baselineFR2  = 0;
+
+meanORmedian = 'Mean_ave';
+
+input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+inputinfo1 = input1 - baselineFR1;
+
+input2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+inputinfo2 = input2 - baselineFR2;
+
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'ipsi', 'contra'};
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input1);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.4;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.4, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.4], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.4]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, subName1,{'; '}, epochName1, {'   vs  '}, epochName2, str);
+title(titletext)
+
+% ylim([-20 120]);
+xlim([.85 1.2]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%
+
+if stopAtPubFigures == 1
+    %     f = figure('Position',[500 500 400 300]);
+    pause(2)
+end
+
+%7/16/20 below is example of spaghetti plot we want to use w/ ephy data
+figure()
+szz = 250;
+
+input1 = inputinfo1;
+input2 = inputinfo2;
+xTickLabels = {'WholeTrial', 'sensoryProcessing'};
+% xTickLabels = ([epochName1; epochName2]);
+yLabel = 'Firing rate (Hz)';
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+
+[pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+[pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input1);
+
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.4;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'filled', 'MarkerFaceAlpha', 2/8, 'MarkerEdgeAlpha', 1)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.4, median(input2), szz*2,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.4], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.4]);
+
+xticklabels(xTickLabels);
+ylabel(yLabel); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 10, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+titletext = strcat(SNrsubtype1, {' '}, subName1,{'; '}, epochName1, {'   vs  '}, epochName2, str);
+title(titletext)
+
+ylim([-20 120]);
+xlim([.95 1.1]);
+
+
+
+
+if stopAtPubFigures == 1
+    %     f = figure('Position',[500 500 400 300]);
+    pause(2)
+end
+
+
+
+
+
+
+
+%%
+
+figure()
+% subplot(1, 2, 1)
+subName1 = 'SGandIS';
+epochName1 = 'wholeTrial';
+SNrsubtype1 = 'All neurons';
+subName2 = 'SGandIS';
+epochName2 = 'priors';
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+baselineFR1  = 0;
+baselineFR2  = 0;
+
+meanORmedian = 'Median_ave';
+
+inputinfo1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+% inputinfo1 = input1;%(logicalinput1) - baselineFR1(logicalinput1);
+
+inputinfo2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+% inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
+
+ylabeltext = 'Firing rate (Hz)';
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{'; '}, subName1, {'   vs  '}, subName2);
+
+violin_jasperfabius( 1, inputinfo1, 'withmdn', 1, 'side', 'left', 'Kernelwidth', 3, 'facecolor', [0.5 0.5 0.5])
+hold on
+violin_jasperfabius( 1, inputinfo2, 'withmdn', 1, 'side', 'right', 'Kernelwidth', 3, 'facecolor', [0 0 0])
+ylabel(ylabeltext)
+title(titletext)
+%ylim([-30 30]); xlim([ 0.8 1.2]) ;
+fig_name = cell2mat(titletext);
+set(gcf,'NumberTitle', 'off', 'Name', fig_name);
+set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
+
+
+
+
+
+
+
+
+
+
+figure()
+% subplot(1, 2, 1)
+subName1 = 'SGandIS';
+epochName1 = 'wholeTrial';
+SNrsubtype1 = 'All neurons';
+subName2 = 'SGandIS';
+epochName2 = 'sensoryProcessing';
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+baselineFR1  = 0;
+baselineFR2  = 0;
+
+meanORmedian = 'Median_ave';
+
+inputinfo1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+% inputinfo1 = input1;%(logicalinput1) - baselineFR1(logicalinput1);
+
+inputinfo2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+% inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
+
+ylabeltext = 'Firing rate (Hz)';
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{'; '}, subName1, {'   vs  '}, subName2);
+
+violin_jasperfabius( 1, inputinfo1, 'withmdn', 1, 'side', 'left', 'Kernelwidth', 3, 'facecolor', [0.5 0.5 0.5])
+hold on
+violin_jasperfabius( 1, inputinfo2, 'withmdn', 1, 'side', 'right', 'Kernelwidth', 3, 'facecolor', [0 0 0])
+ylabel(ylabeltext)
+title(titletext)
+%ylim([-30 30]); xlim([ 0.8 1.2]) ;
+fig_name = cell2mat(titletext);
+set(gcf,'NumberTitle', 'off', 'Name', fig_name);
+set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
+
+
+
+
+
+
+figure()
+% subplot(1, 2, 1)
+subName1 = 'SGandIS';
+epochName1 = 'wholeTrial';
+SNrsubtype1 = 'All neurons';
+subName2 = 'SGandIS';
+epochName2 = 'moveInit';
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+baselineFR1  = 0;
+baselineFR2  = 0;
+
+meanORmedian = 'Median_ave';
+
+inputinfo1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+% inputinfo1 = input1;%(logicalinput1) - baselineFR1(logicalinput1);
+
+inputinfo2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+% inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
+
+ylabeltext = 'Firing rate (Hz)';
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{'; '}, subName1, {'   vs  '}, subName2);
+
+violin_jasperfabius( 1, inputinfo1, 'withmdn', 1, 'side', 'left', 'Kernelwidth', 3, 'facecolor', [0.5 0.5 0.5])
+hold on
+violin_jasperfabius( 1, inputinfo2, 'withmdn', 1, 'side', 'right', 'Kernelwidth', 3, 'facecolor', [0 0 0])
+ylabel(ylabeltext)
+title(titletext)
+%ylim([-30 30]); xlim([ 0.8 1.2]) ;
+fig_name = cell2mat(titletext);
+set(gcf,'NumberTitle', 'off', 'Name', fig_name);
+set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
+
+
+
+
+
+
+
+figure()
+% subplot(1, 2, 1)
+subName1 = 'SGandIS';
+epochName1 = 'wholeTrial';
+SNrsubtype1 = 'All neurons';
+subName2 = 'SGandIS';
+epochName2 = 'movePrep';
+
+epochName = 'movePrep';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+baselineFR1  = 0;
+baselineFR2  = 0;
+
+meanORmedian = 'Median_ave';
+
+inputinfo1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+% inputinfo1 = input1;%(logicalinput1) - baselineFR1(logicalinput1);
+
+inputinfo2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+% inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
+
+ylabeltext = 'Firing rate (Hz)';
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{'; '}, subName1, {'   vs  '}, subName2);
+
+violin_jasperfabius( 1, inputinfo1, 'withmdn', 1, 'side', 'left', 'Kernelwidth', 3, 'facecolor', [0.5 0.5 0.5])
+hold on
+violin_jasperfabius( 1, inputinfo2, 'withmdn', 1, 'side', 'right', 'Kernelwidth', 3, 'facecolor', [0 0 0])
+ylabel(ylabeltext)
+title(titletext)
+%ylim([-30 30]); xlim([ 0.8 1.2]) ;
+fig_name = cell2mat(titletext);
+set(gcf,'NumberTitle', 'off', 'Name', fig_name);
+set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
+
+
+
+
+
+
+
+
+figure()
+% subplot(1, 2, 1)
+subName1 = 'SGandIS';
+epochName1 = 'wholeTrial';
+SNrsubtype1 = 'All neurons';
+subName2 = 'SGandIS';
+epochName2 = 'periReward';
+
+epochName = 'wholeTrial';
+baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
+baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+baselineFR1  = 0;
+baselineFR2  = 0;
+
+meanORmedian = 'Median_ave';
+
+inputinfo1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+% logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
+% inputinfo1 = input1;%(logicalinput1) - baselineFR1(logicalinput1);
+
+inputinfo2  = groupvar.(meanORmedian).(epochName2).(subName2);
+% logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
+% inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
+
+ylabeltext = 'Firing rate (Hz)';
+titletext = strcat(SNrsubtype1, {' '}, epochName1,{'; '}, subName1, {'   vs  '}, subName2);
+
+violin_jasperfabius( 1, inputinfo1, 'withmdn', 1, 'side', 'left', 'Kernelwidth', 3, 'facecolor', [0.5 0.5 0.5])
+hold on
+violin_jasperfabius( 1, inputinfo2, 'withmdn', 1, 'side', 'right', 'Kernelwidth', 3, 'facecolor', [0 0 0])
+ylabel(ylabeltext)
+title(titletext)
+%ylim([-30 30]); xlim([ 0.8 1.2]) ;
+fig_name = cell2mat(titletext);
+set(gcf,'NumberTitle', 'off', 'Name', fig_name);
+set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
+
+
+
+
+
+
+
+% 6/9/20
+
+% 
+% %how do we pull out trials that are SG contra/ipsi and those that are IS
+% %contra/ipsi
+% 
+% masterspikestruct_V2.FRstruct.case01_spike1_clust1.wholeTrial.SG
+% 
+% theValue = cell2mat(masterspikestruct_V2.FRstruct.case01_spike1_clust1.wholeTrial.SG(1));
+% 
+% YouripsiArray = cell2mat(masterspikestruct_V2.FRstruct.case01_spike1_clust1.wholeTrial.ipsi);
+% YourcontraArray = cell2mat(masterspikestruct_V2.FRstruct.case01_spike1_clust1.wholeTrial.contra);
+% 
+% theValue =
+% 
+% ismember(theValue, YourArray(:))
+
+%%
+
+figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis');
+filename2 = ('/masterspikestruct_V2');
+load(fullfile(figuresdir, filename2), 'masterspikestruct_V2');
+subName2_index = {'wholeTrial';'priors';'sensoryProcessing';'movePrep';'moveInit'; 'periReward'};
+subName2_index = {'sensoryProcessing'};
+
+for i = 1:length(masterspikestruct_V2.clustfileIndex)
+    
+    structLabel = masterspikestruct_V2.clustfileIndex{i};
+    
+    for k = 1:length(subName2_index)
+        subName2 = subName2_index{k};
+        
+        SGipsi_i = 1;
+        SGcontra_i = 1;
+        ISipsi_i = 1;
+        IScontra_i = 1;
+        
+        YouripsiArray = cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(subName2).ipsi);
+        YourcontraArray = cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(subName2).contra);
+        
+        %         if strcmp(masterspikestruct_V2.surgerySide_LorR{i}, 'R')
+        for m = 1:length(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(subName2).SG))
+            
+            theValue = cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(subName2).SG(m));
+            
+            
+            if ismember(theValue, YouripsiArray(:))
+                [lia,locb] = ismember(theValue, YouripsiArray(:));
+                YouripsiArray(locb) = NaN;
+                masterspikestruct_V2.FRstruct.(structLabel).(subName2).SGipsi(SGipsi_i) = theValue;
+                SGipsi_i = SGipsi_i+1;
+            elseif ismember(theValue, YourcontraArray(:))
+                [lia,locb] = ismember(theValue, YourcontraArray(:));
+                YourcontraArray(locb) = NaN;
+                masterspikestruct_V2.FRstruct.(structLabel).(subName2).SGcontra(SGcontra_i) = theValue;
+                SGcontra_i = SGcontra_i+1;
+            end
+        end
+        
+        
+        
+        for m = 1:length(cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(subName2).IS))
+            
+            theValue = cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(subName2).IS(m));
+            
+            YouripsiArray = cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(subName2).ipsi);
+            YourcontraArray = cell2mat(masterspikestruct_V2.FRstruct.(structLabel).(subName2).contra);
+            
+            if ismember(theValue, YouripsiArray(:))
+                masterspikestruct_V2.FRstruct.(structLabel).(subName2).ISipsi(ISipsi_i) = theValue;
+                ISipsi_i = ISipsi_i+1;
+            elseif ismember(theValue, YourcontraArray(:))
+                masterspikestruct_V2.FRstruct.(structLabel).(subName2).IScontra(IScontra_i) = theValue;
+                IScontra_i = IScontra_i+1;
+            end
+        end
+        
+        
+        
+    end
+end
+
+
+            
+% 
+%             masterspikestruct_V2.FRstruct.(structLabel).(subName2).ipsi = masterspikestruct_V2.FRstruct.(structLabel).(subName2).R;
+%             masterspikestruct_V2.FRstruct.(structLabel).(subName2).contra = masterspikestruct_V2.FRstruct.(structLabel).(subName2).L;
+%             
+%             masterspikestruct_V2.Median_ave.(structLabel).(subName2).ipsi = masterspikestruct_V2.Median_ave.(structLabel).(subName2).R;
+%             masterspikestruct_V2.Median_ave.(structLabel).(subName2).contra = masterspikestruct_V2.Median_ave.(structLabel).(subName2).L;
+%             
+%             masterspikestruct_V2.Mean_ave.(structLabel).(subName2).ipsi = masterspikestruct_V2.Mean_ave.(structLabel).(subName2).R;
+%             masterspikestruct_V2.Mean_ave.(structLabel).(subName2).contra = masterspikestruct_V2.Mean_ave.(structLabel).(subName2).L;
+%             
+%             
+%             
+%         elseif strcmp(masterspikestruct_V2.surgerySide_LorR{i}, 'L')
+%             
+%             masterspikestruct_V2.FRstruct.(structLabel).(subName2).ipsi = masterspikestruct_V2.FRstruct.(structLabel).(subName2).L;
+%             masterspikestruct_V2.FRstruct.(structLabel).(subName2).contra = masterspikestruct_V2.FRstruct.(structLabel).(subName2).R;
+%             
+%             masterspikestruct_V2.Median_ave.(structLabel).(subName2).ipsi = masterspikestruct_V2.Median_ave.(structLabel).(subName2).L;
+%             masterspikestruct_V2.Median_ave.(structLabel).(subName2).contra = masterspikestruct_V2.Median_ave.(structLabel).(subName2).R;
+%             
+%             masterspikestruct_V2.Mean_ave.(structLabel).(subName2).ipsi = masterspikestruct_V2.Mean_ave.(structLabel).(subName2).L;
+%             masterspikestruct_V2.Mean_ave.(structLabel).(subName2).contra = masterspikestruct_V2.Mean_ave.(structLabel).(subName2).R;
+%             
+%         end
+%         
+%     end
+%     
+%     
+% end
+
+
+
+
+
+
+
+%% need to include some pref calculations for the reformatting spike info that is in the tsne code.
+
+num_iter = 500;
+analysis_to_perform = 'leftchoice_vs_rightchoice';
+if caseNumb == 1 || caseNumb == 2 || caseNumb == 3
+    epochs = {[2 3];[2 4];[2 5]; [888 -1 2 888 0.1 2 ];[888 -0.1 5 999 1 5]};
+else
+    epochs = {[2 3];[2 4];[2 5]; [888 -1 2 888 0.1 2 ];[888 -0.1 5 999 1 5];[2 7];[4 7];[888 -0.1 7 999 1 7];};
+end
+
+
+raster_info = IS_raster_info;
+%4/1/20; AT note - %%[888 -0.5 3 888 -0.25 3] - Between 0.5 and 0.25 seconds before event 3
+%input used for hemiPD: {[1 2]; [8 3]; [888 0 3 999 3 .250]; [999 3 0.250 999 4 0]; [3 4];}
+[IS_preference, IS_roc_p, IS_activity_info] = CellPreference_io_V1(raster_info, num_iter, analysis_to_perform, epochs);
+
+
+%the key input is below, first is a column vector for 'L', second is for
+%'R', third is number of iterations
+num_iter = 200;
+
+input1 = 0
+input2 = 0
+[pref, rp] = ROC_preference(L_spikes', R_spikes', num_iter); % Calls new ROC function
+
+
+
+%%
+
+
+
+
+
+
+
+
+
+% %
+% for i = 1:length(masterspikestruct_V2.clustfileIndex)
+%     if strcmp(masterspikestruct_V2.DA_or_GABA_TSNE{i}, 'GABA')  
+%     masterspikestruct_V2.DA_or_GABA_TSNE{i} = 'DANn'
+%     elseif strcmp(masterspikestruct_V2.DA_or_GABA_TSNE{i}, 'DANn')  
+%     masterspikestruct_V2.DA_or_GABA_TSNE{i} = 'GABA'
+%     end
+%     
+%     
+% end
+
+
+
+
+
+figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis');
+filename2 = ('/masterspikestruct_V2');
+load(fullfile(figuresdir, filename2), 'masterspikestruct_V2');
+subName2_index = {'wholeTrial';'priors';'sensoryProcessing';'movePrep';'moveInit'; 'periReward'};
+
+for i = 1:length(masterspikestruct_V2.clustfileIndex)
+    
+    structLabel = masterspikestruct_V2.clustfileIndex{i};
+    
+    for k = 1:length(subName2_index)
+        subName2 = subName2_index{k};
+        
+        if strcmp(masterspikestruct_V2.surgerySide_LorR{i}, 'R')
+            
+            masterspikestruct_V2.FRstruct.(structLabel).(subName2).ipsi = masterspikestruct_V2.FRstruct.(structLabel).(subName2).R;
+            masterspikestruct_V2.FRstruct.(structLabel).(subName2).contra = masterspikestruct_V2.FRstruct.(structLabel).(subName2).L;
+            
+            masterspikestruct_V2.Median_ave.(structLabel).(subName2).ipsi = masterspikestruct_V2.Median_ave.(structLabel).(subName2).R;
+            masterspikestruct_V2.Median_ave.(structLabel).(subName2).contra = masterspikestruct_V2.Median_ave.(structLabel).(subName2).L;
+            
+            masterspikestruct_V2.Mean_ave.(structLabel).(subName2).ipsi = masterspikestruct_V2.Mean_ave.(structLabel).(subName2).R;
+            masterspikestruct_V2.Mean_ave.(structLabel).(subName2).contra = masterspikestruct_V2.Mean_ave.(structLabel).(subName2).L;
+            
+            
+            
+        elseif strcmp(masterspikestruct_V2.surgerySide_LorR{i}, 'L')
+            
+            masterspikestruct_V2.FRstruct.(structLabel).(subName2).ipsi = masterspikestruct_V2.FRstruct.(structLabel).(subName2).L;
+            masterspikestruct_V2.FRstruct.(structLabel).(subName2).contra = masterspikestruct_V2.FRstruct.(structLabel).(subName2).R;
+            
+            masterspikestruct_V2.Median_ave.(structLabel).(subName2).ipsi = masterspikestruct_V2.Median_ave.(structLabel).(subName2).L;
+            masterspikestruct_V2.Median_ave.(structLabel).(subName2).contra = masterspikestruct_V2.Median_ave.(structLabel).(subName2).R;
+            
+            masterspikestruct_V2.Mean_ave.(structLabel).(subName2).ipsi = masterspikestruct_V2.Mean_ave.(structLabel).(subName2).L;
+            masterspikestruct_V2.Mean_ave.(structLabel).(subName2).contra = masterspikestruct_V2.Mean_ave.(structLabel).(subName2).R;
+            
+        end
+        
+    end
+    
+    
+end
+
+
+
+    
+a = 2;
+    
+
+%%
+
+% below generate the structs we need 
+casen = 1;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+close all
+casen = 2;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+close all
+
+casen = 3;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
+close all
+
+casen = 4;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
+close all
+
+casen = 5;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
+
+close all
+casen = 6;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
+
+close all
+casen = 7;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
+
+close all
+casen = 8;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
+close all
+
+casen = 9;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
+
+close all
+casen = 10;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'R')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'R')
+
+close all
+
+casen = 11;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'L')
+
+close all
+casen = 12;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'L')
+close all
+
+casen = 13;
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike1', 3,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 1,1, 'L')
+spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike2', 3,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 1,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 2,1, 'L')
+% spiketrainexaction_AnalysisStruct_V6(casen, 'spike3', 3,1, 'L')
+
+
+
+%%
 
 casen = 1;
 FRanalysis_helperfx_V2(casen, 'spike1', 1,1)

@@ -22,6 +22,13 @@ function [] = behavior_postIO_V1(caseNumb)
 %specifically the 'processed_spikes_V2' folder. If there's a .jpg file,
 %means that there were more than 1 cluster after spike sorting
 exclusionFilter = 0; %set to 1 if we want to exclude 5050's; set to 2 if we want to exclude 5050's AND hard trials'
+%AT 3/30/20 - we want to keep the cutNearOEs to '1', always.
+cutNearOEs = 0; %point of this input is to remove trials in which rxn is essentially zero; means that pt had already initiate movement before go tone could have been heard
+
+% 4/21/20; keep cutfirst3trials to 0, however I am excluding the first
+% three trials regardless - just doing so in a different manner than with
+% the below input to helper fxs
+cutfirst3trials = 0; %set to 1 to cut first three trials of session
 
 %below variable determines whether we sort out the 'easy', 'hard', or
 %concat both types of trials
@@ -30,13 +37,31 @@ exclusionFilter = 0; %set to 1 if we want to exclude 5050's; set to 2 if we want
 inputSetting = 'concat';
 
 
-if exclusionFilter == 0
-    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_nofilter.mat', 'postIO_behavior')
-elseif exclusionFilter == 1
-    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050s.mat', 'postIO_behavior')
-elseif exclusionFilter == 2
-    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050snoHardSG.mat', 'postIO_behavior')
+if exclusionFilter == 0 && strcmp('concat', inputSetting)
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_nofilter_concat.mat', 'postIO_behavior')
+elseif exclusionFilter == 1 && strcmp('concat', inputSetting)
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050s_concat.mat', 'postIO_behavior')
+elseif exclusionFilter == 2 && strcmp('concat', inputSetting)
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050snoHardSG_concat.mat', 'postIO_behavior')
+
+elseif exclusionFilter == 0 && strcmp('easy', inputSetting)
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_nofilter_easy.mat', 'postIO_behavior')
+elseif exclusionFilter == 1 && strcmp('easy', inputSetting)
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050s_easy.mat', 'postIO_behavior')
+elseif exclusionFilter == 2 && strcmp('easy', inputSetting)
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050snoHardSG_easy.mat', 'postIO_behavior')
+
+elseif exclusionFilter == 0 && strcmp('hard', inputSetting)
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_nofilter_hard.mat', 'postIO_behavior')
+elseif exclusionFilter == 1 && strcmp('hard', inputSetting)
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050s_hard.mat', 'postIO_behavior')
+elseif exclusionFilter == 2 && strcmp('hard', inputSetting)
+    load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050snoHardSG_hard.mat', 'postIO_behavior')
 end
+
+
+
+
 
 if nargin == 0
 %post for case 2, 4, 6, 7, 8, 10, 11, 13 (these are listed as
@@ -53,13 +78,6 @@ end
 % end
 
 
-%AT 3/30/20 - we want to keep the cutNearOEs to '1', always.
-cutNearOEs = 1; %point of this input is to remove trials in which rxn is essentially zero; means that pt had already initiate movement before go tone could have been heard
-
-% 4/21/20; keep cutfirst3trials to 0, however I am excluding the first
-% three trials regardless - just doing so in a different manner than with
-% the below input to helper fxs
-cutfirst3trials = 0; %set to 1 to cut first three trials of session
 
 %for most of behavior plots, we're going to want to exclude case 8 and 9
 %since we focus on spaghetti plots
@@ -170,7 +188,9 @@ choice_trials = choice_trials_L + choice_trials_R; %AT making combined SG index
 %AT adding below 4/21/20, this removes the first three trials (which are
 %always SG) from consideration for behavior. note that io_taskindexing_V3
 %excludes the first three trials from consideration for counting errors
-choice_trials(1:3) = 0;
+if cutfirst3trials == 1
+    choice_trials(1:3) = 0;
+end
 
 nochoice_trials = nochoice_trials_L + nochoice_trials_R; %AT making combined SG index
 
@@ -295,7 +315,9 @@ choice_trials = choice_trials_L + choice_trials_R; %AT making combined SG index
 %AT adding below 4/21/20, this removes the first three trials (which are
 %always SG) from consideration for behavior. note that io_taskindexing_V3
 %excludes the first three trials from consideration for counting errors
-choice_trials(1:3) = 0;
+if cutfirst3trials == 1
+    choice_trials(1:3) = 0;
+end
 
 nochoice_trials = nochoice_trials_L + nochoice_trials_R; %AT making combined SG index
 
@@ -365,13 +387,28 @@ postIO_behavior.(caseName).(ONorOFF).errors.IS = errors.ISerrors;
 
 
 
-if exclusionFilter == 0
-    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_nofilter.mat', 'postIO_behavior')
-elseif exclusionFilter == 1
-    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050s.mat', 'postIO_behavior')
-elseif exclusionFilter == 2
-    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050snoHardSG.mat', 'postIO_behavior')
+if exclusionFilter == 0 && strcmp('concat', inputSetting)
+    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_nofilter_concat.mat', 'postIO_behavior')
+elseif exclusionFilter == 1 && strcmp('concat', inputSetting)
+    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050s_concat.mat', 'postIO_behavior')
+elseif exclusionFilter == 2 && strcmp('concat', inputSetting)
+    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050snoHardSG_concat.mat', 'postIO_behavior')
+
+elseif exclusionFilter == 0 && strcmp('easy', inputSetting)
+    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_nofilter_easy.mat', 'postIO_behavior')
+elseif exclusionFilter == 1 && strcmp('easy', inputSetting)
+    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050s_easy.mat', 'postIO_behavior')
+elseif exclusionFilter == 2 && strcmp('easy', inputSetting)
+    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050snoHardSG_easy.mat', 'postIO_behavior')
+
+elseif exclusionFilter == 0 && strcmp('hard', inputSetting)
+    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_nofilter_hard.mat', 'postIO_behavior')
+elseif exclusionFilter == 1 && strcmp('hard', inputSetting)
+    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050s_hard.mat', 'postIO_behavior')
+elseif exclusionFilter == 2 && strcmp('hard', inputSetting)
+    save('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_postIO/behavior_struct_postIO_no5050snoHardSG_hard.mat', 'postIO_behavior')
 end
+
 
 
 

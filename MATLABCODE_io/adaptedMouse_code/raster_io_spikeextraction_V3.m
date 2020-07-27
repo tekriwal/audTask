@@ -121,13 +121,17 @@ for epoch_ind = 1:length(epochInfo.epochs)
     ref_time2 = eval(epochInfo.epochs{epoch_ind, 3});      %this is the first event in the epoch
     ref_time2_offset = epochInfo.epochs{epoch_ind, 4};  %this is the offset for the above
     
-    
+    epochTimes = zeros(length(trial_start_times), 2);
     for trial_num = 1:length(trial_start_times)
         %AT 4/26/20 editting below so that ref_time is now ref_time_start,
         %conveys start of epoch we're interested in (already was doing this),
         %and importantly adding ref_time_end
         ref_time_start = trial_start_times(trial_num) + ref_time1(trial_num) + (ref_time1_offset); % absolute time of event to reference spikes to
         ref_time_end = trial_start_times(trial_num) + ref_time2(trial_num) + (ref_time2_offset); % absolute time of event to reference spikes to
+        
+        %AT adding below 6/20 to save out info to be used in LFP analyses
+        epochTimes(trial_num,1) = ref_time_start;
+        epochTimes(trial_num,2) = ref_time_end;
         
         if ~isnan(ref_time_start) % ref_time will be NaN if the particular event did not occur in this trial
             
@@ -169,6 +173,8 @@ for epoch_ind = 1:length(epochInfo.epochs)
     spikestruct.(epochInfo.epochNames{epoch_ind}).FR = ref_spike_times_FR;
     spikestruct.(epochInfo.epochNames{epoch_ind}).waveformfeatures_times = waveformfeatures_times;
     
+    %AT added below output on 6/20
+    spikestruct.(epochInfo.epochNames{epoch_ind}).epochTimes = epochTimes;
     
     
     

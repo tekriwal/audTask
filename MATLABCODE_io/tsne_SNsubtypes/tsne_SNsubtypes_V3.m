@@ -6,20 +6,24 @@
 %% below input is important if not trying to run new clustering inputs
 % newYinput = 0; %set to 1 to calculate new tsne input, or 0 if loading old
 filename2Yinput = ('/fantastic_tsne_May30_V1'); %'/fantastic_tsne6' is a good one too
-
+filenameRamayyaComparisoninput = ('/Yinput_tsneramayya_replication_option3');
 loadY = 1; %set to 1 if we want to use old 'Y', redundant with newYinput?
 
-indexSTNmanual = 0; %this input is pretty important, if set to 0 then the STN stay in, otherwise they get cut one way or another
+indexSTNmanual = 1; %this input is pretty important, if set to 0 then the STN stay in, otherwise they get cut one way or another
 checkFRdistribution = 0; %this is for checking that the FR distributions are mono-peaked
 
 saveFig = 0;
 % function [] = FRanalysis_V1(caseNumb, spikeFile, clust, saveFig)
+caselabelON = 1; %set to '1' if we want the caseID's on the scatter
+
+markersize = 35;
+fontsize = 18;
 
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis');
 filename2 = ('/masterspikestruct_V2');
 load(fullfile(figuresdir, filename2), 'masterspikestruct_V2');
-subName2_index = {'SGandIS';'SG';'IS';'L';'R'};
+subName2_index = {'SGandIS';'SG';'IS';'L';'R'; 'Corrects'; 'Incorrects'};
 
 for i = 1:length(masterspikestruct_V2.clustfileIndex)
     
@@ -476,9 +480,9 @@ inputWvWdth = input3_1;
 
 FRindex_Ramayya = zeros(size(inputFR'));
 for i = 1:length(FRindex_Ramayya)
-    if inputFR(i) < 15 && inputWvWdth(i) > 0.7 %Ramayya used .8 for waveform duration,
+    if inputFR(i) < 15 && inputWvWdth(i) > 0.8 %Ramayya used .8 for waveform duration,
         FRindex_Ramayya(i) = 1; %Dopa
-    elseif inputFR(i) > 15 && inputWvWdth(i) < 0.7
+    elseif inputFR(i) > 15 && inputWvWdth(i) < 0.8
         FRindex_Ramayya(i) = 2; %Gaba
     else
         FRindex_Ramayya(i) = 3; %Misc
@@ -487,8 +491,8 @@ end
 
 
 if indexSTNmanual == 1
-    STNindex = [32, 28, 20, 8];
-    %     STNindex = [32, 28];
+    %     STNindex = [32, 28, 20, 8];
+    STNindex = [32, 28];
     
     for i = 1:length(STNindex)
         k = STNindex(i);
@@ -566,13 +570,47 @@ if indexSTNmanual == 1
         groupvar.(meanORmedian).(epochName).(subName)(k) = [];
         epochName = 'periReward';
         groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+  
+        subName = 'Corrects';
+        meanORmedian = 'Median_ave';
+        epochName = 'wholeTrial';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'priors';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'sensoryProcessing';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'movePrep';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'moveInit';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'periReward';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        
+        
+        subName = 'Incorrects';
+        meanORmedian = 'Median_ave';
+        epochName = 'wholeTrial';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'priors';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'sensoryProcessing';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'movePrep';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'moveInit';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        epochName = 'periReward';
+        groupvar.(meanORmedian).(epochName).(subName)(k) = [];
+        
         
         masterspikestruct_V2.anatomLocation(k) = [];
         masterspikestruct_V2.clustfileIndex(k) = [];
+        masterspikestruct_V2.DA_or_GABA_TSNE(k) = [];
         FRindex(k) = [];
         FRindex_Ramayya(k) = [];
         inputFR(k) = [];
         inputWvWdth(k) = [];
+        
         
     end
 end
@@ -590,13 +628,18 @@ if indexSTNmanual == 2
     inputWvWdth_noSTN = inputWvWdth(STNindex);
     FRindex_Ramayya_noSTN = FRindex_Ramayya(STNindex);
     %     c = cell2mat(masterspikestruct_V2.clustfileIndex(STNindex));
-    gscatter(inputFR_noSTN, inputWvWdth_noSTN, FRindex_Ramayya_noSTN)
+    h = gscatter(inputFR_noSTN, inputWvWdth_noSTN, FRindex_Ramayya_noSTN);
     %     text(inputFR_noSTN+dx, inputWvWdth_noSTN(:,2)+dy, c);
-    
+    h(1).MarkerSize = markersize;
+    h(2).MarkerSize = markersize;
 else
     
     %     c = cell2mat(masterspikestruct_V2.clustfileIndex);
-    gscatter(inputFR, inputWvWdth, FRindex_Ramayya)
+    h = gscatter(inputFR, inputWvWdth, FRindex_Ramayya);
+    h(1).MarkerSize = markersize;
+    h(2).MarkerSize = markersize;
+    
+    
     %     text(inputFR+dx, inputWvWdth(:,2)+dy, c);
     
 end
@@ -605,13 +648,14 @@ end
 
 
 line([15,15], [0, 1], 'Color',[.5 .5 .5],'LineStyle','--')
-line([0, 120],[0.7,0.7], 'Color',[.5 .5 .5],'LineStyle','--')
+line([0, 120],[0.8,0.8], 'Color',[.5 .5 .5],'LineStyle','--')
 
 xlabel('Baseline FR')
 ylabel('Wavewidth (ms)')
-legend('Dopa','Gaba', 'Unclassified')
-title('Replicating Ramayya''s classification strategy (possible supp figure)')
-
+legend('Gaba', 'Unclassified', 'Dopa')
+title('Thresholding cluster approach')
+set(gca, 'FontSize', fontsize, 'FontName', 'Georgia')
+box('off')
 
 
 
@@ -625,32 +669,119 @@ c = cell2mat(masterspikestruct_V2.clustfileIndex);
 
 STNindex = ~strcmp(masterspikestruct_V2.SNr_or_STN_IMAGING, 'STN');
 
-if indexSTNmanual == 2
+if loadY == 1
+    figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Manuscript','Figures','Figures_rawfiles', 'Supplemental', 'Ramayya_clustering_supp');
+    %     filename2 = ('/fantastic_tsne5'); %'/fantastic_tsne6' is a good one too
+    load(fullfile(figuresdir, filenameRamayyaComparisoninput), 'Y_noSTN_ramayya_comparison');
+%     Y_noSTN_ramayya_comparison = Y_ramayya_comparison(any(STNindex,2),:); %indexes across multiple columns in Y
+    c = cell2mat(masterspikestruct_V2.clustfileIndex);
+    h = gscatter(Y_noSTN_ramayya_comparison(:,1),Y_noSTN_ramayya_comparison(:,2),FRindex_Ramayya);
+    h(1).MarkerSize = markersize;
+    h(2).MarkerSize = markersize;
+elseif  loadY ~= 1 && indexSTNmanual == 2
     Y_noSTN_ramayya_comparison = Y_ramayya_comparison(any(STNindex,2),:); %indexes across multiple columns in Y
     FRindex_Ramayya_noSTN = FRindex_Ramayya(STNindex);
     c = cell2mat(masterspikestruct_V2.clustfileIndex(STNindex));
-    gscatter(Y_noSTN_ramayya_comparison(:,1),Y_noSTN_ramayya_comparison(:,2),FRindex_Ramayya_noSTN)
+    h = gscatter(Y_noSTN_ramayya_comparison(:,1),Y_noSTN_ramayya_comparison(:,2),FRindex_Ramayya_noSTN);
+    h(1).MarkerSize = markersize;
+    h(2).MarkerSize = markersize;
     % c = cell2mat(masterspikestruct_V2.clustfileIndex);
     text(Y_noSTN_ramayya_comparison(:,1)+dx, Y_noSTN_ramayya_comparison(:,2)+dy, c);
-elseif indexSTNmanual == 1
+elseif  loadY ~= 1 && indexSTNmanual == 1
     Y_noSTN_ramayya_comparison = Y_ramayya_comparison(any(STNindex,2),:); %indexes across multiple columns in Y
     c = cell2mat(masterspikestruct_V2.clustfileIndex);
-    gscatter(Y_noSTN_ramayya_comparison(:,1),Y_noSTN_ramayya_comparison(:,2),FRindex_Ramayya)
+    h = gscatter(Y_noSTN_ramayya_comparison(:,1),Y_noSTN_ramayya_comparison(:,2),FRindex_Ramayya);
+    h(1).MarkerSize = markersize;
+    h(2).MarkerSize = markersize;
     % c = cell2mat(masterspikestruct_V2.clustfileIndex);
-    text(Y_noSTN_ramayya_comparison(:,1)+dx, Y_noSTN_ramayya_comparison(:,2)+dy, c);
+    
+    %     %6/1/20, below we'll want commented out for actual fig, nice to see the labels though for processing
+    %     text(Y_noSTN_ramayya_comparison(:,1)+dx, Y_noSTN_ramayya_comparison(:,2)+dy, c);
 else
     
-    % Y(32,:) = [];
-    %below is simplified input rep. classic way this is done
-    gscatter(Y_ramayya_comparison(:,1),Y_ramayya_comparison(:,2),FRindex_Ramayya)
-    % c = cell2mat(masterspikestruct_V2.clustfileIndex);
-    text(Y_ramayya_comparison(:,1)+dx, Y_ramayya_comparison(:,2)+dy, c);
+    h =  gscatter(Y_ramayya_comparison(:,1),Y_ramayya_comparison(:,2),FRindex_Ramayya);
+    h(1).MarkerSize = markersize;
+    h(2).MarkerSize = markersize;
+    %     %6/1/20, below we'll want commented out for actual fig, nice to see the
+    %     %labels though for processing
+    if caselabelON == 1
+        text(Y_ramayya_comparison(:,1)+dx, Y_ramayya_comparison(:,2)+dy, c);
+    end
     
 end
 
 
 title('tSNE using same inputs as Ramayya''s strategy (possible supp figure)')
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+set(gca, 'FontSize', fontsize, 'FontName', 'Georgia')
+box('off')
+
+
+%quantification that tSNE doesn't do much with the two inputs of wavelength
+%and ave FR
+
+figure()
+
+if strcmp(filename2Yinput,'/fantastic_tsne2')
+    idx = dbscan(Y_ramayya_comparison,80,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filename2Yinput,'/fantastic_tsne3')
+    idx = dbscan(Y_ramayya_comparison,145,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filename2Yinput,'/fantastic_tsne4')
+    idx = dbscan(Y_ramayya_comparison,45,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filename2Yinput,'/fantastic_tsne5')
+    idx = dbscan(Y_ramayya_comparison,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filename2Yinput,'/fantastic_tsne6')
+    idx = dbscan(Y_ramayya_comparison,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
+    
+elseif strcmp(filenameRamayyaComparisoninput,'/Yinput_tsneramayya_replication_option3')
+    idx = dbscan(Y_noSTN_ramayya_comparison,300,1); %
+end
+
+
+h = gscatter(Y_noSTN_ramayya_comparison(:,1),Y_noSTN_ramayya_comparison(:,2),idx);
+h(1).MarkerSize = markersize;
+h(1).MarkerFaceColor = [1 1 1];
+h(1).MarkerEdgeColor = [0 0 0];
+h(1).LineWidth = .001;
+
+h(2).MarkerSize = markersize;
+h(2).MarkerFaceColor = [.5 .5 .5];
+h(2).MarkerEdgeColor = [.5 .5 .5];
+h(2).LineWidth = .1;
+% c = cell2mat(masterspikestruct_V2.clustfileIndex);
+c = cell2mat(masterspikestruct_V2.clustfileIndex);
+if caselabelON == 1
+    text(Y_noSTN_ramayya_comparison(:,1)+dx, Y_noSTN_ramayya_comparison(:,2)+dy, c);
+end
+title('Ramayya comparison, DBSCAN (supp)')
+set(gca, 'FontSize', fontsize, 'FontName', 'Georgia')
+box('off')
+
+
+
+figure()
+kidx = kmeans(Y_noSTN_ramayya_comparison, 2); % The default distance metric is squared Euclidean distance
+h = gscatter(Y_noSTN_ramayya_comparison(:,1),Y_noSTN_ramayya_comparison(:,2),kidx);
+h(1).MarkerSize = markersize;
+h(1).MarkerFaceColor = [1 1 1];
+h(1).MarkerEdgeColor = [0 0 0];
+h(1).LineWidth = .001;
+
+h(2).MarkerSize = markersize;
+h(2).MarkerFaceColor = [.5 .5 .5];
+h(2).MarkerEdgeColor = [.5 .5 .5];
+h(2).LineWidth = .1;
+% c = cell2mat(masterspikestruct_V2.clustfileIndex);
+c = cell2mat(masterspikestruct_V2.clustfileIndex);
+if caselabelON == 1
+    text(Y_noSTN_ramayya_comparison(:,1)+dx, Y_noSTN_ramayya_comparison(:,2)+dy, c);
+end
+title('Ramayya comparison, K-Means (supp)')
+set(gca, 'FontSize', fontsize, 'FontName', 'Georgia')
+box('off')
 
 
 
@@ -699,17 +830,29 @@ elseif indexSTNmanual == 0
 end
 
 
+%remember that we've cut out #'s 28 and 32, so #30 below is #29
+groups_tSNE_determined = ones(size(inputFR'));
+for i = 1:length(groups_tSNE_determined)
+    if strcmp(masterspikestruct_V2.DA_or_GABA_TSNE(i), 'DANn')
+        groups_tSNE_determined(i) = 2;
+    end
+end
 
-groupsAsOfJune1st = ones(size(inputFR'));
-groupsAsOfJune1st(6) = 2; %2's are dopamine
-groupsAsOfJune1st(7) = 2;
-groupsAsOfJune1st(16) = 2;
-groupsAsOfJune1st(30) = 2;
+% %remember that we've cut out #'s 28 and 32, so #30 below is #29
+% groups_tSNE_determined(6) = 2; %2's are dopamine
+% groups_tSNE_determined(7) = 2;
+% groups_tSNE_determined(16) = 2;
+% groups_tSNE_determined(29) = 2;
 
-groupsAsOfJune1st(8) = 3; %3's are STN
-groupsAsOfJune1st(20) = 3; %3's are STN
-groupsAsOfJune1st(28) = 3; %3's are STN
-groupsAsOfJune1st(32) = 3; %3's are STN
+
+
+% AT 6/1/20 - don't need to do below because we're cutting out the two
+% trials ID'ed on IO notes and JT's processing as being STN. Those are case
+% 9 lead 1 (#28) and case 11 lead 2 (#32)
+% groupsAsOfJune1st(8) = 3; %3's are STN
+% groupsAsOfJune1st(20) = 3; %3's are STN
+% groupsAsOfJune1st(28) = 3; %3's are STN
+% groupsAsOfJune1st(32) = 3; %3's are STN
 
 % for i = 1:length(groupsAsOfJune1st)
 %     if inputFR(i) < 15 && inputWvWdth(i) > 0.7 %Ramayya used .8 for waveform duration,
@@ -729,15 +872,20 @@ groupsAsOfJune1st(32) = 3; %3's are STN
 %below is the fantastictsne inputs for March 30th V1
 % tsneInput = [input1_1',input3_1',input5_1', input7_1',  input9_1', input11_1',  input13_1'];
 % Y = tsne(tsneInput);
-Y_noSTN = Y;
+% Y_noSTN = Y;
 figure()
 % Y = tsne(tsneInput);
-gscatter(Y_noSTN(:,1),Y_noSTN(:,2),groupsAsOfJune1st)
+h = gscatter(Y_noSTN(:,1),Y_noSTN(:,2),groups_tSNE_determined);
+h(1).MarkerSize = markersize;
+h(2).MarkerSize = markersize;
 % c = cell2mat(masterspikestruct_V2.clustfileIndex);
 c = cell2mat(masterspikestruct_V2.clustfileIndex);
-text(Y_noSTN(:,1)+dx, Y_noSTN(:,2)+dy, c);
+if caselabelON == 1
+    text(Y_noSTN(:,1)+dx, Y_noSTN(:,2)+dy, c);
+end
 title('tSNE')
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+set(gca, 'FontSize', fontsize, 'FontName', 'Georgia')
+box('off')
 
 
 
@@ -764,51 +912,932 @@ elseif strcmp(filename2Yinput,'/fantastic_tsne6')
     idx = dbscan(Y,100,1); % The default distance metric is Euclidean distance %80 for 2, 45 for 3
     
 elseif strcmp(filename2Yinput,'/fantastic_tsne_May30_V1')
-    idx = dbscan(Y,300,1); % for this one, from 300 until 204 gives just 2 clusters
+    idx = dbscan(Y_noSTN,300,1); % for this one, from 300 until 204 gives just 2 clusters
 end
 
 
-gscatter(Y(:,1),Y(:,2),idx);
+h = gscatter(Y_noSTN(:,1),Y_noSTN(:,2),idx);
+h(1).MarkerSize = markersize;
+h(2).MarkerSize = markersize;
 % c = cell2mat(masterspikestruct_V2.clustfileIndex);
 c = cell2mat(masterspikestruct_V2.clustfileIndex);
-text(Y(:,1)+dx, Y(:,2)+dy, c);
+if caselabelON == 1
+    text(Y_noSTN(:,1)+dx, Y_noSTN(:,2)+dy, c);
+end
 title('DBSCAN Using Euclidean Distance Metric')
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+set(gca, 'FontSize', fontsize, 'FontName', 'Georgia')
+box('off')
 
 
 
 figure()
-kidx = kmeans(Y, 2); % The default distance metric is squared Euclidean distance
-gscatter(Y(:,1),Y(:,2),kidx);
+kidx = kmeans(Y_noSTN, 2); % The default distance metric is squared Euclidean distance
+h = gscatter(Y_noSTN(:,1),Y_noSTN(:,2),kidx);
+h(1).MarkerSize = markersize;
+h(2).MarkerSize = markersize;
 % c = cell2mat(masterspikestruct_V2.clustfileIndex);
 c = cell2mat(masterspikestruct_V2.clustfileIndex);
-text(Y(:,1)+dx, Y(:,2)+dy, c);
+if caselabelON == 1
+    text(Y_noSTN(:,1)+dx, Y_noSTN(:,2)+dy, c);
+end
 title('K-Means Using Squared Euclidean Distance Metric')
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+set(gca, 'FontSize', fontsize, 'FontName', 'Georgia')
+box('off')
 
 
 
 
 
-%% AT we need to assess whether or not there's differences in some neurons in perireward vs others
+%% AT we need to assess whether or not there's differences in some neurons in particular epochs to help define whether cells are putative DANn or GABA (perireward vs others)
 
-%below is comparing just FR using some simple thresholds
+%below is looking at tsne justification
+
+GABAindex = ~strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, 'DANn');
+DANnindex = ~strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, 'GABA');
 
 % figure()
 % subplot(1, 2, 1)
-subName1 = 'SGandIS';
-epochName1 = 'periReward';
+meanORmedian = 'Median_ave';
+epochName = 'periReward';
 
-epochName = 'wholeTrial';
-baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1));
-% baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
+subName1 = 'Corrects';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_correctsperiReward = input1(DANnindex);
+
+subName1 = 'Incorrects';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_incorrectsperiReward = input1(DANnindex);
+
+
+subName1 = 'Corrects';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_correctsperiReward = input1(GABAindex);
+
+subName1 = 'Incorrects';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_incorrectsperiReward = input1(GABAindex);
+
+
+
 
 meanORmedian = 'Median_ave';
+epochName = 'wholeTrial';
 
-input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
+subName1 = 'Corrects';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_correctswholeTrial = input1(DANnindex);
+
+subName1 = 'Incorrects';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_incorrectswholeTrial = input1(DANnindex);
+
+
+subName1 = 'Corrects';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_correctswholeTrial = input1(GABAindex);
+
+subName1 = 'Incorrects';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_incorrectswholeTrial = input1(GABAindex);
+
+
+
+meanORmedian = 'Median_ave';
+epochName = 'movePrep';
+
+subName1 = 'L';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_LmovePrep = input1(DANnindex);
+
+subName1 = 'R';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_RmovePrep = input1(DANnindex);
+
+
+subName1 = 'L';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_LmovePrep = input1(GABAindex);
+
+subName1 = 'R';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_RmovePrep = input1(GABAindex);
+
+
+meanORmedian = 'Median_ave';
+epochName = 'moveInit';
+
+subName1 = 'L';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_LmoveInit = input1(DANnindex);
+
+subName1 = 'R';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_RmoveInit = input1(DANnindex);
+
+
+subName1 = 'L';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_LmoveInit = input1(GABAindex);
+
+subName1 = 'R';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_RmoveInit = input1(GABAindex);
+
+
+
+meanORmedian = 'Median_ave';
+epochName = 'priors';
+
+subName1 = 'L';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_Lpriors = input1(DANnindex);
+
+subName1 = 'R';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputDANn_Rpriors = input1(DANnindex);
+
+
+subName1 = 'L';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_Lpriors = input1(GABAindex);
+
+subName1 = 'R';
+input1  = (groupvar.(meanORmedian).(epochName).(subName1));
+inputGABA_Rpriors = input1(GABAindex);
+
+
+
+
+% 6/5/20; feedback epoch 
+figure()
+subplot(1,2,1)
+
+szz = 75;
+
+input1 = inputDANn_correctsperiReward;
+input2 = inputDANn_incorrectsperiReward;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'Corrects', 'Incorrects'});
+ylabel('Feedback, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('DANn,',str));
+
+
+ylim([0 120]);
+xlim([.95 1.25]);
+
+
+subplot(1,2,2)
+szz = 75;
+
+input1 = inputGABA_correctsperiReward;
+input2 = inputGABA_incorrectsperiReward;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'Corrects', 'Incorrects'});
+ylabel('Feedback, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+
+
+ylim([0 120]);
+xlim([.95 1.25]);
+
+
+
+% 6/5/20; movePrep epoch, L vs R 
+figure()
+subplot(1,2,1)
+
+szz = 75;
+
+input1 = inputDANn_LmovePrep;
+input2 = inputDANn_RmovePrep;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'L', 'R'});
+ylabel('movePrep, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('DANn,',str));
+
+
+ylim([0 120]);
+xlim([.95 1.25]);
+
+
+subplot(1,2,2)
+szz = 75;
+
+input1 = inputGABA_LmovePrep;
+input2 = inputGABA_RmovePrep;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'L', 'R'});
+ylabel('movePrep, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+
+
+ylim([0 120]);
+xlim([.95 1.25]);
+
+
+
+% 6/5/20; moveInit epoch, L vs R 
+figure()
+subplot(1,2,1)
+
+szz = 75;
+
+input1 = inputDANn_LmoveInit;
+input2 = inputDANn_RmoveInit;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'L', 'R'});
+ylabel('moveInit, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('DANn,',str));
+
+
+ylim([0 120]);
+xlim([.95 1.25]);
+
+
+subplot(1,2,2)
+szz = 75;
+
+input1 = inputGABA_LmoveInit;
+input2 = inputGABA_RmoveInit;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'L', 'R'});
+ylabel('moveInit, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+
+
+ylim([0 120]);
+xlim([.95 1.25]);
+
+
+
+
+
+% 6/5/20; priors epoch, L vs R 
+figure()
+subplot(1,2,1)
+
+szz = 75;
+
+input1 = inputDANn_Lpriors;
+input2 = inputDANn_Rpriors;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'L', 'R'});
+ylabel('priors, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('DANn,',str));
+
+
+ylim([0 120]);
+xlim([.95 1.25]);
+
+
+subplot(1,2,2)
+szz = 75;
+
+input1 = inputGABA_Lpriors;
+input2 = inputGABA_Rpriors;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'L', 'R'});
+ylabel('priors, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+
+
+ylim([0 120]);
+xlim([.95 1.25]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% 6/5/20; feedback epoch vs baseline
+
+figure()
+subplot(1,2,1)
+
+szz = 75;
+
+input1 = inputDANn_correctsperiReward - inputDANn_correctswholeTrial;
+input2 = inputDANn_incorrectsperiReward - inputDANn_incorrectswholeTrial;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'Corrects', 'Incorrects'});
+ylabel('Feedback-Baseline, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('DANn,',str));
+
+
+ylim([-10 20]);
+xlim([.95 1.25]);
+
+
+subplot(1,2,2)
+szz = 75;
+
+input1 = inputGABA_correctsperiReward - inputGABA_correctswholeTrial;
+input2 = inputGABA_incorrectsperiReward - inputGABA_incorrectswholeTrial;
+
+%stats
+hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
+hx_is = lillietest(input2);
+
+[p_ttest_nonparaunpaired, h_ttest_nonparaunpaired] = ranksum(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[p_ttest_nonparapaired, h_ttest_nonparapaired] = signrank(input1, input2) ; %PAIRED
+
+[p_ttest_unpaired, h_ttest_unpaired] = ttest2(input1, input2) ; %'left' tests the hypothesis that x2 > x1 (UNPAIRED)
+[h_ttest_paired, p_ttest_paired] = ttest(input1, input2) ; %PAIRED, normal distributions
+%
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.2;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 1);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, median(input1), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.2, median(input2), szz*3,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.2], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.2]);
+
+xticklabels({'Corrects', 'Incorrects'});
+ylabel('Feedback-Baseline, Firing rate (Hz)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+
+if hx_sg == 0 && hx_is == 0
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_paired));
+else
+    str = strcat({' 2tailed p = '}, num2str(p_ttest_nonparapaired));
+end
+title(strcat('GABA,',str));
+
+
+ylim([-10 20]);
+xlim([.95 1.25]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 % logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
 % inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
-inputinfo1 = input1 - baselineFR1;
+inputinfo1 = input1 - input2;
 
 
 FRindex_feedbackvswholeTrial = zeros(size(inputinfo1'));
@@ -927,9 +1956,9 @@ for i = 1:length(FRindex_feedbackvswholeTrial)
     
     
     if p_paired < 0.05
-        FRindex_feedbackvswholeTrial(i) = 3; %'Dopa'
-    elseif p_paired < 0.01
         FRindex_feedbackvswholeTrial(i) = 2; %'Dopa'
+%     elseif p_paired < 0.01
+%         FRindex_feedbackvswholeTrial(i) = 2; %'Dopa'
     else
         FRindex_feedbackvswholeTrial(i) = 1; % Other
     end
@@ -941,13 +1970,16 @@ end
 
 figure()
 % Y = tsne(tsneInput);
-gscatter(Y(:,1),Y(:,2),FRindex_feedbackvswholeTrial)
+h = gscatter(Y_noSTN(:,1),Y_noSTN(:,2),FRindex_feedbackvswholeTrial);
+h(1).MarkerSize = markersize;
+h(2).MarkerSize = markersize;
 % c = cell2mat(masterspikestruct_V2.clustfileIndex);
 c = cell2mat(masterspikestruct_V2.clustfileIndex);
-text(Y(:,1)+dx, Y(:,2)+dy, c);
+text(Y_noSTN(:,1)+dx, Y_noSTN(:,2)+dy, c);
 
-title('something')
-set(gca, 'FontSize', 14, 'FontName', 'Georgia')
+title('significant diff in FR, all units')
+set(gca, 'FontSize', fontsize, 'FontName', 'Georgia')
+box('off')
 
 
 
@@ -977,11 +2009,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -996,6 +2028,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 subplot(1, 2, 2)
 
@@ -1005,11 +2038,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1024,6 +2057,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext), { 'diffFrom priors'}));
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS_diffFromBaseline'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -1052,11 +2086,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1071,6 +2105,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 subplot(1, 2, 2)
 
@@ -1080,11 +2115,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1099,6 +2134,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext), { 'diffFrom sensoryProcessing'}));
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS_diffFromBaseline'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -1129,11 +2165,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1148,6 +2184,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 subplot(1, 2, 2)
 
@@ -1157,11 +2194,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1176,6 +2213,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext), { 'diffFrom movePrep'}));
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS_diffFromBaseline'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -1211,11 +2249,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1230,6 +2268,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 subplot(1, 2, 2)
 
@@ -1239,11 +2278,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -1258,6 +2297,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext), { 'diffFrom moveInit'}));
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS_diffFromBaseline'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -1322,8 +2362,8 @@ end
 
 ploton = 1;
 if ploton == 1
-    masterspikestruct_V2.anatomLocation
-    masterspikestruct_V2.anatomLocation
+    masterspikestruct_V2.DA_or_GABA_TSNE
+    masterspikestruct_V2.DA_or_GABA_TSNE
     
     
     subName1 = 'SGandIS';
@@ -1336,15 +2376,15 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
-    titletext = strcat(SNrsubtype1, {' '}, epochName1, {'   vs   '},  SNrsubtype2, {' '}, epochName2, (' '), subName1)
+    titletext = strcat(SNrsubtype1, {' '}, epochName1, {'   vs   '},  SNrsubtype2, {' '}, epochName2, (' '), subName1);
     
     figure()
     violin_jasperfabius( 1, inputDANn, 'withmdn', 1, 'side', 'left', 'Kernelwidth', 3, 'facecolor', [0.5 0.5 0.5])
@@ -1356,7 +2396,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1379,11 +2420,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1399,7 +2440,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1426,11 +2468,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1446,7 +2488,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1474,11 +2517,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1494,7 +2537,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1521,11 +2565,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1541,7 +2585,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1573,11 +2618,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1593,7 +2638,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1614,8 +2660,8 @@ if ploton == 1
     
     %% SG
     
-    masterspikestruct_V2.anatomLocation
-    masterspikestruct_V2.anatomLocation
+    masterspikestruct_V2.DA_or_GABA_TSNE
+    masterspikestruct_V2.DA_or_GABA_TSNE
     
     
     subName1 = 'SG';
@@ -1628,11 +2674,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1648,7 +2694,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1671,11 +2718,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1691,7 +2738,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1718,11 +2766,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1738,7 +2786,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1766,11 +2815,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1786,7 +2835,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1813,11 +2863,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1833,7 +2883,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1865,11 +2916,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1885,7 +2936,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1904,8 +2956,8 @@ if ploton == 1
     
     %% IS
     
-    masterspikestruct_V2.anatomLocation
-    masterspikestruct_V2.anatomLocation
+    masterspikestruct_V2.DA_or_GABA_TSNE
+    masterspikestruct_V2.DA_or_GABA_TSNE
     
     
     subName1 = 'IS';
@@ -1918,11 +2970,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1938,7 +2990,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -1961,11 +3014,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -1981,7 +3034,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2008,11 +3062,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2028,7 +3082,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2056,11 +3111,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2076,7 +3131,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2103,11 +3159,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2123,7 +3179,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2155,11 +3212,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    indDANn = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    indDANn = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputDANn = input1(indDANn);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    indGABA = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    indGABA = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputGABA = input2(indGABA);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2175,7 +3232,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','tsne_SNsubtypes'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2201,11 +3259,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2220,7 +3278,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     subplot(1, 2, 2)
     
     SNrsubtype1 = 'DANn';
@@ -2229,11 +3288,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2248,7 +3307,8 @@ if ploton == 1
     fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext)));
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2276,11 +3336,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2295,7 +3355,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     subplot(1, 2, 2)
     
     SNrsubtype1 = 'DANn';
@@ -2304,11 +3365,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2323,7 +3384,8 @@ if ploton == 1
     fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext)));
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2351,11 +3413,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2370,7 +3432,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     subplot(1, 2, 2)
     
     SNrsubtype1 = 'DANn';
@@ -2379,11 +3442,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2398,7 +3461,8 @@ if ploton == 1
     fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext)));
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2424,11 +3488,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2443,7 +3507,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     subplot(1, 2, 2)
     
     SNrsubtype1 = 'DANn';
@@ -2452,11 +3517,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2471,7 +3536,8 @@ if ploton == 1
     fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext)));
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2498,11 +3564,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2517,7 +3583,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     subplot(1, 2, 2)
     
     SNrsubtype1 = 'DANn';
@@ -2526,11 +3593,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2545,7 +3612,8 @@ if ploton == 1
     fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext)));
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2572,11 +3640,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2591,7 +3659,8 @@ if ploton == 1
     fig_name = cell2mat(titletext);
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     subplot(1, 2, 2)
     
     SNrsubtype1 = 'DANn';
@@ -2600,11 +3669,11 @@ if ploton == 1
     meanORmedian = 'Median_ave';
     
     input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-    logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+    logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
     inputinfo1 = input1(logicalinput1);
     
     input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-    logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+    logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
     inputinfo2 = input2(logicalinput2);
     
     ylabeltext = 'Firing rate (Hz)';
@@ -2619,7 +3688,8 @@ if ploton == 1
     fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext)));
     set(gcf,'NumberTitle', 'off', 'Name', fig_name);
     set(gca, 'FontSize', 8, 'FontName', 'Georgia')
-    
+    box('off')
+
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (fig_name);
     if saveFig == 1
@@ -2654,11 +3724,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2673,6 +3743,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 subplot(1, 2, 2)
 
@@ -2682,11 +3753,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2701,6 +3772,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext), { 'diffFromBaseline'}));
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS_diffFromBaseline'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -2734,11 +3806,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2753,6 +3825,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 subplot(1, 2, 2)
 
@@ -2762,11 +3835,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2781,6 +3854,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext), { 'diffFromBaseline'}));
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS_diffFromBaseline'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -2816,11 +3890,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2835,6 +3909,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 subplot(1, 2, 2)
 
@@ -2844,11 +3919,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2863,6 +3938,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext), { 'diffFromBaseline'}));
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS_diffFromBaseline'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -2894,11 +3970,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2913,6 +3989,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 subplot(1, 2, 2)
 
@@ -2922,11 +3999,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2941,6 +4018,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext), { 'diffFromBaseline'}));
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS_diffFromBaseline'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -2972,11 +4050,11 @@ baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2));
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -2991,6 +4069,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 subplot(1, 2, 2)
 
@@ -3000,11 +4079,11 @@ SNrsubtype2 = SNrsubtype1;
 meanORmedian = 'Median_ave';
 
 input1  = (groupvar.(meanORmedian).(epochName1).(subName1));
-logicalinput1 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype1);
+logicalinput1 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype1);
 inputinfo1 = input1(logicalinput1) - baselineFR1(logicalinput1);
 
 input2  = groupvar.(meanORmedian).(epochName2).(subName2);
-logicalinput2 = strcmp(masterspikestruct_V2.anatomLocation, SNrsubtype2);
+logicalinput2 = strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, SNrsubtype2);
 inputinfo2 = input2(logicalinput2) - baselineFR2(logicalinput2);
 
 ylabeltext = 'Firing rate (Hz)';
@@ -3019,6 +4098,7 @@ ylim([-30 30]); xlim([ 0.8 1.2]) ;
 fig_name = cell2mat(strcat({'GABA and '}, cell2mat(titletext), { 'diffFromBaseline'}));
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses', 'tsne_SNsubtypes', 'SGvIS_diffFromBaseline'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3062,6 +4142,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3095,6 +4176,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3129,6 +4211,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3165,6 +4248,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3202,6 +4286,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3236,6 +4321,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3279,6 +4365,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3312,6 +4399,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3346,6 +4434,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3382,6 +4471,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3419,6 +4509,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
@@ -3453,6 +4544,7 @@ title(titletext)
 fig_name = cell2mat(titletext);
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
 set(gca, 'FontSize', 8, 'FontName', 'Georgia')
+box('off')
 
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (fig_name);
