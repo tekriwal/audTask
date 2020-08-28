@@ -26,7 +26,7 @@ for cci = 1:length(cNumS)
     load(cIndex , 'finalMesh')
     
     bAs = {'STN','SNR'};
-    siDes = {'R','L'};
+    siDes = c_dtab.sideofbrain;
     
     for i = 1:2
         for ii = 1:1

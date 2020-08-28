@@ -60,7 +60,7 @@ for pi = 1:height(datTab)
     
     % Brain Areas
     stnMesh = outputmesh.(objNames{contains(objNames,bAh) & contains(objNames,'STN')});
-    snrMesh = outputmesh.(objNames{contains(objNames,bAh) & contains(objNames,'SN')});
+    snrMesh = outputmesh.(objNames{contains(objNames,bAh) & contains(objNames,'SNr')});
     % Wire
     wireMesh = outputmesh.(objNames{contains(objNames,eleh) & contains(objNames,wireObj)});
 

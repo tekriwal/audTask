@@ -55,9 +55,9 @@ for pi = 1:height(datTab)
     
     % Brain Areas
     stnMeshL = outputmesh.(objNames{contains(objNames,'left') & contains(objNames,'STN')});
-    snrMeshL = outputmesh.(objNames{contains(objNames,'left') & contains(objNames,'SN')});
+    snrMeshL = outputmesh.(objNames{contains(objNames,'left') & contains(objNames,'SNr')});
     stnMeshR = outputmesh.(objNames{contains(objNames,'right') & contains(objNames,'STN')});
-    snrMeshR = outputmesh.(objNames{contains(objNames,'right') & contains(objNames,'SN')});
+    snrMeshR = outputmesh.(objNames{contains(objNames,'right') & contains(objNames,'SNr')});
     % Wire
     wireMesh = outputmesh.(objNames{contains(objNames,eleh) & contains(objNames,wireObj)});
 

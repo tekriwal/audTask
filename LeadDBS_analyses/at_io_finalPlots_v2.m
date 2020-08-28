@@ -18,7 +18,7 @@ end
 
 %%
 cd('D:\Neuroimaging\dataForPlotting')
-load('ai_io_plotting.mat','datCell')
+load('ai_io_plotting08062020.mat','datCell')
 
 % close all;
 % Create data
@@ -37,10 +37,12 @@ for ti = 1:13
         tOI = tmpS.(tmpF{ti2}).ioBrainRg;
         tNR = tmpS.(tmpF{ti2}).recBrainRg;
         
-        if strcmp(tOI,tNR)
-            allSpk(spkC,1) = 1;
+        if strcmp(tOI,tNR) && strcmp(tOI,'SNR')
+            allSpk(spkC,1) = 1; % double verify SNR
+        elseif strcmp(tOI,'SNR')
+            allSpk(spkC,1) = 2; % IO verify SNR
         else
-            allSpk(spkC,1) = 0;
+            allSpk(spkC,1) = 0; % NOT SNR
         end
         
         if strcmp(tOI,'SNR')
@@ -82,13 +84,14 @@ nd = dir('*.mat');
 nd2 = {nd.name};
 tmpN = nd2{1};
 load(tmpN,'finalMesh')
-tmpTD = finalMesh.SNR.R;
-tmpTTD = finalMesh.SNR.R;
-tmpTDstn = finalMesh.STN.R;
+tmpTD = finalMesh.SNR.L;
+tmpTTDl = finalMesh.SNR.L;
+tmpTTDr = finalMesh.SNR.R;
+tmpTDstn = finalMesh.STN.L;
+tmpTDsnc = finalMesh.SNC.L;
 
 rXY3d = allXYZ;
-rXY3d(:,1) = abs(rXY3d(:,1));
-
+rXY3d(:,1) = (abs(rXY3d(:,1)))*-1;
 
 figure;
 d = drawMesh(tmpTD.vertices, tmpTD.faces);
@@ -97,25 +100,37 @@ d.FaceAlpha = 0.125;
 d.EdgeColor = 'none';
 hold on
 d = drawMesh(tmpTDstn.vertices, tmpTDstn.faces);
-d.FaceColor = [0.5 0.5 0.5];
+d.FaceColor = [0.85 0 0];
 d.FaceAlpha = 0.1;
+d.EdgeColor = 'none';
+
+d = drawMesh(tmpTDsnc.vertices, tmpTDsnc.faces);
+d.FaceColor = [0.25 0.25 0.25];
+d.FaceAlpha = 0.5;
 d.EdgeColor = 'none';
 view([167 11])
 
 snInd = allSpkf(:,2) == 1;
 snVerInd = (allSpkf(:,1) == 1 & allSpkf(:,2) == 1);
 
-
 rXY2d = allXYZ;
-rXY2d(:,1) = abs(rXY2d(:,1));
+rXY2d(:,1) = (abs(rXY2d(:,1)))*-1;
 
 sn_medianZ = round(median(allXYZ(snInd,3)));
 
-tmpTTD.vertices(:,4) = round(tmpTTD.vertices(:,3));
-medZbound = tmpTTD.vertices(:,4) == sn_medianZ;
-tmpSVerts = tmpTTD.vertices(medZbound,:);
+% left
+tmpTTDl.vertices(:,4) = round(tmpTTDl.vertices(:,3));
+medZboundl = tmpTTDl.vertices(:,4) == sn_medianZ;
+tmpSVertsl = tmpTTDl.vertices(medZboundl,:);
+% right
+% tmpTTDr.vertices(:,4) = round(tmpTTDr.vertices(:,3));
+% medZboundr = tmpTTDr.vertices(:,4) == sn_medianZ;
+% tmpSVertsr = tmpTTDr.vertices(medZboundr,:);
 
-k = boundary(tmpSVerts(:,1),tmpSVerts(:,2));
+
+kl = boundary(tmpSVertsl(:,1),tmpSVertsl(:,2));
+% kr = boundary(tmpSVertsr(:,1),tmpSVertsr(:,2));
+
 
 hold on
 %     figure;
@@ -123,17 +138,21 @@ hold on
 %     yLM = get(gca,'ylim')
 %     zLM = get(gca,'zlim')
 
-plot3(tmpSVerts(k,1),tmpSVerts(k,2),repmat(sn_medianZ,size(tmpSVerts(k,2))),'Color',[0.5 0.5 0.5],'LineWidth',2)
+plot3(tmpSVertsl(kl,1),tmpSVertsl(kl,2),repmat(sn_medianZ,size(tmpSVertsl(kl,2))),'Color',[0.75 0 0],'LineWidth',2)
 %            patch([xLM(1),xLM(2),xLM(2),xLM(1)],[yLM(1),yLM(2),yLM(2),yLM(1)],...
 %                [sn_medianZ,sn_medianZ,sn_medianZ,sn_medianZ],'r','FaceAlpha',0.3,'EdgeColor','none');
 
 
 camlight
 
+% Double Verify SNR
+% scatter3(rXY3d(allSpkf(:,1) == 1,1),rXY3d(allSpkf(:,1) == 1,2),rXY3d(allSpkf(:,1) == 1,3),50,'g','filled')
+% Single Verify SNR
+scatter3(rXY3d(allSpkf(:,2) == 1,1),rXY3d(allSpkf(:,2) == 1,2),rXY3d(allSpkf(:,2) == 1,3),50,'g','filled')
+% NOT SNR
+scatter3(rXY3d(allSpkf(:,1) == 0,1),rXY3d(allSpkf(:,1) == 0,2),rXY3d(allSpkf(:,1) == 0,3),50,'k','filled')
 
-scatter3(rXY3d(snInd,1),rXY3d(snInd,2),rXY3d(snInd,3),30,'g','filled')
 
-scatter3(rXY3d(snVerInd,1),rXY3d(snVerInd,2),rXY3d(snVerInd,3),30,'b','filled')
 
 
 
@@ -146,17 +165,41 @@ zticks([])
 
 
 figure;
-plot(tmpSVerts(k,1),tmpSVerts(k,2),'Color',[0.5 0.5 0.5],'LineWidth',2)
-hold on
-scatter(rXY2d(snInd,1),rXY2d(snInd,2),30,'g','filled')
-scatter(rXY2d(snVerInd,1),rXY2d(snVerInd,2),30,'b','filled')
+
+tmpTTDl.vertices(:,4) = round(tmpTTDl.vertices(:,3));
+uniqueVals = unique(tmpTTDl.vertices(:,4));
+
+for ui = 1:length(uniqueVals)
+    
+    tmpUNI = uniqueVals(ui);
+    tmpINDs = tmpTTDl.vertices(:,4) == tmpUNI;
+    tmpSVertt = tmpTTDl.vertices(tmpINDs,:);
+    tmpBound = boundary(tmpSVertt(:,1),tmpSVertt(:,2));
+    
+    if tmpUNI == sn_medianZ
+    plot(tmpSVertt(tmpBound,1),tmpSVertt(tmpBound,2),'Color','r','LineWidth',2)
+    else
+    plot(tmpSVertt(tmpBound,1),tmpSVertt(tmpBound,2),'Color',[0.5 0.5 0.5],'LineWidth',0.5)
+    end
+    
+    hold on
+    
+end
+
+% Double Verify SNR
+scatter(rXY2d(allSpkf(:,1) == 1,1),rXY2d(allSpkf(:,1) == 1,2),30,'g','filled')
+% Single Verify SNR
+scatter(rXY2d(allSpkf(:,1) == 2,1),rXY2d(allSpkf(:,1) == 2,2),30,'b','filled')
+% NOT SNR
+scatter(rXY2d(allSpkf(:,1) == 0,1),rXY2d(allSpkf(:,1) == 0,2),30,'k','filled')
+
 xlabel('Medial - Lateral')
 ylabel('Posterior - Anterior')
 axis square
 
 xticks([])
 yticks([])
-
+view([-180 90])
 
 %% 3D
 
@@ -175,7 +218,7 @@ yticks([])
 % xlabel('Medial - Lateral')
 % ylabel('Posterior - Anterior')
 % zlabel('Ventral - Dorsal')
-view([16.8,12.0])
+% view([16.8,12.0])
 
 
 figure;
