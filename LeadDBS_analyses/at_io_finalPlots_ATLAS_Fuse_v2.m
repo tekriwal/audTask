@@ -1,4 +1,4 @@
-function [] = at_io_finalPlots_ATLAS_Fuse_v1(inputARGS)
+function [] = at_io_finalPlots_ATLAS_Fuse_v2(inputARGS)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -9,11 +9,11 @@ end
 
 switch inputARGS.plotNum
     case 1
-        
+        pltN = 1;
     case 2
-        
+        pltN = 2;
     case 3
-        
+        pltN = 3;
 end
 
 %%
@@ -26,10 +26,12 @@ datCellclean = cleanUPdt(datCell);
 
 % close all;
 % Create data
-allSpk = nan(50,2);
+allSpk = nan(50,3);
 spkC = 1;
 xyzAll = nan(50,3);
 locAll = cell(50,1);
+% figID = zeros(50,1);
+figNnum = [5,8,12];
 for ti = 1:13
     
     tmpS = datCellclean{ti};
@@ -58,6 +60,13 @@ for ti = 1:13
             else
                 allSpk(spkC,2) = 0;
             end
+            
+            if ismember(ti,figNnum)
+                allSpk(spkC,3) = ti;
+            else
+                allSpk(spkC,3) = 1;
+            end
+            
             xyzAll(spkC,:) = tmpS.(tmpF{ti2}).XYZ;
             locAll{spkC,1} = cell2mat(table2cell(tmpS.(tmpF{ti2}).regionLOCs));
             spkC = spkC + 1;
@@ -104,7 +113,7 @@ d.EdgeColor = 'none';
 
 d = drawMesh(cor_LSTN.vertices, cor_LSTN.faces);
 d.FaceColor = [0.9 0 0];
-d.FaceAlpha = 0.25;
+d.FaceAlpha = 0.1;
 d.EdgeColor = 'none';
 
 d = drawMesh(cor_LSNC.vertices, cor_LSNC.faces);
@@ -134,7 +143,7 @@ d.EdgeColor = 'none';
 
 d = drawMesh(cor_RSTN.vertices, cor_RSTN.faces);
 d.FaceColor = [0.9 0 0];
-d.FaceAlpha = 0.25;
+d.FaceAlpha = 0.1;
 d.EdgeColor = 'none';
 
 d = drawMesh(cor_RSNC.vertices, cor_RSNC.faces);
@@ -147,8 +156,8 @@ d.EdgeColor = 'none';
 
 % FIX THE NUMBER OF LINES and WHERE THEY GO
 
-for li = 1:length(datCell)
-    tmpN = datCell{li};
+for li = 1:length(datCellclean)
+    tmpN = datCellclean{li};
     
     tFns = fieldnames(tmpN);
     
@@ -178,12 +187,19 @@ hold on
 
 camlight
 
+% COLORS
+% C1 = 240 228 66
+% C2 = 0 114 178
+% C3 = 213 94 0
+
 % Double Verify SNR
 % scatter3(rXY3d(allSpkf(:,1) == 1,1),rXY3d(allSpkf(:,1) == 1,2),rXY3d(allSpkf(:,1) == 1,3),50,'g','filled')
 % Single Verify SNR
-scatter3(rXY3d_c(allSpkf(:,2) == 1,1),rXY3d_c(allSpkf(:,2) == 1,2),rXY3d_c(allSpkf(:,2) == 1,3),50,'g','filled')
+scatter3(rXY3d_c(allSpkf(:,2) == 1,1),rXY3d_c(allSpkf(:,2) == 1,2),rXY3d_c(allSpkf(:,2) == 1,3),50,[213/255, 94/255 0/255],'filled')
 % NOT SNR
-scatter3(rXY3d_c(allSpkf(:,1) == 0,1),rXY3d_c(allSpkf(:,1) == 0,2),rXY3d_c(allSpkf(:,1) == 0,3),50,'k','filled')
+% scatter3(rXY3d_c(allSpkf(:,1) == 0,1),rXY3d_c(allSpkf(:,1) == 0,2),rXY3d_c(allSpkf(:,1) == 0,3),50,'k','filled')
+scatter3(rXY3d_c(allSpkf(:,3) == 5,1),rXY3d_c(allSpkf(:,3) == 5,2),rXY3d_c(allSpkf(:,3) == 5,3),50,[240/255, 228/255 66/255],'filled')
+scatter3(rXY3d_c(allSpkf(:,3) == 12,1),rXY3d_c(allSpkf(:,3) == 12,2),rXY3d_c(allSpkf(:,3) == 12,3),50,[0/255, 114/255 178/255],'filled')
 
 zlabel('Ventral - Dorsal')
 ylabel('Anterior - Posterior')
@@ -195,7 +211,9 @@ yticks([])
 view([-180 90])
 
 
-test = 1;
+ax = gca; exportgraphics(ax,'axialView.pdf','ContentType','image','Resolution',300)
+ax = gca; exportgraphics(ax,'obView.pdf','ContentType','image','Resolution',300)
+
 
 
 

@@ -37,14 +37,14 @@ for ci = 1:13
 end
 %% IF STEP 5 is run - RE SAVE
 cd('D:\Neuroimaging\dataForPlotting')
-save('ai_io_plotting09072020.mat','datCell')
+save('ai_io_plotting09142020.mat','datCell')
 % final_AT_DBSrecLoc_v1fp
 % final_AT_DBSrecLoc_v1fp(2)
 
 %% Step 6a - Create Final plots
 close all
 % at_io_finalPlots_bilat_v1
-at_io_finalPlots_ATLAS_Fuse_v1
+at_io_finalPlots_ATLAS_Fuse_v2
 
 %% Step 6b - LAD distance scatter
 at_io_plotLAD
