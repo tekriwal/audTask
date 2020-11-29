@@ -46,8 +46,8 @@ function [ref_spike_times, trial_inds, plot_handles] =...
 GetPhysioGlobals_io_V1;
 global RESOLUTION;
 
-TICK_LENGTH = 1; % length of tick marks for spikes
-SPIKE_TICK_WIDTH = 0.2; % width of lines marking spikes
+TICK_LENGTH = .90; % length of tick marks for spikes
+SPIKE_TICK_WIDTH = .5; % width of lines marking spikes
 EVENT_TICK_WIDTH = 2; % width of lines marking secondary events (e.g., odor poke out)
 
 if isempty(trial_start_times) % if there are no trials, return empty matrices

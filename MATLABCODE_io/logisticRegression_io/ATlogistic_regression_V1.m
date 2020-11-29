@@ -4,6 +4,14 @@
 %or contra, SG or IS, and corr or incorr
 function [] = ATlogistic_regression_V1()
 
+% %AT adding below 11/17/20
+% %to save out the breakpoints, use below code:
+% b = dbstatus('-completenames');
+% save buggybrkpnts b;  
+% %to load in, use below:
+load buggybrkpnts b
+dbstop(b)
+
 cutfirstthree = 1;
 
 
@@ -235,7 +243,7 @@ subName2_index = {'SGandIS';'SG';'IS';'L';'R'; 'Corrects'; 'Incorrects'; 'ipsi';
 %we want to take a intra-trial measure of FR change.
 
 epoch_index = {'priors', 'sensoryProcessing', 'movePrep', 'moveInit', 'periReward'};
-% subName2_index = {'SGandIS';'SG';'IS';'L';'R'; 'Corrects'; 'Incorrects'; 'ipsi'; 'contra'; 'SGipsi'; 'SGcontra'; 'ISipsi'; 'IScontra'};
+% subName2_index  = {'SGandIS';'SG';'IS';'L';'R'; 'Corrects'; 'Incorrects'; 'ipsi'; 'contra'; 'SGipsi'; 'SGcontra'; 'ISipsi'; 'IScontra'};
 subName2_index = {'SGandIS'};
 
 for i = 1:length(masterspikestruct_V2.clustfileIndex_wOut_case8or9)
@@ -285,8 +293,124 @@ for i = 1:length(masterspikestruct_V2.clustfileIndex_wOut_case8or9)
         predictor_mat = diffvectorstruct.(structLabel).(epoch_index2).SGandIS(:,2:4);
         firing_rate = diffvectorstruct.(structLabel).(epoch_index2).SGandIS(:,1);
         
-        mdl(i, k) = fitlm(predictor_mat, firing_rate, model_notation);
+        mdl{i, k} = fitlm(predictor_mat, firing_rate, model_notation);
 
+    end
+end
+
+
+for ii = 1:length(masterspikestruct_V2.clustfileIndex_wOut_case8or9)
+    for kk = 1:5
+        pvaluemat(ii, kk) = num2cell(table2array(mdl{ii, kk}.Coefficients(:,4)),[1 2]);
+        
+%             if table2array(mdl{ii, kk}.Coefficients(1,4)) < 0.05
+%                 strcat1 = 'intercept ';
+%             else
+%                 strcat1 = '';
+%             end
+%             
+
+strcat1 = '';
+           if table2array(mdl{ii, kk}.Coefficients(2,4)) < 0.05
+                strcat2 = 'SGorIS ';
+            else
+                strcat2 = '';
+            end
+        
+           if table2array(mdl{ii, kk}.Coefficients(3,4)) < 0.05
+                strcat3 = 'ipsiorcont ';
+            else
+                strcat3 = '';
+            end
+        
+            if table2array(mdl{ii, kk}.Coefficients(4,4)) < 0.05
+                strcat4 = 'corrorinc ';
+            else
+                strcat4 = '';
+            end
+        
+            pvaluemat_labeled{ii, kk} = strcat(strcat1, '_',strcat2,'_', strcat3,'_', strcat4);
+                            
+        
+    end
+end
+
+
+%% AT 8/12/20
+%adding below to check the whole -1 to 1 regression thing as a way to check
+%the above pvaluemat_labeled. Change is going to be based on 'predictor_mat'
+%% AT 8/18/20
+% the below output is identical to the above, compare pvaluemat_labeled to
+% pvaluemat_labeled2
+
+
+
+
+epoch_index = {'priors', 'sensoryProcessing', 'movePrep', 'moveInit', 'periReward'};
+
+for i = 1:length(masterspikestruct_V2.clustfileIndex_wOut_case8or9)
+    
+    structLabel = masterspikestruct_V2.clustfileIndex_wOut_case8or9{i};
+ 
+    for k = 1:length(epoch_index)
+        epoch_index2 = epoch_index{k};
+        
+        
+        model_notation = 'y ~ x1 + x2 + x3'; % This is "Wilkinson notation"; see fitlm help menu
+
+        predictor_mat = diffvectorstruct.(structLabel).(epoch_index2).SGandIS(:,2:4);
+        [a,b] = size(predictor_mat);
+        predictor_mat2 = zeros(size(predictor_mat));
+        for aa = 1:a
+            for bb = 1:b
+                if predictor_mat(aa,bb) == 0
+                    predictor_mat2(aa,bb) = -1;
+                end
+            end
+        end
+               
+%         predictor_mat(predictor_mat==0) = -1;
+        firing_rate = diffvectorstruct.(structLabel).(epoch_index2).SGandIS(:,1);
+        
+        mdl{i, k} = fitlm(predictor_mat2, firing_rate, model_notation);
+
+    end
+end
+
+
+for ii = 1:length(masterspikestruct_V2.clustfileIndex_wOut_case8or9)
+    for kk = 1:5
+        pvaluemat(ii, kk) = num2cell(table2array(mdl{ii, kk}.Coefficients(:,4)),[1 2]);
+        
+%             if table2array(mdl{ii, kk}.Coefficients(1,4)) < 0.05
+%                 strcat1 = 'intercept ';
+%             else
+%                 strcat1 = '';
+%             end
+%             
+
+strcat1 = '';
+           if table2array(mdl{ii, kk}.Coefficients(2,4)) < 0.05
+                strcat2 = 'SGorIS ';
+            else
+                strcat2 = '';
+            end
+        
+           if table2array(mdl{ii, kk}.Coefficients(3,4)) < 0.05
+                strcat3 = 'ipsiorcont ';
+            else
+                strcat3 = '';
+            end
+        
+            if table2array(mdl{ii, kk}.Coefficients(4,4)) < 0.05
+                strcat4 = 'corrorinc ';
+            else
+                strcat4 = '';
+            end
+        
+            pvaluemat_labeled2{ii, kk} = strcat(strcat1, '_',strcat2,'_', strcat3,'_', strcat4);
+                            
+        
     end
 end
 
@@ -294,41 +418,43 @@ end
 
 
 
-%% below is from reference code 7/27/20
 
-% "accuracy" model: x1 = current choice; x2 = previous choice; x3 = reaction time;
-% x4 = trial type;
-
-% predictors: current choice, previous choice, trial type
-predictor_mat = [choice_current choice_previous reaction_time trial_type Accuracy_vector];
-
-model_notation = 'y ~ x1 + x2 + x3 + x4 + x5 + x4*x5'; % This is "Wilkinson notation"; see fitlm help menu
-
-for epoch_ind = 1:length(epochs)
-    
-    mdl.accuracy{epoch_ind} = fitlm(predictor_mat, firing_rate(:, epoch_ind), model_notation);
-    
-end
-
-clear predictor_mat model_notation;
-
-% "full" model: x1 = current choice; x2 = previous choice; x3 = reaction time;
-% x4 = trial type;
-
-% predictors: current choice, previous choice, trial type
-predictor_mat = [choice_current choice_previous reaction_time trial_type];
-
-model_notation = 'y ~ x1 + x2 + x3 + x4'; % This is "Wilkinson notation"; see fitlm help menu
-
-for epoch_ind = 1:length(epochs)
-    
-    mdl.full{epoch_ind} = fitlm(predictor_mat, firing_rate(:, epoch_ind), model_notation);
-    
-end
-
-clear predictor_mat model_notation;
-
-
+% %% below is from reference code 7/27/20
+% reference = 0;
+% if reference == 1
+% % "accuracy" model: x1 = current choice; x2 = previous choice; x3 = reaction time;
+% % x4 = trial type;
+% 
+% % predictors: current choice, previous choice, trial type
+% predictor_mat = [choice_current choice_previous reaction_time trial_type Accuracy_vector];
+% 
+% model_notation = 'y ~ x1 + x2 + x3 + x4 + x5 + x4*x5'; % This is "Wilkinson notation"; see fitlm help menu
+% 
+% for epoch_ind = 1:length(epochs)
+%     
+%     mdl.accuracy{epoch_ind} = fitlm(predictor_mat, firing_rate(:, epoch_ind), model_notation);
+%     
+% end
+% 
+% clear predictor_mat model_notation;
+% 
+% % "full" model: x1 = current choice; x2 = previous choice; x3 = reaction time;
+% % x4 = trial type;
+% 
+% % predictors: current choice, previous choice, trial type
+% predictor_mat = [choice_current choice_previous reaction_time trial_type];
+% 
+% model_notation = 'y ~ x1 + x2 + x3 + x4'; % This is "Wilkinson notation"; see fitlm help menu
+% 
+% for epoch_ind = 1:length(epochs)
+%     
+%     mdl.full{epoch_ind} = fitlm(predictor_mat, firing_rate(:, epoch_ind), model_notation);
+%     
+% end
+% 
+% clear predictor_mat model_notation;
+% 
+% end
 
 
 

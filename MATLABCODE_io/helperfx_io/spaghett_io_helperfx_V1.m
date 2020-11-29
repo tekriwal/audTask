@@ -59,9 +59,9 @@ y2lim_perccorrincorr =  100;
 
 
 
-absDiffPlot = 1;
+absDiffPlot = 0;
 perChangePlot = 1;
-saveFig = 1;
+saveFig = 0;
 
 
 

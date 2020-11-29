@@ -16,8 +16,8 @@ function [inputmatrix, rsp_struct] = import_behavior_io_auditoryTask_V1(caseInfo
 %'inputmatrix' gives the order and ID of stimuli
 %'rsp_struct' gives task output from time of testing
 
-behaviorfolder = caseInfo_table.("Name of subfolder with behavioral data on box.com ");
-inputmatrix_name = caseInfo_table.("io name of input matrix  file ");
+behaviorfolder = caseInfo_table.("Name of subfolder with behavioral data on box.com");
+inputmatrix_name = caseInfo_table.("io name of input matrix  file");
 rsp_name = caseInfo_table.("io name of rsp file");
 
 

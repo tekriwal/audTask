@@ -16,7 +16,7 @@
 function [] = behaviorAnalysis_IO_V2()
 
 szz = 600;
-longersideInput = 600; %9/4/20, AT's attempt at Golden ratio calcs for size
+
 exclusionFilter = 0; %I think we just want to use exclusionFilter = 0
 cutfirst3trials = 0;
 
@@ -421,14 +421,10 @@ title([str, strinput1, strinput2]);
 ylim([0 4.0]);
 xlim([.99 1.04]);
 
-%AT golden ratio calculation. Change the longerside input to what is
-%desired
 x0=10;
 y0=10;
-longerside=longersideInput;
-shorterside = longerside*(61.803/100);
-height = longerside;
-width = shorterside;
+longerside=600;
+shorterside = 
 set(gcf,'position',[x0,y0,width,height])
 
 

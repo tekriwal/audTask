@@ -1,5 +1,8 @@
+%10/5/20 - V5 works well, plots the ipsi-contra diff in FR for each
+%condition in addition to traditional raster/psth
+
 %10/2/20 - V4 works well but we want to try and add some analyses. so going
-%to make V5
+%to make V5. 
 
 %AT 9/6/20 - so I used this fx to generate the rasters. I think this is
 %most up to date version of code. Throws error downstream, unsure why.
@@ -63,7 +66,7 @@
 %
 
 % function [h1, fig_handle] = AT_CellSummary_SG_IS_V1(behav_file, spk_file, align_ind1, window_event1, ymaxx, NUM_TRIALS_TO_PLOT, PSTH_SMOOTH_FACTOR, saveFigure)
-function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V4(caseNumb, spikeFile, clust, align_ind1, raster_plotting, NUM_TRIALS_TO_PLOT, window_event1, PSTH_SMOOTH_FACTOR,saveFig)
+function [h1, fig_handle] = AT_CellSummary_SG_IS_io_V5(caseNumb, spikeFile, clust, align_ind1, raster_plotting, NUM_TRIALS_TO_PLOT, window_event1, PSTH_SMOOTH_FACTOR,saveFigure)
 
 %3/22/20
 %below are some basic inputs we are going to want; to figure out what the
@@ -79,7 +82,20 @@ if nargin == 0
     clust = 1; %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     align_ind1 = 2; %which part of the trial do we want to look at as our 'zero' point?
     %%[trialStart_times; upPressed_times; stimDelivered_times; goCue_times; leftUP_times; submitsResponse_times; feedback_times]);
+
+    %AT 10/5/20 - the below window size should be used to check the
+    %smoothing done to raster/psths. 
     window_event1 = [-.5 3.5];
+    window_event1 = [-1 3.5];
+
+%     window_event1 = [-3.5 1];
+%     align_ind1 = 7;
+
+%     window_event1 = [-2.5 2];
+%     align_ind1 = 4;
+    
+   prefAnalysis = 1;
+ 
     PSTH_SMOOTH_FACTOR = 60;
 
     %for align_ind1 = 2; -1.5 to 6 I used 100, 
@@ -98,7 +114,8 @@ if nargin == 0
 %     raster_plotting = 'inOrder'; % 'inOrder' means that the raster plots things in numeric order, if this variable is set to 'default', then it plots the default way (randomly selects)
         raster_plotting = 'default';
     
-    saveFig = 0;
+    saveFigure = 1;
+
     % window_event1 = [-1.5 4]; %window of time around align_ind1 that we want to look at
     % ymaxx
     NUM_TRIALS_TO_PLOT = 12;
@@ -122,8 +139,10 @@ onlyQuickTrialsThresh = 7;
 cutfirst3trials = 0; %set to 1 to cut first three trials of session
 miny = 'zero';
 
-if caseNumb == 13 || 10
+if caseNumb == 13 
     locat = 'SouthEast';
+elseif caseNumb == 10
+    locat = 'NorthEast';
 else
     locat = 'NorthWest';
 end
@@ -239,7 +258,6 @@ elseif strcmp(spikeFile,'spike3')
     spk_file = spike3;
 end
 
-saveFigure = 1;
 
 
 %AT 2/18/20, I've adjusted the output of fx import_ephys_io_auditoryTask_V1
@@ -1249,7 +1267,8 @@ max_psth = max([max(get(p1, 'YData')) max(get(p3, 'YData'))]); %...
 %     max(get(p9, 'YData')) max(get(p10, 'YData')) max(get(p11, 'YData')) max(get(p12, 'YData'))]);
 max_y = ((ceil(max_psth / 10)) * 10)+10;
 
-max_y = 70;
+max_y = 65;
+min_y = 25;
 
 plot_window_event1 = init_psth_window_event1 + [+((RESOLUTION/1000)/2) -((RESOLUTION/1000)/2)]; %b/c raster output has been padded
 
@@ -1264,7 +1283,7 @@ set(gca, 'XTick', [0 (round(length(ref_psth_info.L.choice.event1.smooth_psth) *.
 
 % set(gca, 'YLim', [0 ymaxx], 'YTick', [0 ymaxx/2 ymaxx], 'YTickLabel', [0 ymaxx/2 ymaxx]);
 if strcmp(miny, 'zero')
-    set(gca, 'YLim', [0 max_y], 'YTick', [0 (max_y / 2) max_y], 'YTickLabel', [0 (max_y / 2) max_y]);
+    set(gca, 'YLim', [min_y max_y], 'YTick', [min_y ((max_y+min_y) / 2) max_y], 'YTickLabel', [min_y ((max_y+min_y) / 2) max_y]);
 elseif strcmp(miny, 'half')
     set(gca, 'YLim', [(max_y / 2) max_y], 'YTick', [0 (max_y / 2) max_y], 'YTickLabel', [0 (max_y / 2) max_y]);
 end
@@ -1280,10 +1299,11 @@ ylabel('Firing rate (spikes/s)');
 
 
 if strcmp(surgerySide, 'L')
-    legend([p1 p3],{'Ipsi (L)', 'Contra (R)'}, 'Location', locat);
+    lgd = legend([p1 p3],{'Ipsi (L)', 'Contra (R)'}, 'Location', locat);
 elseif strcmp(surgerySide, 'R')
-    legend([p1 p3],{'Contra (L)', 'Ipsi (R)'}, 'Location', locat);
+    lgd = legend([p1 p3],{'Contra (L)', 'Ipsi (R)'}, 'Location', locat);
 end%title('Stimulus guided');
+lgd.FontSize = 4;
 
 
 
@@ -1372,8 +1392,8 @@ set(gcf, 'CurrentAxes', event1_psth);
 % max_psth = max([max(get(p1, 'YData')) max(get(p2, 'YData')) max(get(p3, 'YData')) max(get(p4, 'YData'))]); %...
 %     max(get(p5, 'YData')) max(get(p6, 'YData')) max(get(p7, 'YData')) max(get(p8, 'YData'))...
 %     max(get(p9, 'YData')) max(get(p10, 'YData')) max(get(p11, 'YData')) max(get(p12, 'YData'))]);
-max_y = ((ceil(max_psth / 10)) * 10)+10;
-max_y = 70;
+% max_y = ((ceil(max_psth / 10)) * 10)+10;
+% max_y = 70;
 plot_window_event1 = init_psth_window_event1 + [+((RESOLUTION/1000)/2) -((RESOLUTION/1000)/2)]; %b/c raster output has been padded
 
 
@@ -1387,7 +1407,7 @@ set(gca, 'XTick', [0 (round(length(ref_psth_info.L.choice.event1.smooth_psth) *.
 
 % set(gca, 'YLim', [0 ymaxx], 'YTick', [], 'YTickLabel', []);
 if strcmp(miny, 'zero')
-    set(gca, 'YLim', [0 max_y], 'YTick', [0 (max_y / 2) max_y], 'YTickLabel', [0 (max_y / 2) max_y]);
+    set(gca, 'YLim', [min_y max_y], 'YTick', [min_y ((max_y+min_y) / 2) max_y], 'YTickLabel', [min_y ((max_y+min_y) / 2) max_y]);
 elseif strcmp(miny, 'half')
     set(gca, 'YLim', [(max_y / 2) max_y], 'YTick', [0 (max_y / 2) max_y], 'YTickLabel', [0 (max_y / 2) max_y]);
 end
@@ -1401,12 +1421,13 @@ l = line([xt(2) xt(2)], [0 max_y], 'Color', [0 0 0]);
 % ylabel('Firing rate (Hz)');
 
 if strcmp(surgerySide, 'L')
-    legend([p2 p4],{'Ipsi (L)', 'Contra (R)'}, 'Location', locat);
+    lgd = legend([p2 p4],{'Ipsi (L)', 'Contra (R)'}, 'Location', locat);
     
 elseif strcmp(surgerySide, 'R')
-    legend([p2 p4],{'Contra (L)', 'Ipsi (R)'}, 'Location', locat);
+    lgd = legend([p2 p4],{'Contra (L)', 'Ipsi (R)'}, 'Location', locat);
 end%title('Stimulus guided');
 
+lgd.FontSize = 4;
 fig_name = strcat([spk_file.spikeDATA.fileINFO.analyzDATE,'_', align_event1_times(1:6),spikeFile]);
 
 set(gcf,'NumberTitle', 'off', 'Name', fig_name);
@@ -1448,6 +1469,103 @@ end
 % saveas(gcf,'savename')
 
 
+%% AT adding below 10/2/2020, purpose is to calculate some features Drs Thompson and Felsen were interested in seeing
+
+
+smoothie = 1;
+smoothedwindowsize = 400;
+movingSTDwindowsize = 400;
+smoothdatavar = 1200;
+
+%ipsi minus contra
+patterned_delta = ref_psth_info.R.nochoice.event1.smooth_psth - ref_psth_info.L.nochoice.event1.smooth_psth;
+if smoothie == 1
+    patterned_delta = smoothdata(patterned_delta,'sgolay',smoothdatavar);
+
+    patterned_delta = smooth(patterned_delta, smoothedwindowsize,'sgolay');
+    patterned_delta = patterned_delta';
+end
+patterned_delta_ste = movstd(patterned_delta,movingSTDwindowsize); %calculates moving standard dev for 50 ms window
+patterned_delta_ste_upper = patterned_delta + (2*patterned_delta_ste);
+patterned_delta_ste_lower = patterned_delta - (2*patterned_delta_ste);
+
+
+%ipsi minus contra
+unpatterned_delta = ref_psth_info.R.choice.event1.smooth_psth - ref_psth_info.L.choice.event1.smooth_psth;
+if smoothie == 1
+        unpatterned_delta = smoothdata(unpatterned_delta,'sgolay',smoothdatavar);
+
+    unpatterned_delta = smooth(unpatterned_delta, smoothedwindowsize,'sgolay');
+    unpatterned_delta = unpatterned_delta';
+
+end
+unpatterned_delta_ste = movstd(unpatterned_delta,movingSTDwindowsize); %calculates moving standard dev for 50 ms window
+unpatterned_delta_ste_upper = unpatterned_delta + (2*unpatterned_delta_ste);
+unpatterned_delta_ste_lower = unpatterned_delta - (2*unpatterned_delta_ste);
+
+
+
+figure()
+max_y = 10;
+min_y = -15;
+unpatterned_COLOR = [.5 .5 .5]; %grey
+patterned_COLOR = [0 0 0]; %grey
+
+
+% +/- ste in shading
+s1 = patch([1:length(patterned_delta_ste_upper) length(patterned_delta_ste_upper):-1:1], [patterned_delta_ste_upper fliplr(patterned_delta_ste_lower)], STE_COLOR);
+set(s1, 'EdgeColor', 'none');
+hold on
+% +/- ste in shading
+s3 = patch([1:length(unpatterned_delta_ste_upper) length(unpatterned_delta_ste_upper):-1:1], [unpatterned_delta_ste_upper fliplr(unpatterned_delta_ste_lower)], STE_COLOR);
+set(s3, 'EdgeColor', 'none');
+hold on
+
+pp1 = plot(unpatterned_delta, 'Color', unpatterned_COLOR, 'LineStyle', CHOICE_STYLE, 'LineWidth', 5);
+hold on
+pp2 = plot(patterned_delta, 'Color', patterned_COLOR, 'LineStyle', NOCHOICE_STYLE, 'LineWidth', 5);
+
+
+
+plot_window_event1 = init_psth_window_event1 + [+((RESOLUTION/1000)/2) -((RESOLUTION/1000)/2)]; %b/c raster output has been padded
+
+
+XTICKLABEL_BUFFER_SPACE = '   ';
+set(gca, 'XTick', [0 (round(length(ref_psth_info.L.choice.event1.smooth_psth) *...
+    (-plot_window_event1(1) / (plot_window_event1(2) - plot_window_event1(1)))))...
+    length(ref_psth_info.L.choice.event1.smooth_psth)],...
+    'XTickLabel',...
+    {[XTICKLABEL_BUFFER_SPACE num2str(plot_window_event1(1))] 0 [num2str(plot_window_event1(2)) XTICKLABEL_BUFFER_SPACE]},...
+    'XLim', [0 length(ref_psth_info.L.choice.event1.smooth_psth)]);
+
+% set(gca, 'YLim', [0 ymaxx], 'YTick', [], 'YTickLabel', []);
+if strcmp(miny, 'zero')
+    set(gca, 'YLim', [min_y max_y], 'YTick', [min_y 0 max_y], 'YTickLabel', [min_y 0 max_y]);
+elseif strcmp(miny, 'half')
+    set(gca, 'YLim', [(max_y / 2) max_y], 'YTick', [min_y (max_y / 2) max_y], 'YTickLabel', [min_y (max_y / 2) max_y]);
+end
+
+xt = get(gca, 'xtick');
+l = line([xt(2) xt(2)], [min_y max_y], 'Color', [0 0 0], 'LineWidth', 3);
+title('Ipsi minus contra FR')
+legend([pp1 pp2],{'Unpatterned', 'Patterned'}, 'Location', 'NorthEast');
+
+
+if saveFigure == 1
+    savename = strcat('raster_ipsicon_diffs',ts,fig_name,'_AT.pdf');
+    
+    % print('-bestfit',savename,'-dpdf') %AT 10_29_18
+    % print('-bestfit',savename,'-dpdf','-r0')
+    
+    %AT below 9/27/20
+    ax = gcf;
+    exportgraphics(ax,savename,'ContentType','image','Resolution',500)
+    
+    %     saveas(gcf,savename)
+end
+
+
+
 
 %% AT 3/30/20; adding in the next part
 
@@ -1461,7 +1579,7 @@ end
 % IS_raster_info.L.align_ind = 1; %I think this corresponds with trial_event_times?
 % IS_raster_info.L.window = init_psth_window_event1;
 
-
+if prefAnalysis == 1
 IS_raster_info;
 SG_raster_info;
 
@@ -1505,14 +1623,14 @@ activity_info.SG_activity_info = SG_activity_info;
 %below saves out the figure, hopefully
 figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','rasterPsth', caseName); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
 filename = (['/rasterPsth_' caseName, spikeFile, clustname, align_event1_times(1:8)]);
-if saveFig == 1
+if saveFigure == 1
     saveas(gcf,fullfile(figuresdir, filename), 'jpeg');
 end
 
 %below saves out the variables pertaining to preference
 filename2 = (['/prefVariables_' caseName, spikeFile, clustname, align_event1_times(1:8)]);
-if saveFig == 1
+if saveFigure == 1
     save(fullfile(figuresdir, filename2), 'preference', 'roc_p', 'activity_info');
 end
-
+end
 return

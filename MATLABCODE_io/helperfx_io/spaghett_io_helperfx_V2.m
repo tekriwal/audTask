@@ -1,5 +1,5 @@
 
-%%
+%% AT 9/15/20 the V2 version of this code has been extensively worked on. Runs quite well for the 5 epoch comparison in the io task.
 
 
 % AT; V1, 7/19/20, goal of this subfx is to generate the multi-epoch
@@ -10,7 +10,30 @@
 
 
 
-function [] = spaghett_io_helperfx_V2(SNrsubtype1, subName1, subName2, meanORmedian, groupvar, masterspikestruct_V2, combinedbaseline)
+function [] = spaghett_io_helperfx_V2(SNrsubtype1, subName1, subName2, meanORmedian, groupvar, masterspikestruct_V2, combinedbaseline, multiplecomparisons, saveFig)
+saveFig = 1;
+%below inputs are for the permutation fx, added 11/28/2020 by AT
+iterations = 10000;
+permuteMethod = 'half';
+permuteMethod = 'randomize';
+
+
+fontSize = 5;
+szz = 150;
+
+absDiffPlot = 1;
+perChangePlot = 1;
+subplotting = 1;
+
+
+
+
+
+if combinedbaseline==1
+    combinedbaselineLabel = ' commonbaseline';
+else
+    combinedbaselineLabel = '';
+end
 
 if combinedbaseline == 1 && strcmp(meanORmedian, 'intraTrialFR_mean')
     error('input mismatch')
@@ -22,26 +45,8 @@ elseif combinedbaseline == 1 && strcmp(meanORmedian, 'intraTrialpercFR_median')
     error('input mismatch')
 end
 
-fontSize = 6;
-
 %inputs: groupvar
 
-
-% SNrsubtype1 = 'All neurons'; %contributes to title of plots
-% subName1 = 'SG';
-% subName2 = 'IS';
-% meanORmedian = 'Mean_ave';
-
-absDiffPlot = 0;
-perChangePlot = 1;
-saveFig = 1;
-
-
-if combinedbaseline==1
-    combinedbaselineLabel = 'SGandISbaseline';
-else
-    combinedbaselineLabel = '';
-end
 
 
 if strcmp(subName1, 'SG')
@@ -50,6 +55,8 @@ elseif strcmp(subName1, 'ipsi')
     xTickLabels = {'ipsi', 'contra'};
 elseif strcmp(subName1, 'Corrects')
     xTickLabels = {'Corrects', 'Incorrects'};
+else
+    xTickLabels = {subName1, subName2};
 end
 
 
@@ -60,8 +67,8 @@ if  strcmp(meanORmedian, 'intraTrialpercFR_mean') ||  strcmp(meanORmedian, 'intr
     y1lim_abs = -50;
     y2lim_abs = 50;
 else
-    y1lim_abs = -20; %ylims for abs diff FR plot
-    y2lim_abs = 20;
+    y1lim_abs = -15; %ylims for abs diff FR plot
+    y2lim_abs = 25;
 end
 
 y1lim_percSGIS = -50; %ylims for abs diff FR plot
@@ -76,7 +83,6 @@ y2lim_perccorrincorr =  100;
 
 
 
-szz = 50;
 
 cluster1index = ~strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, 'DANn');
 cluster2index = ~strcmp(masterspikestruct_V2.DA_or_GABA_TSNE, 'GABA');
@@ -100,6 +106,14 @@ elseif strcmp(subName1, 'ipsi')
     subNamename = 'ipsVcon';
 elseif strcmp(subName1, 'Corrects')
     subNamename = 'corVinc';
+elseif strcmp(subName1, 'SGipsi') && strcmp(subName2, 'SGcontra')
+    subNamename = 'SGipsivSGcontra';
+elseif strcmp(subName1, 'ISipsi') && strcmp(subName2, 'IScontra')
+    subNamename = 'ISipsivIScontra';
+elseif strcmp(subName1, 'SGipsi') && strcmp(subName2, 'ISipsi')
+    subNamename = 'SGipsivISipsi';
+elseif strcmp(subName1, 'SGcontra') && strcmp(subName2, 'IScontra')
+    subNamename = 'SGcontravIScontra';
 end
 
 %     if strcmp(meanORmedian,'intraTrialpercFR_mean') || strcmp(meanORmedian,'intraTrialpercFR_median')
@@ -121,17 +135,21 @@ end
 
 
 if absDiffPlot == 1
+    
+    %9/14/20, adding in below to correct for stats if multiple comparisons
+    %are needed.
+    if multiplecomparisons == 1
+        [c_pvalues_2tailed, c_pvalues_lft1tailed, c_pvalues_rt1tailed, pvalues_2tailed, pvalues_lft1tailed, pvalues_rt1tailed] = multiplecomparisons_V1(groupvar, meanORmedian, subName1, subName2, indeX);
+    end
     yLabel = 'Firing rate (Hz)';
     if   strcmp(meanORmedian, 'intraTrialpercFR_mean')
         yLabel = 'Change in firing rate as % of baseline (Hz)';
     end
     
     %ALL neurons, not indexing for GABA/DA
-    subplotting = 1;
     kWidth = .5;
-    figure()
+    hFig = figure();
     if subplotting == 1
-        set(gcf, 'Units', 'Normalized', 'OuterPosition', [.2, 0.3, .7, 0.7]);
         subplot(1, 5, 1)
     else
         figure()
@@ -148,7 +166,7 @@ if absDiffPlot == 1
         baselineFR1  = 0;
         baselineFR2  = 0;
     elseif combinedbaseline == 1 && ~strcmp(meanORmedian, 'intraTrialFR_mean') && ~strcmp(meanORmedian, 'intraTrialpercFR_mean') && ~strcmp(meanORmedian, 'intraTrialFR_median') && ~strcmp(meanORmedian, 'intraTrialpercFR_median')
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     else
         baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
@@ -168,6 +186,8 @@ if absDiffPlot == 1
     
     input1 = inputinfo1;
     input2 = inputinfo2;
+    
+
     %     if strcmp(meanORmedian,'intraTrialpercFR_mean')
     %         yLabel = 'Diff in % of firing rate cmp to baseline (Hz)';
     %     else
@@ -231,25 +251,47 @@ if absDiffPlot == 1
     ylabel(yLabel); %, 'FontSize', 14);
     
     set(gca, 'FontSize', fontSize, 'FontName', 'Georgia')
- 
+    
     ylim([y1lim_abs y2lim_abs])
     xlim([ 0.6 1.4])
     
-    [pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+    [pvalue_subplot1_uncorr,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
     
-    [pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
-    [pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+    [pvalueinfo1_subplot1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+    [pvalueinfo2_subplot1,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
     
+    if multiplecomparisons == 1
+        statscorrected = 'Corrected for mltiple cmps';
+        pvalue_subplot1 = c_pvalues_2tailed(1);
+        
+        %         pvalueinfo1_subplot1 = c_pvalues_lft1tailed(1);
+        %         pvalueinfo2_subplot1 = c_pvalues_rt1tailed(1);
+    end
     
-    str = strcat({'2td p = '}, num2str(pvalue));
-    
-    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
-    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
 
-    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel);
-    title([titletext, str, str1t_1,str1t_2]) 
-     
+    str = strcat({'Corr 2td p = '}, num2str(pvalue_subplot1));
+    str_1 = strcat({'Uncorr 2td p = '}, num2str(pvalue_subplot1));
     
+    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
+    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
+    
+    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
+    title([titletext, str, str_1 str1t_1,str1t_2])
+    
+    
+    str = strcat({'Corr 2td p = '}, num2str(pvalue_subplot1));
+    str_1 = strcat({'Uncorr 2td p = '}, num2str(pvalue_subplot1_uncorr));
+    
+    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
+    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
+    
+        
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+          'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
+    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
+          
+    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
     
     
     
@@ -270,7 +312,7 @@ if absDiffPlot == 1
         baselineFR1  = 0;
         baselineFR2  = 0;
     elseif combinedbaseline == 1 && ~strcmp(meanORmedian, 'intraTrialFR_mean') && ~strcmp(meanORmedian, 'intraTrialpercFR_mean') && ~strcmp(meanORmedian, 'intraTrialFR_median') && ~strcmp(meanORmedian, 'intraTrialpercFR_median')
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     else
         baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
@@ -289,7 +331,9 @@ if absDiffPlot == 1
     
     input1 = inputinfo1;
     input2 = inputinfo2;
-    %     yLabel = 'Firing rate (Hz)';
+        [p, observeddifference, effectsize] = permutationTest(input1, input2, iterations, ...
+          'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
+      %     yLabel = 'Firing rate (Hz)';
     
     %stats
     hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
@@ -351,20 +395,30 @@ if absDiffPlot == 1
     ylim([y1lim_abs y2lim_abs])
     xlim([ 0.6 1.4])
     
-    [pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+    [pvalue_subplot2_uncorr,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
     
-    [pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
-    [pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+    [pvalueinfo1_subplot2,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+    [pvalueinfo2_subplot2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
     
+    if multiplecomparisons == 1
+        pvalue_subplot2 = c_pvalues_2tailed(2);
+        %         pvalueinfo1_subplot2 = c_pvalues_lft1tailed(2);
+        %         pvalueinfo2_subplot2 = c_pvalues_rt1tailed(2);
+    end
     
-    str = strcat({'2td p = '}, num2str(pvalue));
+    str = strcat({'Corr 2td p = '}, num2str(pvalue_subplot2));
+    str_1 = strcat({'Uncorr 2td p = '}, num2str(pvalue_subplot2_uncorr));
     
-    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
-    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
-
-    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName);
-    title([titletext, str, str1t_1,str1t_2]) 
-     
+    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
+    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
+    
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+          'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
+    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
+          
+    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
+    
     
     
     
@@ -389,7 +443,7 @@ if absDiffPlot == 1
         baselineFR1  = 0;
         baselineFR2  = 0;
     elseif combinedbaseline == 1 && ~strcmp(meanORmedian, 'intraTrialFR_mean') && ~strcmp(meanORmedian, 'intraTrialpercFR_mean') && ~strcmp(meanORmedian, 'intraTrialFR_median') && ~strcmp(meanORmedian, 'intraTrialpercFR_median')
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     else
         baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
@@ -409,7 +463,8 @@ if absDiffPlot == 1
     input1 = inputinfo1;
     input2 = inputinfo2;
     
-    
+        [p, observeddifference, effectsize] = permutationTest(input1, input2, iterations, ...
+          'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
     
     %stats
     hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
@@ -471,21 +526,29 @@ if absDiffPlot == 1
     ylim([y1lim_abs y2lim_abs])
     xlim([ 0.6 1.4])
     
-    [pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+    [pvalue_subplot3_uncorr,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
     
-    [pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
-    [pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+    [pvalueinfo1_subplot3,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+    [pvalueinfo2_subplot3,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
     
+    if multiplecomparisons == 1
+        pvalue_subplot3 = c_pvalues_2tailed(3);
+        %         pvalueinfo1_subplot3 = c_pvalues_lft1tailed(3);
+        %         pvalueinfo2_subplot3 = c_pvalues_rt1tailed(3);
+    end
     
-    str = strcat({'2td p = '}, num2str(pvalue));
+    str = strcat({'Corr 2td p = '}, num2str(pvalue_subplot3));
+    str_1 = strcat({'Uncorr 2td p = '}, num2str(pvalue_subplot3_uncorr));
     
-    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
-    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
-
-    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName);
-    title([titletext, str, str1t_1,str1t_2]) 
-     
-     
+    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
+    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
+    
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+          'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
+    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
+          
+    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
     
     
     
@@ -512,7 +575,7 @@ if absDiffPlot == 1
         baselineFR1  = 0;
         baselineFR2  = 0;
     elseif combinedbaseline == 1 && ~strcmp(meanORmedian, 'intraTrialFR_mean') && ~strcmp(meanORmedian, 'intraTrialpercFR_mean') && ~strcmp(meanORmedian, 'intraTrialFR_median') && ~strcmp(meanORmedian, 'intraTrialpercFR_median')
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     else
         baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
@@ -531,7 +594,8 @@ if absDiffPlot == 1
     
     input1 = inputinfo1;
     input2 = inputinfo2;
-    
+        [p, observeddifference, effectsize] = permutationTest(input1, input2, iterations, ...
+          'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
     %stats
     hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
     hx_is = lillietest(input2);
@@ -592,23 +656,29 @@ if absDiffPlot == 1
     ylim([y1lim_abs y2lim_abs])
     xlim([ 0.6 1.4])
     
-    [pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+    [pvalue_subplot4_uncorr,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
     
-    [pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
-    [pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+    [pvalueinfo1_subplot4,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+    [pvalueinfo2_subplot4,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
     
+    if multiplecomparisons == 1
+        pvalue_subplot4 = c_pvalues_2tailed(4);
+        %         pvalueinfo1_subplot4 = c_pvalues_lft1tailed(4);
+        %         pvalueinfo2_subplot4 = c_pvalues_rt1tailed(4);
+    end
     
-    str = strcat({'2td p = '}, num2str(pvalue));
+    str = strcat({'Corr 2td p = '}, num2str(pvalue_subplot4));
+    str_1 = strcat({'Uncorr 2td p = '}, num2str(pvalue_subplot4_uncorr));
     
-    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
-    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
-
-    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName);
-    title([titletext, str, str1t_1,str1t_2]) 
-     
+    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
+    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
     
-    
-    
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+          'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
+    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
+          
+    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
     
     
     
@@ -630,7 +700,7 @@ if absDiffPlot == 1
         baselineFR1  = 0;
         baselineFR2  = 0;
     elseif combinedbaseline == 1 && ~strcmp(meanORmedian, 'intraTrialFR_mean') && ~strcmp(meanORmedian, 'intraTrialpercFR_mean') && ~strcmp(meanORmedian, 'intraTrialFR_median') && ~strcmp(meanORmedian, 'intraTrialpercFR_median')
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     else
         baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
@@ -649,7 +719,9 @@ if absDiffPlot == 1
     
     input1 = inputinfo1;
     input2 = inputinfo2;
-    
+        [p, observeddifference, effectsize] = permutationTest(input1, input2, iterations, ...
+          'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
+      
     %stats
     hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
     hx_is = lillietest(input2);
@@ -710,22 +782,42 @@ if absDiffPlot == 1
     ylim([y1lim_abs y2lim_abs])
     xlim([ 0.6 1.4])
     
-    [pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+    [pvalue_subplot5_uncorr,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
     
-    [pvalueinfo1,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
-    [pvalueinfo2,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
+    [pvalueinfo1_subplot5,outcomeinfo1,paraORnonparainfo1] = stats_subfx_compToZero(input1);
+    [pvalueinfo2_subplot5,outcomeinfo2,paraORnonparainfo2] = stats_subfx_compToZero(input2);
     
+    if multiplecomparisons == 1
+        pvalue_subplot5 = c_pvalues_2tailed(5);
+        %         pvalueinfo1_subplot5 = c_pvalues_lft1tailed(5);
+        %         pvalueinfo2_subplot5 = c_pvalues_rt1tailed(5);
+    end
     
-    str = strcat({'2td p = '}, num2str(pvalue));
+    str = strcat({'Corr 2td p = '}, num2str(pvalue_subplot5));
+    str_1 = strcat({'Uncorr 2td p = '}, num2str(pvalue_subplot5_uncorr));
     
-    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
-    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
-
-    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName);
-    title([titletext, str, str1t_1,str1t_2]) 
-     
+    str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
+    str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
     
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+          'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
+    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
+          
+    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
     
+    %     AT golden ratio calculation. Change the longerside input to what is desired
+    x0=10;
+    y0=10;
+    longersideInput = 500;
+    longerside=longersideInput;
+    shorterside = longerside*(61.803/100);
+    height = longerside;
+    width = shorterside*2;
+    set(hFig,'position',[x0,y0,width,height])
+    
+    %
+    %
     
     
     
@@ -736,7 +828,7 @@ if absDiffPlot == 1
     figuresdir = fullfile('/Users','andytek','Box','Auditory_task_SNr','Data','generated_analyses','epochs_FR_analysis'); %set this to be 1,2, or 3; note that only a few of the spike recordings are multi-cluster
     filename = (['/spagh2_', SNrsubtype1name, '_', subNamename, '_', meanORmedian, '_', combinedbaselineLabel]);
     if saveFig == 1
-        saveas(gcf,fullfile(figuresdir, filename), 'jpeg');
+        saveas(gcf,fullfile(figuresdir, filename), 'pdf');
     end
     
     
@@ -760,12 +852,12 @@ end
 
 
 if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcmp(meanORmedian, 'intraTrialpercFR_mean') &&  ~strcmp(meanORmedian, 'intraTrialFR_median') &&  ~strcmp(meanORmedian, 'intraTrialpercFR_median')
-    
+    yLabel = 'Percent change in FR';
     
     %     yLabel = 'Percent change in Firing rate (Hz)';
     
     %ALL neurons, not indexing for GABA/DA
-    subplotting = 1;
+    %     subplotting = 1;
     kWidth = .5;
     figure()
     if subplotting == 1
@@ -785,7 +877,7 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
     baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2)(indeX));
     if combinedbaseline == 1
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     end
     % baselineFR1  = 0;
@@ -795,19 +887,19 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     
     
     
-%     %AT 7/21/20, below added as an example of how to reformat the baseline
-%     %calculation is 'combinedbaseline' is set to 1
-%     if strcmp(meanORmedian, 'intraTrialFR_mean') || strcmp(meanORmedian, 'intraTrialpercFR_mean') || strcmp(meanORmedian, 'intraTrialFR_median') || strcmp(meanORmedian, 'intraTrialpercFR_median')
-%         baselineFR1  = 0;
-%         baselineFR2  = 0;
-%     elseif combinedbaseline == 1 && ~strcmp(meanORmedian, 'intraTrialFR_mean') && ~strcmp(meanORmedian, 'intraTrialpercFR_mean') && ~strcmp(meanORmedian, 'intraTrialFR_median') && ~strcmp(meanORmedian, 'intraTrialpercFR_median')
-%         baselineFR1  = groupvar.('Mean_ave').(epochName).('SGandIS');
-%         baselineFR2  = baselineFR1;
-%     else
-%         baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
-%         baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2)(indeX));
-%     end
-%     
+    %     %AT 7/21/20, below added as an example of how to reformat the baseline
+    %     %calculation is 'combinedbaseline' is set to 1
+    %     if strcmp(meanORmedian, 'intraTrialFR_mean') || strcmp(meanORmedian, 'intraTrialpercFR_mean') || strcmp(meanORmedian, 'intraTrialFR_median') || strcmp(meanORmedian, 'intraTrialpercFR_median')
+    %         baselineFR1  = 0;
+    %         baselineFR2  = 0;
+    %     elseif combinedbaseline == 1 && ~strcmp(meanORmedian, 'intraTrialFR_mean') && ~strcmp(meanORmedian, 'intraTrialpercFR_mean') && ~strcmp(meanORmedian, 'intraTrialFR_median') && ~strcmp(meanORmedian, 'intraTrialpercFR_median')
+    %         baselineFR1  = groupvar.(meanORmedian).(epochName).('SGandIS');
+    %         baselineFR2  = baselineFR1;
+    %     else
+    %         baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
+    %         baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2)(indeX));
+    %     end
+    %
     
     
     
@@ -902,7 +994,7 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     
     set(gca, 'FontSize', fontSize, 'FontName', 'Georgia')
     
-
+    
     if strcmp(subName1, 'SG')
         ylim([y1lim_percSGIS y2lim_percSGIS])
     elseif strcmp(subName1, 'ipsi')
@@ -923,10 +1015,10 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     
     str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
-
+    
     titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel);
-    title([titletext, str, str1t_1,str1t_2]) 
-     
+    title([titletext, str, str1t_1,str1t_2])
+    
     
     
     
@@ -950,7 +1042,7 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
     baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2)(indeX));
     if combinedbaseline == 1
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     end
     % baselineFR1  = 0;
@@ -1049,10 +1141,10 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     
     str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
-
+    
     titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName);
-    title([titletext, str, str1t_1,str1t_2]) 
-     
+    title([titletext, str, str1t_1,str1t_2])
+    
     
     
     
@@ -1074,7 +1166,7 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
     baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2)(indeX));
     if combinedbaseline == 1
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     end
     % baselineFR1  = 0;
@@ -1173,10 +1265,10 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     
     str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
-
+    
     titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName);
-    title([titletext, str, str1t_1,str1t_2]) 
-      
+    title([titletext, str, str1t_1,str1t_2])
+    
     
     
     
@@ -1202,7 +1294,7 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
     baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2)(indeX));
     if combinedbaseline == 1
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     end
     % baselineFR1  = 0;
@@ -1301,10 +1393,10 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     
     str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
-
+    
     titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName);
-    title([titletext, str, str1t_1,str1t_2]) 
-     
+    title([titletext, str, str1t_1,str1t_2])
+    
     
     
     
@@ -1328,7 +1420,7 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     baselineFR1  = (groupvar.(meanORmedian).(epochName).(subName1)(indeX));
     baselineFR2  = (groupvar.(meanORmedian).(epochName).(subName2)(indeX));
     if combinedbaseline == 1
-        baselineFR1  = (groupvar.('Mean_ave').(epochName).('SGandIS')(indeX));
+        baselineFR1  = (groupvar.(meanORmedian).(epochName).('SGandIS')(indeX));
         baselineFR2  = baselineFR1;
     end
     % baselineFR1  = 0;
@@ -1426,11 +1518,9 @@ if perChangePlot == 1  &&  ~strcmp(meanORmedian, 'intraTrialFR_mean') &&  ~strcm
     
     str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1));
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2));
-
-    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName);
-    title([titletext, str, str1t_1,str1t_2]) 
-     
     
+    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName);
+    title([titletext, str, str1t_1,str1t_2])
     
     
     

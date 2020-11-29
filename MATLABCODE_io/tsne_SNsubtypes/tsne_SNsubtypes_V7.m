@@ -1,3 +1,4 @@
+%V7, adding in the permutation test
 %PUT BREAKPOINT AT line 1276.
 %
 
@@ -9,7 +10,7 @@
 %AT_FRanalyses. I've saved out some promising 'Y' from tsneoutput in a
 %folder on box. At present, #5 or #6 is pretty good
 
-function [] = tsne_SNsubtypes_V6()
+function [] = tsne_SNsubtypes_V7()
 % %AT adding below 11/17/20
 % %to save out the breakpoints, use below code:
 % b = dbstatus('-completenames');

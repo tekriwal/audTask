@@ -1,3 +1,8 @@
+%9/27/20, updated code to generate plots for 'speed' - may need to adjust
+%the length that the controller travels
+
+%V3 on 9/4/20, getting close to having polished figures.
+
 %8/27/20, run this code w/ filters set to 0. Then we are primarily
 %interested in plots #9, 6, and 1 
 
@@ -13,12 +18,14 @@
 
 
 
-function [] = behaviorAnalysis_IO_V2()
+function [] = behaviorAnalysis_IO_V3()
 
 szz = 600;
 longersideInput = 600; %9/4/20, AT's attempt at Golden ratio calcs for size
 exclusionFilter = 0; %I think we just want to use exclusionFilter = 0
 cutfirst3trials = 0;
+distanceTraveled = 60; % 60mm or 6cm
+
 
 if exclusionFilter == 0 && cutfirst3trials == 1
     load('/Users/andytek/Box/Auditory_task_SNr/Data/generated_analyses/behavior_IO/behavior_struct_IO_nofilter_V2.mat', 'behavior')
@@ -37,6 +44,8 @@ end
 
 caseIndex = {'case01';'case02';'case03';'case04';'case05';'case06';'case07';'case08';'case09';'case10';'case11';'case12';'case13'};
 caseIndex = {'case01';'case02';'case03';'case04';'case05';'case06';'case07';'case10';'case11';'case12';'case13'};
+
+caseIndex_controllerMovement = {'case01';'case02';'case03';'case04';'case05';'case06';'case07';'case10';'case11';'case12';'case13'};
 
 
 
@@ -360,6 +369,80 @@ end
 
 figure()
 
+input1 = distanceTraveled./SGrxntimemean;
+input2 = distanceTraveled./ISrxntimemean;
+%stats
+[pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
+[pvalue1,outcome1,paraORnonpara1] = stats_subfx_compToZero(input1)
+[pvalue2,outcome2,paraORnonpara2] = stats_subfx_compToZero(input2)
+
+xmin = -0.1;
+xmax = 0.1;
+n = length(input1);
+x1 = xmin+rand(1,n)*(xmax-xmin);
+x1 = 0;
+
+xaxis_onPairedSG = 1:(length(input1));
+xaxis_onPairedSG(:) = 1;
+xaxis_onPairedSG = xaxis_onPairedSG + x1;
+
+xaxis_onPairedIS = 1:(length(input2));
+xaxis_onPairedIS(:) = 1.03;
+xaxis_onPairedIS = xaxis_onPairedIS + x1;
+
+scatter(xaxis_onPairedSG(:),input1(:), szz, [.5 .5 .5],'MarkerFaceColor', [.5 .5 .5], 'MarkerFaceAlpha',3/8)
+hold on
+scatter(xaxis_onPairedIS(:),input2(:), szz,  [.5 .5 .5], 'MarkerFaceColor', [.5 .5 .5],'MarkerFaceAlpha',3/8)
+
+hold on
+for j = 1:length(input2)
+    plot1 = plot([xaxis_onPairedSG(j) xaxis_onPairedIS(j)], [input1(j)' input2(j)'], 'Color', [.5 .5 .5], 'LineWidth', 3);
+    plot1.Color(4) = 3/8;
+    hold on
+end
+
+hold on
+scatter(1, mean(input1), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+hold on
+
+scatter(1.03, mean(input2), szz*1.5,'MarkerFaceColor', 'k','MarkerEdgeColor', 'k', 'MarkerFaceAlpha',6/8)
+
+hold on
+plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
+
+
+% set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
+set(gca, 'XTick', [1 1.03]);
+
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
+
+xticklabels({'Unpatterned', 'Patterned'}); 
+ylabel('Average speed of response (mm/second)'); %, 'FontSize', 14);
+
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
+
+
+str = strcat({'2td p = '}, num2str(pvalue));
+strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
+strinput2 = strcat({'input2 1td p = '}, num2str(pvalue2));
+title([str, strinput1, strinput2]);
+
+% ylim([0 4.0]);
+xlim([.99 1.04]);
+
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
+
+
+figure()
+
 input1 = SGrxntimemean;
 input2 = ISrxntimemean;
 %stats
@@ -405,12 +488,12 @@ plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
+xticklabels({'Unpatterned', 'Patterned'}); 
 ylabel('Reaction time'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 
 str = strcat({'2td p = '}, num2str(pvalue));
@@ -481,12 +564,12 @@ plot([1 1.03], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
+xticklabels({'Unpatterned', 'Patterned'}); 
 ylabel('Reaction time'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 str = strcat({'2td p = '}, num2str(pvalue));
 strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
@@ -497,6 +580,16 @@ title([str, strinput1, strinput2]);
 ylim([0 4.0]);
 xlim([.99 1.04]);
 
+
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
 
 %
 % figure()
@@ -555,12 +648,12 @@ xlim([.99 1.04]);
 % % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 % set(gca, 'XTick', [1 1.03]);
 %
-% set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+% set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 %
-% xticklabels({'SG', 'IS'});
+% xticklabels({'Unpatterned', 'Patterned'}); 
 % ylabel('Whole trial time'); %, 'FontSize', 14);
 %
-% set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+% set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 %
 % if hx_sg == 0 && hx_is == 0
 %     str = strcat({' 2tailed p value equals '}, num2str(p_ttest_paired));
@@ -584,8 +677,8 @@ xlim([.99 1.04]);
 
 figure()
 
-input1 = SGmean_rxnTime_leftUPtillFeedback;
-input2 = ISmean_rxnTime_leftUPtillFeedback;
+input1 = SGmean_rxnTime_leftUPtillFeedback(5:end);
+input2 = ISmean_rxnTime_leftUPtillFeedback(5:end);
 %stats
 [pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
 [pvalue1,outcome1,paraORnonpara1] = stats_subfx_compToZero(input1)
@@ -629,12 +722,12 @@ plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
+xticklabels({'Unpatterned', 'Patterned'}); 
 ylabel('left up until feedback rxn time'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 str = strcat({'2td p = '}, num2str(pvalue));
 strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
@@ -645,6 +738,16 @@ title([str, strinput1, strinput2]);
 
 % ylim([0 3.0]);
 xlim([.99 1.04]);
+
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
 
 
 
@@ -700,12 +803,12 @@ plot([1 1.03], [median(input1)  median(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
+xticklabels({'Unpatterned', 'Patterned'}); 
 ylabel('left up until feedback rxn time'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 str = strcat({'2td p = '}, num2str(pvalue));
 strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
@@ -716,6 +819,16 @@ title([str, strinput1, strinput2]);
 
 % ylim([0 3.0]);
 xlim([.99 1.04]);
+
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
 
 
 
@@ -778,12 +891,12 @@ plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
+xticklabels({'Unpatterned', 'Patterned'}); 
 ylabel('Non rxn times'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 str = strcat({'2td p = '}, num2str(pvalue));
 strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
@@ -795,6 +908,16 @@ title([str, strinput1, strinput2]);
 % ylim([0 3.0]);
 xlim([.99 1.04]);
 
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
+
 
 
 
@@ -802,8 +925,8 @@ xlim([.99 1.04]);
 
 figure()
 
-input1 = SGperccorr;
-input2 = ISperccorr;
+input1 = SGperccorr*100;
+input2 = ISperccorr*100;
 
 %stats
 [pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
@@ -849,12 +972,12 @@ plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
-ylabel('Percent correct'); %, 'FontSize', 14);
+xticklabels({'Unpatterned', 'Patterned'}); 
+ylabel('Percent correct (%)'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 str = strcat({'2td p = '}, num2str(pvalue));
 strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
@@ -862,9 +985,19 @@ strinput2 = strcat({'input2 1td p = '}, num2str(pvalue2));
 title([str, strinput1, strinput2]);
 
 
-ylim([0 1]);
+ylim([50 100]);
 xlim([.99 1.04]);
 
+
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
 
 
 
@@ -926,12 +1059,12 @@ plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
+xticklabels({'Unpatterned', 'Patterned'}); 
 ylabel('Number of out earlies'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 str = strcat({'2td p = '}, num2str(pvalue));
 strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
@@ -942,6 +1075,16 @@ ylim([-1 8]);
 xlim([.99 1.04]);
 
 
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
+
 
 
 
@@ -951,8 +1094,8 @@ xlim([.99 1.04]);
 
 figure()
 
-input1 = SGpercerrors;
-input2 = ISpercerrors;
+input1 = SGpercerrors*100;
+input2 = ISpercerrors*100;
 
 %stats
 [pvalue,paraORnonpara] = stats_subfx2tailed(input1,input2, 'paired');
@@ -997,12 +1140,12 @@ plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
-ylabel('Number of out earlies as %'); %, 'FontSize', 14);
+xticklabels({'Unpatterned', 'Patterned'}); 
+ylabel('Percent premature responses %'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 str = strcat({'2td p = '}, num2str(pvalue));
 strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
@@ -1010,10 +1153,20 @@ strinput2 = strcat({'input2 1td p = '}, num2str(pvalue2));
 title([str, strinput1, strinput2]);
 
 
-ylim([-0.1 0.3]);
+ylim([-2 25]);
 xlim([.99 1.04]);
 
 
+
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
 
 
 
@@ -1074,12 +1227,12 @@ plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
+xticklabels({'Unpatterned', 'Patterned'}); 
 ylabel('Number of out earlies (errors pt heard)'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 str = strcat({'2td p = '}, num2str(pvalue));
 strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
@@ -1089,6 +1242,16 @@ title([str, strinput1, strinput2]);
 ylim([-1 8]);
 xlim([.99 1.04]);
 
+
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
 
 
 
@@ -1147,12 +1310,12 @@ plot([1 1.03], [mean(input1)  mean(input2)], 'Color', 'k', 'LineWidth', 3);
 % set(gca, 'YTick', [-1 -0.5 0 0.5 1]);
 set(gca, 'XTick', [1 1.03]);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
-xticklabels({'SG', 'IS'});
-ylabel('Number of out earlies as % (errors pt heard)'); %, 'FontSize', 14);
+xticklabels({'Unpatterned', 'Patterned'}); 
+ylabel('Number of out earlies as % (errors pt DIDNOT hear)'); %, 'FontSize', 14);
 
-set(gca, 'FontSize', 18, 'FontName', 'Georgia')
+set(gca, 'FontSize', 18, 'FontName', 'Helvetica Neue') 
 
 str = strcat({'2td p = '}, num2str(pvalue));
 strinput1 = strcat({'input1 1td p = '}, num2str(pvalue1));
@@ -1164,6 +1327,16 @@ ylim([-.1 20]);
 xlim([.99 1.04]);
 
 
+
+%AT golden ratio calculation. Change the longerside input to what is
+%desired
+x0=10;
+y0=10;
+longerside=longersideInput;
+shorterside = longerside*(61.803/100);
+height = longerside;
+width = shorterside;
+set(gcf,'position',[x0,y0,width,height])
 
 
 

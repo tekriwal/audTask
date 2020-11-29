@@ -1,0 +1,4 @@
+Labels,energy,peak to peak,first derivative min,second deriv min,second deriv max,positive peak,negative peak
+ClusterA,927.5,0.704545454545455,6,7,-11,38,24
+ClusterB,329,0.454545454545455,1,2,-2,17,11
+ClusterA,607,0.386363636363636,4,22,-6,27,20

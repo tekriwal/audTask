@@ -78,7 +78,7 @@
 %
 
 % function [h1, fig_handle] = AT_CellSummary_SG_IS_V1(behav_file, spk_file, align_ind1, window_event1, ymaxx, NUM_TRIALS_TO_PLOT, PSTH_SMOOTH_FACTOR, saveFigure)
-function [h1, fig_handle] = spiketrainexaction_AnalysisStruct_V6(caseNumb, spikeFile, clust, saveFig, surgerySide)
+function [h1, fig_handle] = spiketrainexaction_AnalysisStruct_V6(caseNumb, spikeFile, clust, saveFig)
 
 
 %4/27/20; epochInfo will be a four column matrix. First column is event for
@@ -127,7 +127,7 @@ if nargin == 0
     %     raster_plotting = 'inOrder'; % 'inOrder' means that the raster plots things in numeric order, if this variable is set to 'default', then it plots the default way (randomly selects)
     %     raster_plotting = 'default';
     
-    saveFig = 1;
+    saveFig = 0;
     % window_event1 = [-1.5 4]; %window of time around align_ind1 that we want to look at
     % ymaxx
     

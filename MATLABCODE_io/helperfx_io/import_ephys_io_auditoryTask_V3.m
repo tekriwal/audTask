@@ -28,7 +28,7 @@ spike3 = [];
 % spikeMethod_folder = 'processed_spikes_BClust';
 
 
-neuraldata_folder = caseInfo_table.("Name of subfolder with neural data on box.com ");
+neuraldata_folder = caseInfo_table.("Name of subfolder with neural data on box.com");
 
 ephysfile_name = caseInfo_table.("Name of raw ephys file");
 
