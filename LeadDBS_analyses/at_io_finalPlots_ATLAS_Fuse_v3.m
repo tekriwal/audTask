@@ -5,6 +5,7 @@ function [] = at_io_finalPlots_ATLAS_Fuse_v3(inputARGS)
 arguments
     inputARGS.plotNum = 1
     inputARGS.plName = 'default'
+    inputARGS.latV = 'L';
 end
 
 
@@ -169,7 +170,11 @@ switch pltN
         d.FaceColor = [0.2 0.2 0.2];
         d.FaceAlpha = 0.5;
         d.EdgeColor = 'none';
-        view([708 90])
+        if strcmp(inputARGS.latV,'l')
+            view([-90 0])
+        else
+            view([90 0])
+        end
     case 3
         figure;
         hold on
@@ -187,7 +192,11 @@ switch pltN
         d.FaceColor = [0.2 0.2 0.2];
         d.FaceAlpha = 0.5;
         d.EdgeColor = 'none';
-        view([262 58])
+        if strcmp(inputARGS.latV,'l')
+            view([90 0])
+        else
+            view([-90 0])
+        end
 end
 
 % PLOT Recording lines

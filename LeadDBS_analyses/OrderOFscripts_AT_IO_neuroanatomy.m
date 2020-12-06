@@ -44,7 +44,9 @@ save('ai_io_plotting09142020.mat','datCell')
 %% Step 6a - Create Final plots
 close all
 % at_io_finalPlots_bilat_v1
-at_io_finalPlots_ATLAS_Fuse_v2
+% at_io_finalPlots_ATLAS_Fuse_v2
+
+at_io_finalPlots_ATLAS_Fuse_v3
 
 %% Step 6b - LAD distance scatter
 at_io_plotLAD
