@@ -94,8 +94,8 @@ function [p, observeddifference, effectsize] = permutationTest(sample1, sample2,
 % %values in the permutation, then have it equal 'half', otherwise use
 % %'randomize'
 % 
-% permuteMethod =  'randomize';
-permuteMethod =  'half';
+permuteMethod =  'randomize';
+% permuteMethod =  'half';
 
 %%
 

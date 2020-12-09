@@ -87,15 +87,15 @@
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-function [p, observeddifference, effectsize] = permutationTest(sample1, sample2, permutations, permuteMethod, varargin)
+function [p, observeddifference, effectsize] = permutationTest_V2(sample1, sample2, permutations, varargin)
 
 
 % %AT adding below variable, if you want to always be replacing half of the
 % %values in the permutation, then have it equal 'half', otherwise use
 % %'randomize'
 % 
-% permuteMethod =  'randomize';
-% % permuteMethod =  'half';
+permuteMethod =  'randomize';
+% permuteMethod =  'half';
 
 %%
 
@@ -133,6 +133,7 @@ if iscolumn(sample2), sample2 = sample2'; end
 allobservations = [sample1, sample2];
 observeddifference = nanmean(sample1) - nanmean(sample2);
 effectsize = observeddifference / nanmean([std(sample1), std(sample2)]);
+effectsize = observeddifference / std(allobservations);
 
 w = warning('off', 'MATLAB:nchoosek:LargeCoefficient');
 if ~exact && permutations > nchoosek(numel(allobservations), numel(sample1))
@@ -160,35 +161,49 @@ for n = 1:permutations
     if exact, permutation = [allcombinations(n,:), setdiff(1:numel(allobservations), allcombinations(n,:))];
     else, permutation = randperm(length(allobservations)); end
     
-    
-    %AT 11/28/20, changing below to account for the paired nature of our
-    %findings.
-    if strcmp(permuteMethod, 'half')
-        howmanytoPermute = round(length(sample1)/2);
-    elseif strcmp(permuteMethod, 'randomize')
-         howmanytoPermute = randsample(length(sample1),1);
-    end
-    permutation = randperm(length(sample1));
-    permutationindex = permutation(1:howmanytoPermute);
-    paireddata = [sample1; sample2];
-%     flipindex = paireddata(1:round(length(permutation)/2));
-
-    tobepermuted_paireddata = paireddata(:,permutationindex);
-    permuted_paireddata = flipud(tobepermuted_paireddata);%this flips the patterned/unpatterned relationship for half the data   
-   
-    toNOTbepermuted_paireddata = paireddata;
-    toNOTbepermuted_paireddata(:,permutationindex) = []; %this should remove the columns used in the permutation output
-    
-    
-    
-    newdata = [permuted_paireddata,toNOTbepermuted_paireddata];
+%     
+%     %AT 11/28/20, changing below to account for the paired nature of our
+%     %findings.
+%     if strcmp(permuteMethod, 'half')
+%         howmanytoPermute = round(length(sample1)/2);
+%     elseif strcmp(permuteMethod, 'randomize')
+%          howmanytoPermute = randsample(length(sample1),1);
+%     end
+%     permutation = randperm(length(sample1));
+%     permutationindex = permutation(1:howmanytoPermute);
+%     paireddata = [sample1; sample2];
+% %     flipindex = paireddata(1:round(length(permutation)/2));
+% 
+%     tobepermuted_paireddata = paireddata(:,permutationindex);
+%     permuted_paireddata = flipud(tobepermuted_paireddata);%this flips the patterned/unpatterned relationship for half the data   
+%    
+%     toNOTbepermuted_paireddata = paireddata;
+%     toNOTbepermuted_paireddata(:,permutationindex) = []; %this should remove the columns used in the permutation output
+%     
+%     
+%     
+%     newdata = [permuted_paireddata,toNOTbepermuted_paireddata];
     
     % dividing into two samples
-    randomSample1 = newdata(1,:);
-    randomSample2 = newdata(2,:);
+    paireddata = [sample1; sample2];
+    
+    randomSample1 = paireddata(1,:);
+    randomSample2 = paireddata(2,:);
+    
+    deltaDiff = randomSample1 - randomSample2;
+    randomizationofDiffs = (2*(rand(length(randomSample1),1)>.5) - 1)';
+    randomed_deltaDiff = deltaDiff.*randomizationofDiffs;
+    
     
     % saving differences between the two samples
-    randomdifferences(n) = nanmean(randomSample1) - nanmean(randomSample2);
+    randomdifferences(n) = nanmean(randomed_deltaDiff);
+    
+    
+    
+    
+    
+    
+    
 end
 if showprogress, delete(w); end
 

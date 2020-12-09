@@ -1,4 +1,6 @@
 
+
+%% AT 12/2/20, this fx calls a couple subfx that run some permutation calculations. The one JT wrote creates a distribution from the sample data itself, while the one I editted from an online source is a paired permutation test that randomly flips the labels of paired data. I like mine.
 %% AT 9/15/20 the V2 version of this code has been extensively worked on. Runs quite well for the 5 epoch comparison in the io task.
 
 
@@ -13,9 +15,9 @@
 function [] = spaghett_io_helperfx_V2(SNrsubtype1, subName1, subName2, meanORmedian, groupvar, masterspikestruct_V2, combinedbaseline, multiplecomparisons, saveFig)
 saveFig = 1;
 %below inputs are for the permutation fx, added 11/28/2020 by AT
-iterations = 10000;
-permuteMethod = 'half';
-permuteMethod = 'randomize';
+iterations = 100000;
+% permuteMethod = 'half';
+% permuteMethod = 'randomize';
 
 
 fontSize = 5;
@@ -286,12 +288,15 @@ if absDiffPlot == 1
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
     
         
- [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest_V2(input1, input2, iterations, ...
           'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
-    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
-          
+    str_perm = strcat({'FlipPerm.,p='}, num2str(p_permutation), {'Efsz='}, num2str(effectsize_permutation));
+
+    [pVal_permutationJT, effectSize_permutationJT] = bootStrapPaired_JT_V1(input1, input2, iterations);
+    str_permJT = strcat({'JTperm.,p='}, num2str(pVal_permutationJT), {'Efsz='}, num2str(effectSize_permutationJT));
+    
     titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
-    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm,str_permJT])
     
     
     
@@ -331,7 +336,7 @@ if absDiffPlot == 1
     
     input1 = inputinfo1;
     input2 = inputinfo2;
-        [p, observeddifference, effectsize] = permutationTest(input1, input2, iterations, ...
+        [p, observeddifference, effectsize] = permutationTest_V2(input1, input2, iterations, ...
           'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
       %     yLabel = 'Firing rate (Hz)';
     
@@ -412,15 +417,15 @@ if absDiffPlot == 1
     str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
     
- [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest_V2(input1, input2, iterations, ...
           'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
-    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
-          
+    str_perm = strcat({'FlipPerm.,p='}, num2str(p_permutation), {'Efsz='}, num2str(effectsize_permutation));
+
+    [pVal_permutationJT, effectSize_permutationJT] = bootStrapPaired_JT_V1(input1, input2, iterations);
+    str_permJT = strcat({'JTperm.,p='}, num2str(pVal_permutationJT), {'Efsz='}, num2str(effectSize_permutationJT));
+    
     titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
-    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
-    
-    
-    
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm,str_permJT])
     
     
     
@@ -463,7 +468,7 @@ if absDiffPlot == 1
     input1 = inputinfo1;
     input2 = inputinfo2;
     
-        [p, observeddifference, effectsize] = permutationTest(input1, input2, iterations, ...
+        [p, observeddifference, effectsize] = permutationTest_V2(input1, input2, iterations, ...
           'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
     
     %stats
@@ -543,15 +548,15 @@ if absDiffPlot == 1
     str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
     
- [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest_V2(input1, input2, iterations, ...
           'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
-    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
-          
+    str_perm = strcat({'FlipPerm.,p='}, num2str(p_permutation), {'Efsz='}, num2str(effectsize_permutation));
+
+    [pVal_permutationJT, effectSize_permutationJT] = bootStrapPaired_JT_V1(input1, input2, iterations);
+    str_permJT = strcat({'JTperm.,p='}, num2str(pVal_permutationJT), {'Efsz='}, num2str(effectSize_permutationJT));
+    
     titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
-    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
-    
-    
-    
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm,str_permJT])
     
     
     
@@ -594,7 +599,7 @@ if absDiffPlot == 1
     
     input1 = inputinfo1;
     input2 = inputinfo2;
-        [p, observeddifference, effectsize] = permutationTest(input1, input2, iterations, ...
+        [p, observeddifference, effectsize] = permutationTest_V2(input1, input2, iterations, ...
           'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
     %stats
     hx_sg = lillietest(input1); %1 means nonpara, 0 means normally distrib
@@ -673,13 +678,15 @@ if absDiffPlot == 1
     str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
     
- [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest_V2(input1, input2, iterations, ...
           'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
-    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
-          
-    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
-    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
+    str_perm = strcat({'FlipPerm.,p='}, num2str(p_permutation), {'Efsz='}, num2str(effectsize_permutation));
+
+    [pVal_permutationJT, effectSize_permutationJT] = bootStrapPaired_JT_V1(input1, input2, iterations);
+    str_permJT = strcat({'JTperm.,p='}, num2str(pVal_permutationJT), {'Efsz='}, num2str(effectSize_permutationJT));
     
+    titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm,str_permJT])
     
     
     
@@ -719,7 +726,7 @@ if absDiffPlot == 1
     
     input1 = inputinfo1;
     input2 = inputinfo2;
-        [p, observeddifference, effectsize] = permutationTest(input1, input2, iterations, ...
+        [p, observeddifference, effectsize] = permutationTest_V2(input1, input2, iterations, ...
           'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
       
     %stats
@@ -799,12 +806,16 @@ if absDiffPlot == 1
     str1t_1 = strcat({'Lft, comp to 0, p = '}, num2str(pvalueinfo1_subplot1));
     str1t_2 = strcat({'Rgt, comp to 0, p = '}, num2str(pvalueinfo2_subplot1));
     
- [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest(input1, input2, iterations, ...
+ [p_permutation, observeddifference_permutation, effectsize_permutation] = permutationTest_V2(input1, input2, iterations, ...
           'sidedness', 'both', 'plotresult', 0, 'showprogress', 250);
-    str_perm = strcat({'Permutation, p = '}, num2str(p_permutation), {'Effect size = '}, num2str(effectsize_permutation));
-          
+    str_perm = strcat({'FlipPerm.,p='}, num2str(p_permutation), {'Efsz='}, num2str(effectsize_permutation));
+
+    [pVal_permutationJT, effectSize_permutationJT] = bootStrapPaired_JT_V1(input1, input2, iterations);
+    str_permJT = strcat({'JTperm.,p='}, num2str(pVal_permutationJT), {'Efsz='}, num2str(effectSize_permutationJT));
+    
     titletext = strcat(SNrsubtype1, {' '}, epochName1,{' - '}, epochName, {' '}, combinedbaselineLabel, statscorrected);
-    title([titletext, str, str_1 str1t_1,str1t_2,str_perm])
+    title([titletext, str, str_1 str1t_1,str1t_2,str_perm,str_permJT])
+    
     
     %     AT golden ratio calculation. Change the longerside input to what is desired
     x0=10;
