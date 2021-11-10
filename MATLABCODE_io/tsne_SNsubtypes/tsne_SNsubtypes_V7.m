@@ -17,8 +17,8 @@ function [] = tsne_SNsubtypes_V7()
 % save buggybrkpnts b;  
 % %to load in, use below:
 
-load buggybrkpnts b
-dbstop(b)
+% load buggybrkpnts b
+% dbstop(b)
 
 
 % below input is important if not trying to run new clustering inputs
@@ -26,8 +26,8 @@ dbstop(b)
 filename2Yinput = ('/fantastic_tsne_May30_V1'); %'/fantastic_tsne6' is a good one too
 filenameRamayyaComparisoninput = ('/Yinput_tsneramayya_replication_option3');
 loadY = 1; %set to 1 if we want to use old 'Y', redundant with newYinput?
-stopAtPubFigures = 1; %if set at 1, then throws an error when we get to figures that are to be included in pub
-violinsON = 0; %set to 1 if we want to see the violin plots; AT 7/19/20
+stopAtPubFigures = 0; %if set at 1, then throws an error when we get to figures that are to be included in pub
+violinsON = 1; %set to 1 if we want to see the violin plots; AT 7/19/20
 
 %6/24/20, for below, set to 0 if interested in the tsne plots themselves
 %and validation, but set to 1 if interested in SG vs IS findings.
@@ -43,7 +43,7 @@ checkFRdistribution = 0; %this is for checking that the FR distributions are mon
 
 combinedBaseline = 0; %AT 9/14/20, I think we want to keep things uncombined.
 multiplecomparisons = 1; %AT 9/14/20 added this to the fx
-saveFig = 1;
+saveFig = 0;
 % function [] = FRanalysis_V1(caseNumb, spikeFile, clust, saveFig)
 caselabelON = 1; %set to '1' if we want the caseID's on the scatter
 
